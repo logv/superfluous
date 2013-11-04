@@ -1,0 +1,7 @@
+<% set_default("google", false) %>
+
+<div class="container-fluid">
+  <div class="login_form">
+    <%= render_partial("login/index.html.erb", { google: google }) %>
+  </div>
+</div>
