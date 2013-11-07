@@ -1,6 +1,5 @@
 {
   "/": "home",
   "/home": "home",
-  "/hello" : "hello",
   "/kitten": "kitten"
 }
