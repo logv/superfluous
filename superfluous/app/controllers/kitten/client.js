@@ -60,7 +60,7 @@ var handle_socket = function(socket) {
 
 module.exports = {
   init: function(data) {
-    jank.watch("kitten", function(kitten) {
+    SF.watch("kitten", function(kitten) {
       console.log("KITTEN UPDATE DIRECTIVE RECEIVED");
       var img = $("<img />");
       img.attr('src', "http://placekitten.com/800/600?image=" + (kitten || 1));

@@ -1,5 +1,5 @@
 {
-  "/": "home",
-  "/home": "home",
+  "/": "about",
+  "/demo": "demo",
   "/kitten": "kitten"
 }

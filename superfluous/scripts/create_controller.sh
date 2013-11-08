@@ -2,7 +2,7 @@
 
 COMPONENT=$1
 
-mkdir app/controllers/${COMPONENT}/
+mkdir -p app/controllers/${COMPONENT}/
 
 cat > app/controllers/${COMPONENT}/client.js << CLIENT
 module.exports = {

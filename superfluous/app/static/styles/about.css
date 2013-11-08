@@ -1,0 +1,17 @@
+body .content .sidebar {
+  @media (max-width: 767px) {
+  }
+  @media (min-width: 767px) {
+    height: 100%;
+    position: fixed;
+  }
+}
+
+body .content .contents {
+  @media (max-width: 767px) {
+  }
+  @media (min-width: 767px) {
+    margin-left: 300px;
+  }
+
+}

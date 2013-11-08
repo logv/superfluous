@@ -141,6 +141,7 @@ Component.build = function(component, options, cb) {
   cmpInstance.$el.attr("class", className);
   cmpInstance.id = id;
   cmpInstance.render();
+  cmpInstance.isComponent = true;
 
   if (cmpInstance.server) {
     cmpInstance.server();

@@ -6,7 +6,7 @@ var _mod;
 var _loaded = {};
 var _arbiter = _.clone(window.Backbone.Events);
 function call(controller, func, args) {
-  jank.controller(controller, function(ctrl) {
+  SF.controller(controller, function(ctrl) {
     if (ctrl[func]) {
       ctrl[func].apply(ctrl, args);
     } else {
@@ -23,7 +23,7 @@ module.exports = {
 
     window.bootloader.__controller_name = controller;
 
-    jank.controller(controller, function(cmp) {
+    SF.controller(controller, function(cmp) {
       if (!cmp) {
         console.log("Tried to set server to", controller, "but fialed!");
         return;
@@ -45,7 +45,7 @@ module.exports = {
   },
 
   get: function() {
-    return jank.controller(_name);
+    return SF.controller(_name);
   },
 
   call: function() {

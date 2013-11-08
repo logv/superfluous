@@ -8,7 +8,7 @@ var _store, _session;
 var SESSION_SECRET = 'keyboard cat';
 module.exports = {
   install: function(app) {
-    _store = new MongoStore({ db: 'jank' } );
+    _store = new MongoStore({ db: 'SF' } );
     _session = express.session({
         secret: SESSION_SECRET,
         store: _store

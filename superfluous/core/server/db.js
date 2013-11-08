@@ -75,9 +75,9 @@ function collection_builder(db_name, before_create) {
   };
 }
 
-var jank_db = collection_builder("jank");
+var SF_db = collection_builder("SF");
 module.exports = {
-  get: jank_db.get,
-  raw: jank_db.raw,
+  get: SF_db.get,
+  raw: SF_db.raw,
   db: collection_builder
 };

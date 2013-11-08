@@ -10,7 +10,7 @@ module.exports = {
 
     // stores a per controller piece of data on the server that is shared with
     // everyone else.
-    jank.set("kitten", kitten);
+    SF.set("kitten", kitten);
 
   }
 };

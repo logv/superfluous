@@ -14,7 +14,7 @@
   }
 
   $(function() {
-    console.log("Bring forth the jank (prelude loaded)");
+    console.log("Bring forth the SF (prelude loaded)");
   });
 
   $(function() {
@@ -48,23 +48,23 @@
   var _store = {};
 
   function data_getter(k, ns) {
-    ns = ns || jank.controller().name;
+    ns = ns || SF.controller().name;
 
     _store[ns] = _store[ns] || {};
     return _store[ns][k];
   }
 
   function data_setter(k, v, ns) {
-    ns = ns || jank.controller().name;
+    ns = ns || SF.controller().name;
     _store[ns] = _store[ns] || {};
     _store[ns][k] = v;
 
-    jank.inform("update:" + k, v);
+    SF.inform("update:" + k, v);
   }
 
   // Very hard to over-ride
   function data_subscriber(k, cb) {
-    var ns = jank.controller().name;
+    var ns = SF.controller().name;
     _store[ns] = _store[ns] || {};
 
     $(function() {
@@ -74,16 +74,16 @@
       }
     });
 
-    jank.subscribe("update:" + k, cb);
+    SF.subscribe("update:" + k, cb);
   }
 
   // tells the server to store some data for us, too.
   // this is a first come, first served type of thing, btw.
   function data_store(k, v, ns) {
-    jank.socket().emit("store", {
+    SF.socket().emit("store", {
       key: k,
       value: v,
-      controller: ns || jank.controller().name });
+      controller: ns || SF.controller().name });
   }
 
   function data_sync(data) {
@@ -271,14 +271,42 @@
       if (!mod[func]) {
         console.debug("Couldn't find", func, "in ", module, ". not running server call");
       } else {
-        mod[func].apply(mod, args);
+        marshall_args(args, function(new_args) {
+          mod[func].apply(mod, new_args);
+        });
       }
     });
   }
 
+  function marshall_args(args, cb) {
+    SF.do_when(window.$G, "core/client/component", function() {
+      var count = 0;
+      _.each(args, function(arg, index) {
+        if (arg.isComponent) {
+          count += 1;
+        }
+      });
+
+      var after = _.after(count, function() {
+        cb(args);
+      });
+
+      _.each(args, function(arg, index) {
+        if (arg.isComponent) {
+          $G(arg.id, function(cmp) {
+            args[index] = cmp;
+            after();
+          });
+        }
+      });
+    });
+  }
+
   function controller_call(controller, func, args) {
-    jank.controller(controller, function(cntrl) {
-      func.apply(cntrl, args);
+    marshall_args(args, function(new_args) {
+      SF.controller(controller, function(cntrl) {
+        func.apply(cntrl, new_args);
+      });
     });
   }
 
@@ -354,7 +382,7 @@
       }, 1500);
     });
 
-    require("app/controllers/" + name + "/client", function(ctrl) {
+    get_controller(name, function(ctrl) {
       // TODO: Is this a good idea? (reaching in like this)
       ctrl.__socket = socket;
 
@@ -402,7 +430,7 @@
     install_socket: install_socket
   };
 
-  var jank = {
+  var SF = {
     set: data_setter,
     get: data_getter,
     sync: data_store,
@@ -414,46 +442,37 @@
 
   };
 
-  _.extend(jank, Backbone.Events);
+  _.extend(SF, Backbone.Events);
   // do some legwork to scope on/emit events to their controllers
-  jank.subscribe = function() {
+  SF.subscribe = function() {
     var args = _.toArray(arguments);
     args[0] = get_controller().name + ":" + args[0];
-    return jank.on.apply(jank, args);
+    return SF.on.apply(SF, args);
   };
 
-  jank.inform = function() {
+  SF.inform = function() {
     var args = _.toArray(arguments);
     args[0] = get_controller().name + ":" + args[0];
-    return jank.trigger.apply(jank, args);
+    return SF.trigger.apply(SF, args);
   };
 
   Backbone.history.start({ pushState: true });
   var _history = new Backbone.Router();
-  jank.go = function(uri, data) {
+  SF.go = function(uri, data) {
     _history.navigate(uri, { trigger: true });
   };
 
-  jank.replace = function(uri, data) {
+  SF.replace = function(uri, data) {
     _history.navigate(uri, { trigger: true, replace: true });
   };
 
   $(window).bind('popstate', function(evt) {
     // see if we have any results saved for the current URI
-    jank.inform("popstate");
+    SF.inform("popstate");
   });
-
-  // i dont like that clicking links that are just #href causes me history
-  // problems.
-  $(document).on("click", "a[href^='#']", function(event) {
-    if (!event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
-      event.preventDefault();
-    }
-  });
-
 
   window.bootloader = bootloader;
-  window.jank = jank;
+  window.SF = SF;
   window.require = bootloader.require;
 
 }());
