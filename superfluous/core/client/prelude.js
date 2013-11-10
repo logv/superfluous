@@ -272,33 +272,33 @@
         console.debug("Couldn't find", func, "in ", module, ". not running server call");
       } else {
         marshall_args(args, function(new_args) {
-          mod[func].apply(mod, new_args);
+          mod[func].apply(mod[func], new_args);
         });
       }
     });
   }
 
   function marshall_args(args, cb) {
-    SF.do_when(window.$G, "core/client/component", function() {
-      var count = 0;
-      _.each(args, function(arg, index) {
-        if (arg.isComponent) {
-          count += 1;
-        }
-      });
+    var count = 0;
+    _.each(args, function(arg, index) {
+      if (arg.isComponent) {
+        count += 1;
+      }
+    });
 
-      var after = _.after(count, function() {
-        cb(args);
-      });
+    var after = _.after(count, function() {
+      cb(args);
+    });
 
-      _.each(args, function(arg, index) {
-        if (arg.isComponent) {
+    _.each(args, function(arg, index) {
+      if (arg.isComponent) {
+        SF.do_when(window.$G, "core/client/component", function() {
           $G(arg.id, function(cmp) {
             args[index] = cmp;
             after();
           });
-        }
-      });
+        });
+      }
     });
   }
 

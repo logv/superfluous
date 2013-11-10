@@ -1,4 +1,41 @@
+body {
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-attachment: fixed;
+
+  .container-fluid {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+
+
+
+  .alert {
+    opacity: 0.8;
+  }
+
+  pre {
+    opacity: 0.8;
+  }
+}
+
 body .content .sidebar {
+  opacity: 0.8;
+  padding: 20px;
+  background-color: #000;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #ccc;
+  }
+
+  a {
+    color: #ccc;
+  }
+
+  a:hover {
+    color: #000;
+  }
+
   @media (max-width: 767px) {
   }
   @media (min-width: 767px) {
@@ -9,6 +46,7 @@ body .content .sidebar {
 
 body .content .contents {
   @media (max-width: 767px) {
+    margin: 0;
   }
   @media (min-width: 767px) {
     margin-left: 300px;

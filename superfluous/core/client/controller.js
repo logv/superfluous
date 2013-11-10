@@ -23,11 +23,14 @@ module.exports = {
 
     window.bootloader.__controller_name = controller;
 
+    console.log("Setting controller", controller, pageId);
     SF.controller(controller, function(cmp) {
       if (!cmp) {
         console.log("Tried to set server to", controller, "but fialed!");
         return;
       }
+
+      console.log("Loaded controller", controller, cmp);
 
       cmp.page = page;
       cmp.setElement(page);

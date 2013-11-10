@@ -13,6 +13,11 @@ module.exports = {
   load: function load_controller(name) {
     var mod = require_app("controllers/" + name + "/server");
     mod.name = name;
+    _.extend(mod, {
+      set_title: function(title) {
+        context("title", title);
+      }
+    });
     return mod;
   },
   require_https: function() {

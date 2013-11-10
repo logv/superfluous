@@ -21,7 +21,7 @@ function index() {
 
   template.add_stylesheet("scrollers.css");
 
-  context("title", "kittyBrowser");
+  this.set_title("kitty browser");
 
   var logout_button = $C("button", {
       name: "log out",

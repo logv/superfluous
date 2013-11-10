@@ -111,7 +111,8 @@ var render_page = function(page_options) {
     css_header: template.css_header() // TODO: make this the packaged CSS early dependency file
     });
 
-  var pageStr = page.toString();
+  var pagePrefix = "<!DOCTYPE html>\n";
+  var pageStr = pagePrefix + page.toString();
 
   // TODO: work on how the order of things are initialized happens
   try {

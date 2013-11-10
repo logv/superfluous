@@ -1,17 +1,19 @@
 <div class="clearfix container-fluid">
-  <div class="sidebar" style="">
-    <% add_stylesheet("about.css"); %>
-    <%= render_sidebar() %>
-  </div>
-
-  <div class="span8 contents">
-      <h1>welcome to <b>superfluous</b></h1>
-
-      <%= render_partial("about/index.html.erb", {
-        client_controller_code: client_code,
-        server_controller_code: server_code,
-        about_server_code: about_server_code,
-        about_client_code: about_client_code,
-        template_code: template_code}) %>
+  <div class="">
+    <div class="sidebar" style="overflow-y: auto">
+      <% add_stylesheet("about.css"); %>
+      <%= render_sidebar() %>
     </div>
+
+    <div class="span8 contents eom" style="padding: 10px">
+        <h1>welcome to <b>superfluous</b></h1>
+
+        <%= render_partial("about/index.html.erb", {
+          client_controller_code: client_code,
+          server_controller_code: server_code,
+          about_server_code: about_server_code,
+          about_client_code: about_client_code,
+          template_code: template_code}) %>
+    </div>
+  </div>
 </div>

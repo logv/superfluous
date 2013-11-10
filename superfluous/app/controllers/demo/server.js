@@ -10,7 +10,7 @@ module.exports = {
   },
 
   index: function() {
-    var template_str = template.render("controllers/demo.html.erb");
+    var template_str = template.render("controllers/demo.html.erb", { total: _total });
     page.render({ content: template_str, socket: true});
   },
 

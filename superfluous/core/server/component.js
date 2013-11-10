@@ -154,7 +154,8 @@ Component.build = function(component, options, cb) {
   // like:
   //    * marshalling data to the client
   //    * making sure that client behaviors get installed.
-  cmpInstance.toString = function() {
+  //
+  function marshallToClient(cmpInstance) {
     // TODO: This needs to only be called after the component is rendered
     // toString'd the first time
     cmpInstance.toString = oldToString;
@@ -191,7 +192,15 @@ Component.build = function(component, options, cb) {
 
     bridge.call("core/client/component", "instantiate", client_options);
     return ret;
+  }
+
+  cmpInstance.toString = function() {
+    return marshallToClient(cmpInstance);
   };
+
+  cmpInstance.marshall = function() {
+    return marshallToClient(cmpInstance);
+  }
 
   if (cb) {
     cb(cmpInstance);

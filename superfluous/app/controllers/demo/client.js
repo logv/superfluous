@@ -4,6 +4,8 @@ module.exports = {
   events: {
     "click a.bump" : "handle_bump"
   },
+  init: function() {
+  },
   socket: function(socket) {
     var self = this;
     socket.on("query_results", function(res) {

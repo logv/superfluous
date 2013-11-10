@@ -7,6 +7,7 @@ var packager = require_core("server/packager");
 var Component = require_core("server/component");
 var async = require("async");
 var readfile = require_core("server/readfile");
+var less = require("less");
 
 function multi_pack(dir, extension, prepack) {
   return function() {
@@ -101,9 +102,7 @@ var js_prelude = function() {
 };
 
 var css_prelude = function() {
-  var req = context("req");
   var res = context("res");
-  var ctx = context.get();
 
   // Shrink wrap the prelude files
   var data = readfile("core/client/prelude.json");
@@ -114,9 +113,16 @@ var css_prelude = function() {
   async.each(
     data.styles,
     function(file, cb) {
-      fs.readFile(file, function(err, data) {
+      fs.readFile(file, function(err, css_data) {
         if (!err) {
-          res.write(data.toString());
+          less.render(css_data.toString(), function(err, data) {
+            if (!err) {
+              res.write(data);
+            } else {
+              console.log("Error lessing", file, "sending down uncompiled version");
+              res.write(css_data.toString());
+            }
+          });
         } else {
           console.log("Error reading", file);
         }
