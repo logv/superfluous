@@ -1,9 +1,12 @@
 <% set_default("client_controller_code", "") %>
 <% set_default("server_controller_code", "") %>
 <% set_default("template_code", "") %>
+
+<!-- Outline -->
+
 <!--
 
-Outline
+Outline 2
 
 -->
 
@@ -11,13 +14,15 @@ Outline
 <link href="https://google-code-prettify.googlecode.com/svn/trunk/styles/doxy.css" rel="stylesheet" />
 
   <p>
-  <b>superfluous</b> is a <b>framework</b> (*gasp* another framework!) that
-  complexifies the writing of web apps. it's a node.js app &amp; component
-  server. at its core, superfluous deals with how the server &amp; client
-  <b>communicate</b> in today's modern app environment.  </p>
+  <b>superfluous</b> is an <b>alpha quality framework</b> (*gasp* another
+  framework!) that simplifies (and complexifies) the writing of web apps. it's
+  a node.js app &amp; component server. at its core, superfluous deals with how
+  the server &amp; client <b>communicate</b> in today's modern app environment.
+  </p>
 
   in other words, superfluous connects <b>app delivery</b> and subsequent
-  <b>interactions</b> (aka <b>the app</b>) into a <b>coherent package.</b></p>
+  <b>interactions</b> (aka <b>the app</b>) into a <b>coherent package</b>,
+  written in <b>one language</b></p>
 
   <p>If you are familiar with django, rails or other web frameworks, many of the
   concepts in superfluous will be familiar to you.</p>
@@ -164,8 +169,12 @@ Model layer up to the developer.
     </div>
   </div>
 
-  <p>The two controllers communicate via the <b>bridge</b> and <b>sockets</b>
-  that are set up as part of the app delivery process.</p>
+  <p>
+  During the initial page delivery, the server controller uses the
+  <b>bridge</b> to talk to the client and run JS. After the app is delivered,
+  the two controllers communicate via <b>sockets</b> that are set up during
+  the app delivery process.
+   </p>
 
   <p class="alert">
     Use <b>scripts/create_controller.sh controller_name</b> to generate a new controller
@@ -224,6 +233,8 @@ the basics are there.
   Re-usable pieces of functionality that don't belong in a controller go in a
   Component. Components are usable on the server or client and contain all the
   code (HTML, CSS, JS) to render and interact with the component in one directory.
+
+  Components (for simplicity) are <b>Backbone.Views</b>.
   </p>
 
   <p>
@@ -329,10 +340,6 @@ the basics are there.
 
 
   </div>
-  </div>
-
-
-  </p>
 </div>
 
 <div>
@@ -354,166 +361,171 @@ setup communication between each other.
 </p>
 
 <div class="developers">
-<h1>Superfluous Features</h1>
+  <h1>Superfluous Features</h1>
 
-<div>
-  Superfluous is very concerned (again :-) with app delivery and communication,
-  as such it does handles some pretty specific cases.
-</div>
+  <div>
+    Superfluous is very concerned (again :-) with app delivery and communication,
+    as such it does handles some pretty specific cases.
+  </div>
 
-<div class="">
-  <h3>App Delivery</h3>
+  <div class="">
+    <h3>App Delivery</h3>
 
-  <p>
-    superfluous handles packaging the app code and assets for you. code
-    minifation, LESS compilation, automatic bug detection, you name it.
-  </p>
+    <p>
+      superfluous handles packaging the app code and assets for you, dynamically.
+      code minication, LESS compilation, etc, are all included in the dynamic
+      packaging endpoints.
+    </p>
 
-  <h3>Asynchronous Delivery</h3>
+    <h3>Asynchronous Delivery</h3>
 
-  <p>
-  The traditional web server generates a blob of HTML that it sends down to the
-  client web browser for rendering. In this model, the generation of the webpage
-  is considered mostly linear.
-  </p>
+    <p>
+    The traditional web server generates a blob of HTML that it sends down to the
+    client web browser for rendering. In this model, the generation of the webpage
+    is considered mostly linear.
+    </p>
 
-  <p>
-  In superfluous, asynchronous delivery lets you inject a placeholder into a
-  template and whenever you run a callback with new data, the new data will be
-  injected into that spot of the page.
+    <p>
+    In superfluous, asynchronous delivery lets you inject a placeholder into a
+    template and whenever you run a callback with new data, the new data will be
+    injected into that spot of the page.
 
-  This is particularly well suited to data fetching and the callback heavy style
-  of node.js.
-  </p>
+    This is particularly well suited to data fetching and the callback heavy style
+    of node.js.
 
-  <div class="mtl mbl">
+    See <a
+    href="https://www.facebook.com/notes/facebook-engineering/bigpipe-pipelining-web-pages-for-high-performance/389414033919">facebook's
+    note on bigpipe</a> for more info on this concept.
+    </p>
 
-    <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#async_example">
-      see example async rendering
-    </button>
+    <div class="mtl mbl">
+
+      <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#async_example">
+        see example async rendering
+      </button>
 
 
-    <div id="async_example" class="collapse">
+      <div id="async_example" class="collapse">
 
-  in app/controllers/async/server.js
-  <pre class="prettyprint"><code>module.exports = {
-    routes: {
-      "": "index"
-    },
-    index: function() {
-      var flush;
-      var async_render = page.async(function(cb) {
-        var options = {};
-        // Pretend to do some asynchronous work, here.
-        do_some_db_call(options, function(err, data) {
-          // When cb is called, the data will be injected on the client into
-          // where async_render was originally called.
-          cb(data);
-        }, 1000);
-      });
+    in app/controllers/async/server.js
+    <pre class="prettyprint"><code>module.exports = {
+      routes: {
+        "": "index"
+      },
+      index: function() {
+        var flush;
+        var async_render = page.async(function(cb) {
+          var options = {};
+          // Pretend to do some asynchronous work, here.
+          do_some_db_call(options, function(err, data) {
+            // When cb is called, the data will be injected on the client into
+            // where async_render was originally called.
+            cb(data);
+          }, 1000);
+        });
 
-      page.render({content: async_render()});
-    }
-  }</code></pre>
+        page.render({content: async_render()});
+      }
+    }</code></pre>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="">
-  <h3>Component Delivery</h3>
+  <div class="">
+    <h3>Component Delivery</h3>
 
-  Superfluous loads components from the server in one endpoint (including
-  templates, styles and scripts), allowing the client to load any component on
-  demand. It takes care of bootloading in their dependencies and any helpers, so
-  that the developer can focus on building the app, not packaging it.
-</div>
-
-
-<div class="">
+    Superfluous loads components from the server in one endpoint (including
+    templates, styles and scripts), allowing the client to load any component on
+    demand. It takes care of bootloading in their dependencies and any helpers, so
+    that the developer can focus on building the app, not packaging it.
+  </div>
 
 
+  <div class="">
 
-  <h3>Auto Socket Setup</h3>
 
-  When a controller enables sockets, <b>socket.io</b> handles the rest. The
-  client and server controller can immediately begin talking to one another.
-  When a user authenticates, their socket is authenticated as well.
-</div>
 
-<div class="">
-  <h3>Request Local Storage</h3>
+    <h3>Auto Socket Setup</h3>
+
+    When a controller enables sockets, <b>socket.io</b> handles the rest. The
+    client and server controller can immediately begin talking to one another.
+    When a user authenticates, their socket is authenticated as well.
+  </div>
+
+  <div class="">
+    <h3>Request Local Storage</h3>
+
+    <p>
+    Even though node.js doesn't really have threads, you can allocate variables
+    into a request specific <b>context</b> from any function, without holding onto
+    a request object.
+    </p>
+
+    <p>
+    This allows your app to communicate between friendly modules without threading
+    a request object through every callback.
+    </p>
+  </div>
+
+  <h3>Multi-Client Synchronization</h3>
+
+  <p>Superfluous comes with multi-client synchronization features. These can be
+  used via SF.watch &amp;, SF.set on the client to let all connected clients
+  share &amp; watch variables for changes.</p>
+
+
+  <h4><b>A complexer demo</b></h4>
 
   <p>
-  Even though node.js doesn't really have threads, you can allocate variables
-  into a request specific <b>context</b> from any function, without holding onto
-  a request object.
-  </p>
+  With the above features (<b>async delivery</b>, <b>multi-client
+  synchronization</b> , <b>sockets</b> and  <b>components</b>), we have enough to
+  run a slightly more complex superfluous app. <a href="/kitten">Click here</a>
+  to see it in action.  </p>
 
   <p>
-  This allows your app to communicate between friendly modules without threading
-  a request object through every callback.
+    This example renders the <b>kitten_tile</b> component and allows users to
+    synchronize the currently displayed kitten among each other. Not very
+    exciting...  but the potential for something more is here :-D
   </p>
-</div>
 
-<h3>Multi-Client Synchronization</h3>
+  </p>
 
-<p>Superfluous comes with multi-client synchronization features. These can be
-used via SF.watch &amp;, SF.set on the client to let all connected clients
-share &amp; watch variables for changes.</p>
+  <h4><b>The complexest demo</b></h4>
 
-
-<h4><b>A complexer demo</b></h4>
-
-<p>
-With the above features (<b>async delivery</b>, <b>multi-client
-synchronization</b> , <b>sockets</b> and  <b>components</b>), we have enough to
-run a slightly more complex superfluous app. <a href="/kitten">Click here</a>
-to see it in action.  </p>
-
-<p>
-  This example renders the <b>kitten_tile</b> component and allows users to
-  synchronize the currently displayed kitten among each other. Not very exciting...
-  but the potential for something more is there :-D
-</p>
-
-</p>
+  Superfluous was refactored out of snorkel, and is mostly alpha quality. Check
+  out <a href="http://github.com/okayzed/snorkel">snorkel's code</a>, if you want
+  to see a much more heinous use of javascript.
 
   <h1>Left to the developer</h1>
 
-  <p>
-  Superfluous leaves a lot of app building questions up to the developer, since
-  it is mainly concerned how the app is created, delivered and interacted with.
+    <p>
+    Superfluous leaves a lot of app building questions up to the developer, since
+    it is mainly concerned how the app is created, delivered and interacted with.
 
-  Most of these can be answered with out of the box solutions and middleware.
-  </p>
+    Most of these can be answered with out of the box solutions and middleware.
+    </p>
 
-  <h3>Caching Data</h3>
+    <h3>Caching Data</h3>
 
-  How data is cached on the client and server is unanswered. It could be in
-  localstorage, it could be RAM, it could be memcache. That's up to you :-D
+    How data is cached on the client and server is unanswered. It could be in
+    localstorage, it could be RAM, it could be memcache. That's up to you :-D
 
-  <h3>Data Layer (the DB &amp; ORM)</h3>
+    <h3>Data Layer (the DB &amp; ORM)</h3>
 
-  Similarly, no ORM is preferred for holding your data. If you choose to
-  use one at all.
+    Similarly, no ORM is preferred for holding your data. If you choose to
+    use one at all.
 
-  <h3>Authentication</h3>
+    <h3>Data Migration</h3>
 
-  Authentication Authentishmation. Check out passport.
+    Noticing a theme around data? You should be :-)
 
-  <h3>Scaling</h3>
+    <h3>Authentication</h3>
 
-  hmmmmm. maybe consider this server for internal tools, only :-)
-</div>
+    Authentication Authentishmation. Check out passport.
 
-<div>
+    <h3>Scaling</h3>
 
-  <!-- Inspirations 
+    hmmmmm. maybe consider this server for internal tools, only :-/
 
 
-    Rails
-    FB BigPipe
-    FB XHP
-
-  -->
 </div>

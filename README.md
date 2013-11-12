@@ -19,17 +19,11 @@ delivery, and subsequent interactions. superfluous connects the two :-D
     cd superfluous/superfluous
     npm install
 
-    # helper for restarting the server when js files change
-    npm install -g nodemon
+    # start the server with the dev environment for
+    # localhost
+    ENV=localhost nodemon app.js
 
-    # copy and edit your config
-    cp config/config.js config/local/my_dev_env.js
-
-    # start the server with the dev environment
-    ENV=local/my_dev_env nodemon app.js
-
-
-    # visit http://localhost:3000
+    # visit http://localhost:3300
 
 ### 1) hack away
 
@@ -37,7 +31,7 @@ delivery, and subsequent interactions. superfluous connects the two :-D
 
 ## Fundamentals
 
-See the [wiki](http://github.com/okayzed/superfluous/wiki)
+See the guide [locally](http://localhost:3300) or [online](http://sf.nicsho.es)
 
 ## built with <3 on
 

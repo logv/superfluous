@@ -334,7 +334,11 @@
     str = str.replace(/^\s*/, "");
     str = str.replace(/\s*$/, "");
 
-    return str.substr("&lt;!--".length, chars);
+    var ret= str.substr("&lt;!--".length, chars);
+    // Decoding from HTML
+    ret = $('<div />').html(ret).text();
+
+    return ret;
   }
 
   function deliver_pagelet(options) {
