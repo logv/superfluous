@@ -100,8 +100,10 @@ Every app has an entry point on the server, accessed via its top level URL (or
 instantiate the app that the user will be interacting with.  </p>
 
 <p>
-Routes are configured in the <b>routes.json</b> file - it is a global index
-of what apps the server is going to be serving and where.
+App Routes are configured in the <b>routes.json</b> file - it is a global index
+of what apps the server is going to be serving and where. Inside each, app the
+server controller has a routes member that tells the router which functions to
+hand requests to.
 </p>
 
 <div class="mtl mbl">
@@ -230,11 +232,11 @@ the basics are there.
   <h3>Components</h3>
 
   <p>
-  Re-usable pieces of functionality that don't belong in a controller go in a
-  Component. Components are usable on the server or client and contain all the
-  code (HTML, CSS, JS) to render and interact with the component in one directory.
+  Components (for simplicity) are <b>Backbone.Views</b>. They are re-usable
+  pieces of functionality that don't belong in a controller.  Components are
+  usable on the server or client and contain all the code (HTML, CSS, JS) to
+  render and interact with the component in one directory.
 
-  Components (for simplicity) are <b>Backbone.Views</b>.
   </p>
 
   <p>
@@ -242,7 +244,8 @@ the basics are there.
   </p>
 
   <p>
-    A component is split into several files: the main <b>component.js</b> file, the <b>events</b> file, the <b>style</b> file and the <b>template</b>.
+    A component is split into several files: the main <b>component.js</b> file,
+    the <b>events</b> file, the <b>style</b> file and the <b>template</b>.
 
   <div>
     <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#button_example">
@@ -282,10 +285,11 @@ the basics are there.
   </div>
 
   <p>
-  The <b>main component</b> file is responsible for a component's core logic and
-  rendering. The <b>events</b> file is responsible for event handling in the component.
-  The <b>style</b> file contains CSS that will be automatically scoped to the component,
-  and the <b>template</b> is the basic HTML used to construct the component.
+  The <b>main component</b> file is responsible for a component's core logic
+  and rendering. The <b>events</b> file is responsible for event handling in
+  the component and is only loaded on the client.  The <b>style</b> file
+  contains CSS that will be automatically scoped to the component, and the
+  <b>template</b> is the basic HTML used to construct the component.
   </p>
 
   <p class="alert">
@@ -320,9 +324,10 @@ the basics are there.
 
   <p>
   In superfluous, components can be created on the server or client and are
-  automatically created and handed to the client app when their necessary files
-  are loaded. It's possible to create a component in the server controller and
-  hand it to the client controller for further use.
+  automatically marshalled and handed to the client app when their necessary
+  files are loaded. It's possible to create a component in the server
+  controller and hand it to the client controller for further use, as though they
+  are regular JS objects.
   </p>
 
   <button type="button" class="btn btn-danger mbl " data-toggle="collapse" data-target="#component_example">

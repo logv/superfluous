@@ -27,11 +27,11 @@ delivery, and subsequent interactions. superfluous connects the two :-D
 
 ### 1) hack away
 
-    vim superfluous/app/controllers/home/server.js
+    vim superfluous/app/controllers/about/server.js
 
 ## Fundamentals
 
-See the guide [locally](http://localhost:3300) or [online](http://sf.nicsho.es)
+See the guide [locally](http://localhost:3300) or [online](http://sf.nicesho.es)
 
 ## built with <3 on
 
