@@ -110,6 +110,7 @@ var css_prelude = function() {
   data = JSON.parse(data);
   res.set("Content-Type", "text/css");
 
+  var css_datas = {};
   async.each(
     data.styles,
     function(file, cb) {
@@ -117,10 +118,10 @@ var css_prelude = function() {
         if (!err) {
           less.render(css_data.toString(), function(err, data) {
             if (!err) {
-              res.write(data);
+              css_datas[file] = data;
             } else {
-              console.log("Error lessing", file, "sending down uncompiled version");
-              res.write(css_data.toString());
+              console.log("Error lessing", file, ", sending uncompiled version");
+              css_datas[file] = css_data.toString();
             }
           });
         } else {
@@ -129,7 +130,14 @@ var css_prelude = function() {
       cb();
       });
     },
-    function(err) { res.end(); });
+    function(err) {
+      _.each(data.styles, function(file) {
+        if (css_datas[file]) {
+          res.write(css_datas[file]);
+        }
+      });
+      res.end();
+    });
 }
 
 var component = function() {
@@ -140,7 +148,7 @@ var component = function() {
 
   var modules = JSON.parse(req.query.m);
   async.each(
-    modules, 
+    modules,
     function(module, cb) {
       Component.build_package(module, function(ret) {
        loaded[module] = ret;
