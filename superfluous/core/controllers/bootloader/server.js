@@ -101,6 +101,12 @@ var js_prelude = function() {
     });
 };
 
+var get_status = function() {
+  var res = context("res");
+  res.write("OK");
+  res.end();
+}
+
 var css_prelude = function() {
   var res = context("res");
 
@@ -167,8 +173,10 @@ module.exports = {
   js_prelude: js_prelude,
   css_prelude: css_prelude,
   component: component,
+  get_status: get_status,
 
   routes: {
+    "/status" : "get_status",
     "/css" : "css",
     "/js" : "js",
     "/component" : "component",

@@ -381,9 +381,19 @@
 
     socket.on("store", data_sync);
     socket.on("refresh", function(data) {
-      setTimeout(function() {
-        window.location.reload();
-      }, 1500);
+      function refresh_page() {
+        var promise = $.get(
+          "/pkg/status", function() {
+            window.location.reload();
+          });
+
+        promise.fail(function() {
+          setTimeout(refresh_page, 1500);
+        });
+      }
+
+      // First ping the server, to see if its safe to reload
+      setTimeout(refresh_page, 1500);
     });
 
     get_controller(name, function(ctrl) {
