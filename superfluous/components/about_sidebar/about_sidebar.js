@@ -16,15 +16,6 @@ module.exports = {
     contents.addClass("nav");
     contents.addClass("nav-stacked");
 
-    // http://stackoverflow.com/questions/2905867/how-to-scroll-to-specific-item-using-jquery
-    function focusElement(scrollTo) {
-      var container = $("body");
-
-      container.animate({
-        scrollTop: scrollTo.offset().top - container.offset().top
-      });
-    }
-
     _.each(headers, function(heading) {
       var hId = _.uniqueId("heading");
       var tagName = heading.tagName;
@@ -34,22 +25,16 @@ module.exports = {
       if (indent <= 1) {
         weight = 'bold';
       }
-      div.append(
-        $("<a />")
-          .attr('href', '#' + hId)
-          .css('margin-left', indent * 5)
-          .css('padding-left', "5px")
-          .css('font-weight', weight)
-          .css('border-left', "1px gray dotted")
-          .html($(heading).html()));
+      var a = $("<a />")
+        .attr('href', '#' + hId)
+        .addClass("content-link")
+        .css('margin-left', indent * 5)
+        .css('font-weight', weight)
+        .html($(heading).html());
 
+      div.append(a);
       contents.append(div);
 
-      // One way of doing it.
-      div.on('click', function(e) {
-        focusElement($(heading));
-        e.preventDefault();
-      });
 
       $(heading).append($("<a />").attr("id", hId).attr('href', '#'));
 
