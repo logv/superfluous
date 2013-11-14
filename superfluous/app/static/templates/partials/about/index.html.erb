@@ -14,10 +14,10 @@ Outline 2
 <link href="https://google-code-prettify.googlecode.com/svn/trunk/styles/doxy.css" rel="stylesheet" />
 
   <p>
-  <b>superfluous</b> is an <b>alpha quality framework</b> (*gasp* another
-  framework!) that simplifies (and complexifies) the writing of web apps. it's
-  a node.js app &amp; component server. at its core, superfluous deals with how
-  the server &amp; client <b>communicate</b> in today's modern app environment.
+  <b>superfluous</b> is an <b>app framework</b> (*gasp* another framework!)
+  that simplifies (and/or complexifies) the writing of web apps. it's a node.js
+  app &amp; component server. at its core, superfluous deals with how the
+  server &amp; client <b>communicate</b> in today's modern app environment.
   </p>
 
   in other words, superfluous connects <b>app delivery</b> and subsequent
@@ -50,15 +50,15 @@ ENV=localhost nodemon app.js
 <p>
 In superfluous, the server is an <a href="http://expressjs.com">express app</a>
 running on <a href="http://nodejs.org">node.js</a>. The server is responsible
-for sending <b>apps</b> (a <b>web page</b> can be considered a type of web app)
-to the client. Each server can host one or more web apps, each living at its
-own top level URL.
+for sending <b>apps</b> (a <b>page</b> can be considered a type of app) to the
+client. Each server can host one or more web apps, each living at its own top
+level URL.
 </p>
 
 <p>
-In addition to delivering the app to the client, the server is responsible for
-performing business logic and manipulating the database in response to client
-actions.
+In addition to delivering the app to the client, the server is generally
+responsible for performing business logic and manipulating the database in
+response to client actions.
 </p>
 
 <p class="alert">
