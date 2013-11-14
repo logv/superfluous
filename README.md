@@ -37,7 +37,6 @@ See the guide [locally](http://localhost:3300) or [online](http://sf.nicesho.es)
 
 * [backbone](http://backbonejs.org)
 * [underscore](http://underscorejs.org)
-* [passport](http://passportjs.org)
 * [express](http://expressjs.com)
 * [node.js](http://nodejs.org)
 

@@ -32,10 +32,6 @@ function setup() {
 
   http.globalAgent.maxSockets = config.max_http_sockets;
 
-  // Authorization
-  var passport = require('passport');
-
-
   // Better stack traces
   require("longjohn");
 
@@ -49,8 +45,14 @@ function setup() {
 
   var session = require("./session");
   session.install(app);
-  app.use(passport.initialize());
-  app.use(passport.session());
+
+
+  // Opportunity for Authorization and other stuff
+  var main = require_app("main");
+  if (main.setup_app) {
+    main.setup_app(app);
+  }
+
 
 
   // parse POST request body bits
