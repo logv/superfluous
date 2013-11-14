@@ -2,8 +2,7 @@ tmp-build
 superfluous/node_modules
 .*.sw?
 sync.sh
-sync_jank.sh
-sync_package.sh
+sync_*.sh
 superfluous/config/override.js
 superfluous/config/certs/
 superfluous/config/local/

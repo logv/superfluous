@@ -82,10 +82,6 @@ module.exports = {
       ret = default_;
     }
     return ret;
-  },
-  get_stored_value: function(name, key) {
-    var controller = this.load(name);
-    return controller[key];
   }
 
 };

@@ -20,7 +20,14 @@ var Component = require_root("components/component");
 
 Component.load = function(component) {
   var base_dir = "./components/" + component + "/";
-  var package_data = readfile(base_dir + "package.json");
+  var package_data;
+  try {
+    package_data = readfile(base_dir + "package.json");
+  } catch (e) {
+    console.log("Couldn't find package.json for ", component, ". Are you sure the component is named that?");
+    throw new Error("Missing Component " + component);
+  }
+
   var pkg = JSON.parse(package_data);
   // Look for package.json file in component dir
   // this will contain dependencies, stylesheets, etc

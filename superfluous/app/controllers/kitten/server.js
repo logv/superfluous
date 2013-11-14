@@ -81,6 +81,11 @@ module.exports = {
     }, (Math.random() * 10000) + 3000);
   },
 
+  // we can persist the kitten to db
+  socket_cache_whitelist: [
+    "kitten"
+  ],
+
   socket: function(socket) {
     var id = __id++;
 

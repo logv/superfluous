@@ -9,6 +9,7 @@ var db_options = {
   journal: 1
 };
 
+var package_json = require_core("../package.json");
 var context = require_core("server/context");
 var mongodb = require("mongodb"),
     port = mongodb.Connection.DEFAULT_PORT;
@@ -43,6 +44,7 @@ function collection_builder(db_name, before_create) {
       var db_name = args.join(separator);
 
       if (!_db && !cb) {
+        console.trace();
         throw("Trying to access DB before its been initialized");
       } else if (!_db) {
         return arbiter.once("db_open", function(db) {
@@ -75,7 +77,7 @@ function collection_builder(db_name, before_create) {
   };
 }
 
-var SF_db = collection_builder("SF");
+var SF_db = collection_builder(package_json.name);
 module.exports = {
   get: SF_db.get,
   raw: SF_db.raw,
