@@ -11,6 +11,7 @@ var db_options = {
 
 var package_json = require_core("../package.json");
 var context = require_core("server/context");
+var config = require_core("server/config");
 var mongodb = require("mongodb"),
     port = mongodb.Connection.DEFAULT_PORT;
 
@@ -77,7 +78,7 @@ function collection_builder(db_name, before_create) {
   };
 }
 
-var SF_db = collection_builder(package_json.name);
+var SF_db = collection_builder(config.db_name || package_json.name);
 module.exports = {
   get: SF_db.get,
   raw: SF_db.raw,
