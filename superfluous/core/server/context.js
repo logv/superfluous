@@ -9,7 +9,7 @@ var domain = require('domain');
 
 var __defaults = {};
 var package_json = require_core("../package.json");
-var app_name = package_json.app;
+var app_name = package_json.name;
 
 var __id = 0;
 module.exports = function(key, val) {
