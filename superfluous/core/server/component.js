@@ -90,6 +90,9 @@ Component.build_package = function(component, cb) {
   ];
 
   var named = _.isObject(pkg.helpers);
+  if (_.isArray(pkg.helpers)) {
+    named = false;
+  }
 
   _.each(pkg.helpers, function(helper, name) {
     jobs.push(process_file(cmp.helpers, js_dir + helper + ".js", (named && name) || helper));

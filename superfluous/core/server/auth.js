@@ -27,15 +27,20 @@ module.exports = {
         var store = session.store();
 
         if (sid) {
-          store.get(sid, function(err, session) {
-            if (err) {
-              return cb(err, false);
-            }
+          try {
+            store.get(sid, function(err, session) {
+              if (err) {
+                return cb(err, false);
+              }
 
-            handshake_data.sid = sid;
-            cb(null, true);
-          });
+              handshake_data.sid = sid;
+              cb(null, true);
+            });
+          } catch(e) {
+            cb(e, false);
+          }
         }
+
       });
     });
   },
