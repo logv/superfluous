@@ -2,23 +2,15 @@
 <% set_default("server_controller_code", "") %>
 <% set_default("template_code", "") %>
 
-<!-- Outline -->
-
-<!--
-
-Outline 2
-
--->
 
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 <link href="https://google-code-prettify.googlecode.com/svn/trunk/styles/doxy.css" rel="stylesheet" />
 
   <p>
   <b>superfluous</b> is an <b>app framework</b> (*gasp* another framework!)
-  that simplifies (and/or complexifies) the writing of web apps. it's a node.js
-  app &amp; component server. at its core, superfluous deals with how the
-  server &amp; client <b>communicate</b> in today's modern app environment.
-  </p>
+  that simplifies the writing of web apps. it's a node.js app &amp; component
+  server, and simplifies how the server &amp; client <b>communicate</b> in
+  today's modern app environment.  </p>
 
   in other words, superfluous connects <b>app delivery</b> and subsequent
   <b>interactions</b> (aka <b>the app</b>) into a <b>coherent package</b>,
@@ -210,7 +202,7 @@ underscore's ERB template syntax.
   new partial template
 </p>
 
-<h4><b>A simple demo</b></h4>
+<h4>A simple demo</h4>
 
 <p>
 With the above code (the <b>client controller</b>, the <b>server controller</b>
@@ -374,15 +366,15 @@ setup communication between each other.
   </div>
 
   <div class="">
-    <h3>App Delivery</h3>
+    <h3>App Packaging</h3>
 
     <p>
-      superfluous handles packaging the app code and assets for you, dynamically.
-      code minication, LESS compilation, etc, are all included in the dynamic
-      packaging endpoints.
+      superfluous handles packaging the app code and assets for you,
+      dynamically.  code minification, LESS compilation, etc, are all included
+      in the dynamic packaging endpoints.
     </p>
 
-    <h3>Asynchronous Delivery</h3>
+    <h3>Pipelined Page Delivery</h3>
 
     <p>
     The traditional web server generates a blob of HTML that it sends down to the
@@ -395,8 +387,10 @@ setup communication between each other.
     template and whenever you run a callback with new data, the new data will be
     injected into that spot of the page.
 
-    This is particularly well suited to data fetching and the callback heavy style
-    of node.js.
+    This is particularly well suited to data fetching and the callback heavy
+    style of node.js. Using pipelined page delivery, the server can delivery
+    each portion of the page as it is ready, greatly increasing the speed at
+    which the page is loaded.
 
     See <a
     href="https://www.facebook.com/notes/facebook-engineering/bigpipe-pipelining-web-pages-for-high-performance/389414033919">facebook's
@@ -438,12 +432,18 @@ setup communication between each other.
 
   <div class="">
     <h3>Component Delivery</h3>
-
     Superfluous loads components from the server in one endpoint (including
     templates, styles and scripts), allowing the client to load any component on
     demand. It takes care of bootloading in their dependencies and any helpers, so
     that the developer can focus on building the app, not packaging it.
   </div>
+
+  <div class="">
+    <h3>Component Scoped CSS</h3>
+    In superfluous, every component's CSS is dynamically scoped to only that
+    component, reducing the cross contamination of styles between components.
+  </div>
+
 
 
   <div class="">
@@ -472,14 +472,14 @@ setup communication between each other.
     </p>
   </div>
 
-  <h3>Multi-Client Synchronization</h3>
+  <h3>Client Synchronization</h3>
 
   <p>Superfluous comes with multi-client synchronization features. These can be
   used via SF.watch &amp;, SF.set on the client to let all connected clients
-  share &amp; watch variables for changes.</p>
+  share &amp; watch shared variables for changes.</p>
 
 
-  <h4><b>A complexer demo</b></h4>
+  <h1>A complexer demo</h1>
 
   <p>
   With the above features (<b>async delivery</b>, <b>multi-client
@@ -495,7 +495,7 @@ setup communication between each other.
 
   </p>
 
-  <h4><b>The complexest demo</b></h4>
+  <h1>The complexest demo</h1>
 
   Superfluous was refactored out of snorkel, and is mostly alpha quality. Check
   out <a href="http://github.com/okayzed/snorkel">snorkel's code</a>, if you want
@@ -515,14 +515,11 @@ setup communication between each other.
     How data is cached on the client and server is unanswered. It could be in
     localstorage, it could be RAM, it could be memcache. That's up to you :-D
 
-    <h3>Data Layer (the DB &amp; ORM)</h3>
+    <h3>ORM &amp; DB</h3>
 
-    Similarly, no ORM is preferred for holding your data. If you choose to
-    use one at all.
-
-    <h3>Data Migration</h3>
-
-    Noticing a theme around data? You should be :-)
+    Similarly, no ORM or DB is preferred for holding your data. If you choose
+    to use one at all. Check out node-orm2, though, if you do want to use one
+    :-D
 
     <h3>Authentication</h3>
 

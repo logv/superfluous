@@ -1,11 +1,11 @@
 superfluous
 ===========
 
-*superfluous* is a node.js app & component server. at its core, it deals
-with how the server & client communicate in today's modern app environment.
+*superfluous* is a node.js app & component server. at its core, it deals with
+how the server & client communicate in the modern app environment.
 
-there are two major parts of communication during the app cycle. The initial
-delivery, and subsequent interactions. superfluous connects the two :-D
+there are two major pieces of communication during the app life cycle. The
+initial delivery, and subsequent interactions. superfluous connects the two :-D
 
 ## Quick Start
 
@@ -31,7 +31,23 @@ delivery, and subsequent interactions. superfluous connects the two :-D
 
 ## Fundamentals
 
+Everything needed to build your own app!
+
+* Controllers
+* Components
+* Templates
+
 See the guide [locally](http://localhost:3300) or [online](http://sf.nicesho.es)
+
+### Extra Features!
+
+* pipelined page generation
+* transparently marshalled components
+* per request storage
+* socket carry over
+* server side rendering
+
+#### ORM Not Included
 
 ## built with <3 on
 
