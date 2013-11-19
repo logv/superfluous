@@ -7,35 +7,76 @@
 <link href="https://google-code-prettify.googlecode.com/svn/trunk/styles/doxy.css" rel="stylesheet" />
 
   <p>
-  <b>superfluous</b> is an <b>app framework</b> (*gasp* another framework!)
-  that simplifies the writing of web apps. it's a node.js app &amp; component
-  server, and simplifies how the server &amp; client <b>communicate</b> in
-  today's modern app environment.  </p>
+  <b><s>superfluous</s></b> is an <b>app framework</b> (*gasp* another
+  framework!) that simplifies the writing of web apps. it's also a node.js app
+  &amp; component server.</p>
 
-  in other words, superfluous connects <b>app delivery</b> and subsequent
-  <b>interactions</b> (aka <b>the app</b>) into a <b>coherent package</b>,
-  written in <b>one language</b></p>
+  <s>superfluous</s> makes app development easier by connecting <b>app
+  delivery</b> and <b>user interactions</b> (aka <b>the app</b>) into a
+  coherent structure in <b>one language</b>, leaving the developer time to
+  think about building the user experience.</p>
 
   <p>If you are familiar with django, rails or other web frameworks, many of the
-  concepts in superfluous will be familiar to you.</p>
+  concepts in <s>superfluous</s> will be familiar to you.</p>
 
-  <p class="alert"> as a framework, superfluous makes some decisions for the
-  developer, but leaves many others open. this is intentional, since superfluous
-  is mostly concerned with app communication.</p>
+  <p class="alert"> as a framework, <s>superfluous</s> makes some decisions for the
+  developer, but leaves many others open. this is intentional, since
+  <s>superfluous</s> is mostly concerned with app communication.</p>
 
 <h2>Getting started</h2>
 
 <pre class="prettyprint lang-bash"><code># clone the skeleton project
-git clone "http://github.com/okayzed/superfluous"
+git clone "http://github.com/okayzed/<s>superfluous</s>"
 
 # enter the code
-cd superfluous/superfluous
+cd <s>superfluous</s>/<s>superfluous</s>
 
 # start the demo app
 ENV=localhost nodemon app.js
 </code></pre>
 
-<h2>Fundamentals &amp; Concepts</h2>
+<h2>Features</h2>
+
+<p>
+  <b>Speed</b> - <s>superfluous</s> has the initial delivery speed of a server app,
+  but the rich interactions of a client heavy app. By delivering the main core
+  of the page to the client ASAP, the client can display the app and
+  download assets while the slower parts of the page are still generating.
+</p>
+<p>
+  <b>Flexibility</b> - <s>superfluous</s> handles many boilerplate tasks but still
+  leaves the developer freedom to architect their web app - whether it's
+  choosing how to render, which data layer to use or how much work should be
+  done on the server or client.
+</p>
+<p>
+  <b>Reusability</b> - Components encapsulate re-usable portions of rendering,
+  event handling and data synchronization code. Using components on a site adds
+  structure, well defined behaviors and division of responsibilities.
+  Components can be rendered on the server or client and treated as the same
+  instance. This eliminates much of the tedium of creating rich and re-usable
+  interactions.
+
+  <div class="alert">Many large web codebases today are using Component based
+  page generation on the server to minimize development friction.</div>
+</p>
+
+<p>
+  <b>Familiarity</b> - Components are simple backbone views with a known
+  lifecycle: initialize, render, destroy.  Whether it's using MVVM and a data
+  binding engine or jQuery selectors, What goes inside each component is up to
+  the developer. If you don't like the idea of templates auto-syncing to data
+  models, don't do it. If you do... go for it :-D
+</p>
+
+<p>
+  <b>Server - Client Cohesion</b> - sometimes, coupling is a good thing. Using
+  two controllers allows the app to organize itself in a way that makes sense
+  for the server and the client, allowing components to exist in many contexts.
+</p>
+
+
+<h1>Fundamentals</h1>
 
 <h3>Server</h3>
 
@@ -59,13 +100,22 @@ how much work is done on the server and how much on the client is left up to
 the developer.
 </p>
 
+<h3>Apps &amp; Pages</h3>
+
+<p>
+In <s>superfluous</s>, <b>apps</b> and <b>pages</b> are very similar, but with
+one difference: a page has no client controller, while an app does. Apps and
+pages live at top level URLs and are responsible for delivering a rendered page
+to the client web browser.
+</p>
+
 <h3>File Layout</h3>
 
-superfluous very much cares about file layout, and expects files to be in
+<s>superfluous</s> very much cares about file layout, and expects files to be in
 certain locations. The majority of the files you'll be working with as an
 app developer are in app/, components/ &amp; config/
 
-<pre class="mtl prettyprint lang-bash"><code>superfluous/
+<pre class="mtl prettyprint lang-bash"><code><s>superfluous</s>/
   app/                  # application specific code and assets
     client/             # client specific code and helpers
     controllers/        # controllers
@@ -77,7 +127,7 @@ app developer are in app/, components/ &amp; config/
   config/               # options for your app and dev environments
     config.js           # default app configuration
     override.js         # use this with `ENV=override node app.js`
-  core/                 # superfluous core code and assets
+  core/                 # <s>superfluous</s> core code and assets
   node_modules/         # node modules installed by npm
   package.json          # information about your app
   routes.json           # the route -&gt; app mapping in the app
@@ -121,7 +171,7 @@ them as MVC. (Models, Views &amp; Controllers).
 </p>
 
 <p>
-superfluous is <b>not</b> a full MVC solution. It takes care of Views (Templates &amp;
+<s>superfluous</s> is <b>not</b> a full MVC solution. It takes care of Views (Templates &amp;
 Components) and Controllers (Client &amp; Server) like MVC, but leaves the
 Model layer up to the developer.
 </p>
@@ -132,8 +182,8 @@ Model layer up to the developer.
   Each app has two controllers, the <b>client controller</b> and the <b>server
   controller</b>. The server controller is the entry point for the app. It
   renders the app by placing <b>components</b> into <b>templates</b> and
-  <b>partials</b> and delivers the constructed app to the client.
-
+  <b>partials</b> and delivers the constructed app to the browser, where the
+  client controller is initialized.
   </p>
 
   <div class="mtl mbl">
@@ -174,6 +224,13 @@ Model layer up to the developer.
     Use <b>scripts/create_controller.sh controller_name</b> to generate a new controller
   </p>
 
+  <p>
+  The advantage of having two controllers is that the client controller adds
+  organization and a central page management point to the app. Components can
+  talk to the client controller, which talks to the server controller -
+  introducing a layer of <b>encapsulation</b> and <b>re-usability</b> for components.
+  </p>
+
 </div>
 
 <h3>Templates</h3>
@@ -202,11 +259,11 @@ underscore's ERB template syntax.
   new partial template
 </p>
 
-<h4>A simple demo</h4>
+<h4>A componentless demo</h4>
 
 <p>
 With the above code (the <b>client controller</b>, the <b>server controller</b>
-and a <b>template</b>), we have enough to run a very simple superfluous app. <a
+and a <b>template</b>), we have enough to run a very simple <s>superfluous</s> app. <a
 href="/demo">Click here</a> to see it in action. It doesn't do much... just
 increments a variable on the server and propagates those changes to any other
 connected clients.
@@ -215,7 +272,7 @@ connected clients.
 
 <p>
 You'll notice that there's no database access or components in this example.
-It's possible to render many styles of web application with superfluous - from
+It's possible to render many styles of web application with <s>superfluous</s> - from
 static HTML, to concat'd templates, to jQuery div builders, to full components,
 the basics are there.
 </p>
@@ -301,41 +358,6 @@ the basics are there.
   (without communication to the server).
   </p>
 
-  <h4>Marshalling Components</h4>
-  <p>
-  Most web frameworks implement a templating + rendering engine, but superfluous
-  goes a step further. Many of the UI components that we want to use on a webpage
-  are generated on the server and then hooked up on the client.  This process can
-  be ungainly, but frameworks do their best to make it easy to do.
-  </p>
-
-  <p>
-  In rails or django, these are usually known as 'tag helpers' or 'template tags'
-  and help the developer insert dynamic components into templates.
-  </p>
-
-  <p>
-  In superfluous, components can be created on the server or client and are
-  automatically marshalled and handed to the client app when their necessary
-  files are loaded. It's possible to create a component in the server
-  controller and hand it to the client controller for further use, as though they
-  are regular JS objects.
-  </p>
-
-  <button type="button" class="btn btn-danger mbl " data-toggle="collapse" data-target="#component_example">
-    See marshalling components
-  </button>
-
-  <div id="component_example" class="collapse mtl">
-    Server Code
-    <pre class="prettyprint"><code><%= about_server_code %>
-    </pre></code>
-
-    Client Code
-    <pre class="prettyprint"><code><%= about_client_code %></pre></code>
-  </div>
-
-
   </div>
 </div>
 
@@ -358,20 +380,23 @@ setup communication between each other.
 </p>
 
 <div class="developers">
-  <h1>Superfluous Features</h1>
+  <h1>Boilerplate</h1>
 
   <div>
-    Superfluous is very concerned (again :-) with app delivery and communication,
-    as such it does handles some pretty specific cases.
+    <s>superfluous</s> is very concerned (again :-) with app delivery and
+    communication, as such it automates and simplifies some specific
+    functionality.
   </div>
 
   <div class="">
     <h3>App Packaging</h3>
 
     <p>
-      superfluous handles packaging the app code and assets for you,
-      dynamically.  code minification, LESS compilation, etc, are all included
-      in the dynamic packaging endpoints.
+      <s>superfluous</s> handles packaging the code and assets for the app,
+      dynamically. code minification, LESS compilation, etc, are all included
+      in the dynamic packaging endpoints. Each endpoint can dynamically serve
+      multiple files at once, reducing the number of simultaneous requests in
+      flight.
     </p>
 
     <h3>Pipelined Page Delivery</h3>
@@ -383,7 +408,7 @@ setup communication between each other.
     </p>
 
     <p>
-    In superfluous, asynchronous delivery lets you inject a placeholder into a
+    In <s>superfluous</s>, asynchronous delivery lets you inject a placeholder into a
     template and whenever you run a callback with new data, the new data will be
     injected into that spot of the page.
 
@@ -432,15 +457,50 @@ setup communication between each other.
 
   <div class="">
     <h3>Component Delivery</h3>
-    Superfluous loads components from the server in one endpoint (including
+    <s>superfluous</s> loads components from the server in one endpoint (including
     templates, styles and scripts), allowing the client to load any component on
     demand. It takes care of bootloading in their dependencies and any helpers, so
     that the developer can focus on building the app, not packaging it.
   </div>
 
+  <h3>Component Marshalling</h3>
+  <p>
+  Most web frameworks implement a templating + rendering engine, but <s>superfluous</s>
+  goes a step further. Many of the UI components that we want to use on a webpage
+  are generated on the server and then hooked up on the client.  This process can
+  be ungainly, but frameworks do their best to make it easy to do.
+  </p>
+
+  <p>
+  In rails or django, these are usually known as 'tag helpers' or 'template tags'
+  and help the developer insert dynamic components into templates.
+  </p>
+
+  <p>
+  In <s>superfluous</s>, components can be created on the server or client and are
+  automatically marshalled and handed to the client app when their necessary
+  files are loaded. It's possible to create a component in the server
+  controller and hand it to the client controller for further use, as though they
+  are regular JS objects.
+  </p>
+
+  <button type="button" class="btn btn-danger mbl " data-toggle="collapse" data-target="#component_example">
+    See marshalling components
+  </button>
+
+  <div id="component_example" class="collapse mtl">
+    Server Code
+    <pre class="prettyprint"><code><%= about_server_code %>
+    </pre></code>
+
+    Client Code
+    <pre class="prettyprint"><code><%= about_client_code %></pre></code>
+  </div>
+
+
   <div class="">
     <h3>Component Scoped CSS</h3>
-    In superfluous, every component's CSS is dynamically scoped to only that
+    In <s>superfluous</s>, every component's CSS is dynamically scoped to only that
     component, reducing the cross contamination of styles between components.
   </div>
 
@@ -468,23 +528,24 @@ setup communication between each other.
 
     <p>
     This allows your app to communicate between friendly modules without threading
-    a request object through every callback.
+    a request object through every callback. <a href="https://groups.google.com/forum/#!topic/nodejs-dev/gBpJeQr0fWM">See this google groups thread for more info</a>
     </p>
   </div>
 
   <h3>Client Synchronization</h3>
 
-  <p>Superfluous comes with multi-client synchronization features. These can be
+  <p><s>superfluous</s> comes with multi-client synchronization features. These can be
   used via SF.watch &amp;, SF.set on the client to let all connected clients
   share &amp; watch shared variables for changes.</p>
 
 
-  <h1>A complexer demo</h1>
+  <h1>Demos</h1>
+  <h3>A demo with components</h3>
 
   <p>
   With the above features (<b>async delivery</b>, <b>multi-client
   synchronization</b> , <b>sockets</b> and  <b>components</b>), we have enough to
-  run a slightly more complex superfluous app. <a href="/kitten">Click here</a>
+  run a slightly more complex <s>superfluous</s> app. <a href="/kitten">Click here</a>
   to see it in action.  </p>
 
   <p>
@@ -495,16 +556,16 @@ setup communication between each other.
 
   </p>
 
-  <h1>The complexest demo</h1>
+  <h3>An app in the wild</h3>
 
-  Superfluous was refactored out of snorkel, and is mostly alpha quality. Check
+  <s>superfluous</s> was refactored out of snorkel, and is mostly alpha quality. Check
   out <a href="http://github.com/okayzed/snorkel">snorkel's code</a>, if you want
   to see a much more heinous use of javascript.
 
   <h1>Left to the developer</h1>
 
     <p>
-    Superfluous leaves a lot of app building questions up to the developer, since
+    <s>superfluous</s> leaves a lot of app building questions up to the developer, since
     it is mainly concerned how the app is created, delivered and interacted with.
 
     Most of these can be answered with out of the box solutions and middleware.
@@ -527,7 +588,6 @@ setup communication between each other.
 
     <h3>Scaling</h3>
 
-    hmmmmm. maybe consider this server for internal tools, only :-/
-
+    hmmmmm. maybe consider this server for smale to medium size sites, for now :-D
 
 </div>

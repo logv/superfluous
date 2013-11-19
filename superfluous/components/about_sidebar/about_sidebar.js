@@ -21,15 +21,13 @@ module.exports = {
       var tagName = heading.tagName;
       var indent = tagName[1];
       var div = $("<li />");
-      var weight = 'normal';
-      if (indent <= 1) {
-        weight = 'bold';
-      }
+      var font_size_adjustment = (70) + (50 / indent);
       var a = $("<a />")
         .attr('href', '#' + hId)
         .addClass("content-link")
-        .css('margin-left', indent * 5)
-        .css('font-weight', weight)
+        .css('margin-left', indent * 8)
+        .css('font-size', font_size_adjustment + "%")
+        .css('margin-top', '4px')
         .html($(heading).html());
 
       div.append(a);

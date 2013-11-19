@@ -17,6 +17,13 @@ body {
   pre {
     opacity: 0.8;
   }
+
+}
+
+s {
+  text-decoration: none;
+  color: #3b7;
+  font-weight: bold;
 }
 
 body .content .sidebar {
@@ -41,6 +48,7 @@ body .content .sidebar {
   @media (min-width: 767px) {
     height: 100%;
     position: fixed;
+    min-width: 200px;
   }
 }
 
