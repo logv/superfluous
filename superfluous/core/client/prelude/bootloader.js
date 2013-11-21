@@ -24,6 +24,7 @@
   var _module_defs = {};
   var _template_defs = {};
   var _packages = {};
+  var _reacts = {};
   var _signatures = {};
   var _versions = {
     pkg: {},
@@ -317,6 +318,46 @@
     }
   }
 
+  function bootload_react(reacts, cb) {
+    require("core/client/react", function() {
+      if (_.isString(reacts)) {
+        reacts = [reacts];
+      }
+
+      var loaded_modules = {};
+      var necessary_reacts = _.reject(reacts, function(k) {
+        loaded_modules[k] = _reacts[k];
+        return _reacts[k];
+      });
+
+      if (!necessary_reacts.length) {
+        if (cb) {
+          cb();
+        }
+        return;
+      }
+
+      var req = $.ajax("/pkg/react", {
+        data: {
+          m: JSON.stringify(necessary_reacts)
+        }
+      });
+
+      req.done(function(data) {
+        _.each(data, function(v, k) {
+          var first_define = !_reacts[k];
+          if (!v.schema.no_redefine || first_define) {
+            _reacts[k] = raw_import(v.main);
+          }
+        });
+
+        if (cb) {
+          cb();
+        }
+      });
+    });
+  }
+
   function bootload_pkg(packages, cb) {
     if (_.isString(packages)) {
       packages = [packages];
@@ -581,6 +622,7 @@
      * @method pkg
      */
     pkg: bootload_pkg,
+    react: bootload_react,
     defs: _module_defs,
     css_defs: _css_defs,
     modules: _modules,
@@ -600,6 +642,7 @@
      */
     deliver: deliver_pagelet,
     versions: _versions,
+    reacts: _reacts,
     signatures: _signatures,
     sync: function() {
       sync_metadata();

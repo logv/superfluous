@@ -1,0 +1,7 @@
+{
+  "main" : "my_first_el",
+  "style": "my_first_el.css",
+  "styles": [],
+  "helpers": [],
+  "no_redefine" : false
+}
