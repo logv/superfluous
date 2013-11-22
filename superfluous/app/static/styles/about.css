@@ -24,10 +24,7 @@ s {
   text-decoration: none;
   font-weight: bold;
 
-  background-image:-webkit-gradient(linear, left center, right bottom, color-stop(0, #d22), color-stop(0.15, #d2d), color-stop(0.3, #22d), color-stop(0.45, #2dd), color-stop(0.6, #2d2),color-stop(0.75, #2d2), color-stop(0.9, #d22), color-stop(1, #d22) );
-  color:transparent;
-  -webkit-background-clip: text;
-
+  color: #3c7
 }
 
 body .content .sidebar {

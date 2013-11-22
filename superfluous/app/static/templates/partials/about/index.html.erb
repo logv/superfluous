@@ -3,15 +3,12 @@
 <% set_default("template_code", "") %>
 
 
-<p>
-<b><s>superfluous</s></b> is an <b>app framework</b> (*gasp* another
-framework!) that simplifies the writing of web apps. it's also a node.js app
-&amp; component server.</p>
-
-<s>superfluous</s> makes app development easier by connecting <b>app
-delivery</b> and <b>user interactions</b> (aka <b>the app</b>) into a
-coherent structure in <b>one language</b>, leaving the developer time to
-think about building the user experience.</p>
+<p> <b><s>superfluous</s></b> is an <b>app framework</b> (*gasp* another
+framework!) that simplifies the writing of web apps.  <s>superfluous</s> makes
+app development easier by connecting <b>app delivery</b> and <b>user
+interactions</b> (aka <b>the app</b>) into a coherent structure. since it's a
+node.js server, the app is written in <b>one language</b>, leaving the
+developer time to think about building the user experience.</p>
 
 <p>If you are familiar with django, rails or other web frameworks, many of the
 concepts in <s>superfluous</s> will be familiar to you.</p>
@@ -579,6 +576,11 @@ setup communication between each other.
     Similarly, no ORM or DB is preferred for holding your data. If you choose
     to use one at all. Check out node-orm2, though, if you do want to use one
     :-D
+
+    <h3>DOM Data Binding</h3>
+
+    For data binding, Rivets goes well with Backbone and the template structure
+    of Components. It keeps the DOM and models in sync in your app, easily.
 
     <h3>Authentication</h3>
 
