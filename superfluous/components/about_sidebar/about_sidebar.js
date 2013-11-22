@@ -17,7 +17,7 @@ module.exports = {
     contents.addClass("nav-stacked");
 
     _.each(headers, function(heading) {
-      var hId = _.uniqueId("heading");
+      var hId = _.uniqueId("sidebar_anchor");
       var tagName = heading.tagName;
       var indent = tagName[1];
       var div = $("<li />");
@@ -34,11 +34,12 @@ module.exports = {
       contents.append(div);
 
 
-      $(heading).append($("<a />").attr("id", hId).attr('href', '#'));
+      $(heading).append($("<div />").attr("id", hId));
 
     });
 
     this.$el.append(contents);
+    var $spy = $("body").scrollspy({target: "#" + this.$el.attr("id")});
   },
   render: function() {
     this.$el.find(".toc").empty();

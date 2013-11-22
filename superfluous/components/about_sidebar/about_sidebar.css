@@ -2,3 +2,8 @@ a.content-link {
   padding-left: 5px;
   border-left: 1px gray dotted;
 }
+
+.active a.content-link {
+  color: #fff;
+  font-weight: bold;
+}
