@@ -38,7 +38,7 @@ module.exports = {
 
     });
 
-    this.$el.append(contents);
+    this.$el.find(".toc").append(contents);
     var $spy = $("body").scrollspy({target: "#" + this.$el.attr("id")});
   },
   render: function() {
