@@ -38,8 +38,11 @@ module.exports = {
 
     });
 
-    this.$el.find(".toc").append(contents);
-    var $spy = $("body").scrollspy({target: "#" + this.$el.attr("id")});
+    $el = this.$el;
+    $el.find(".toc").append(contents);
+    setTimeout(function() {
+      var $spy = $("body").scrollspy({target: "#" + $el.attr("id")});
+    }, 100);
   },
   render: function() {
     this.$el.find(".toc").empty();

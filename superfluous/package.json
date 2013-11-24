@@ -16,6 +16,7 @@
       "Faker" : "x",
       "async" : "x",
       "less" : "x",
+      "json-stable-stringify" : "x",
       "highlight.js" : "x"
     }
 }
