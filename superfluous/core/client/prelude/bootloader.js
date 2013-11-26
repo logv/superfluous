@@ -66,8 +66,7 @@
   });
 
 
-  // We need to sync our _versions with server versions
-  setInterval(function() {
+  function sync_storage() {
     var key;
     _component_storage.setItem("_versions", JSON.stringify(_versions));
 
@@ -88,14 +87,16 @@
 
       if (!_signatures[key] ) {
         try {
-          var val = JSON.parse(localStorage.getItem(key));
           localStorage.removeItem(key);
-          console.log("Removing old localStorage entry", key, val.module || val.schema.main);
         } catch(e) {};
       }
 
     }
-  }, 3000);
+  }
+
+  // We need to sync our _versions with server versions
+  setInterval(sync_storage, 10000);
+  sync_storage();
 
   if (window._query.clear_storage) {
     console.log("Clearing Storage");
@@ -143,8 +144,10 @@
 
       var loaded_modules = {};
       var necessary_modules = _.filter(modules, function(k) {
-        var version = _versions[type][k];
-        if (version) { load_def_from_storage(module_dict, k, version, type, postload); }
+        if (!module_dict[k]) {
+          var version = _versions[type][k];
+          if (version) { load_def_from_storage(module_dict, k, version, type, postload); }
+        }
 
         if (module_dict[k]) {
           loaded_modules[k] = module_dict[k];
@@ -213,10 +216,6 @@
     var first_define = !_packages[component];
 
     if (!definition.schema.no_redefine || first_define) {
-      if (!_component_storage.getItem(definition.signature)) {
-        _component_storage.setItem(definition.signature, JSON.stringify(definition));
-      }
-
       _packages[component] = definition;
 
       // marshalling some JSONified code into code
@@ -275,6 +274,11 @@
 
         define_package(k, v);
         loaded_modules[k] = _packages[k];
+
+        if (!_component_storage.getItem(v.signature)) {
+          _component_storage.setItem(v.signature, JSON.stringify(v));
+        }
+
       });
 
       if (cb) {
