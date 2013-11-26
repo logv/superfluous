@@ -144,7 +144,7 @@ function build(component, options, cb) {
     function load_component() {
       require("components/component", function(Component) {
         var CmpClass = _classes[component];
-        if (!_packages[component].schema.no_redefine || !CmpClass) {
+        if (_packages[component].schema.always_define || !CmpClass) {
           CmpClass = Component.extend(_.clone(exports));
           CmpClass.__created = true;
           CmpClass.helpers = {};
@@ -156,6 +156,9 @@ function build(component, options, cb) {
         render_component(cmpInstance);
 
         cmpInstance.helpers = {};
+        if (!cmpInstance.events) { 
+          cmpInstance.events = {};
+        }
         _.each(_packages[component].helpers, function(helper, name) {
 
           if (CmpClass.helpers[name]) {

@@ -212,11 +212,11 @@
   function define_package(component, definition) {
     var first_define = !_packages[component];
 
-    if (!_component_storage.getItem(definition.signature)) {
-      _component_storage.setItem(definition.signature, JSON.stringify(definition));
-    }
-
     if (!definition.schema.no_redefine || first_define) {
+      if (!_component_storage.getItem(definition.signature)) {
+        _component_storage.setItem(definition.signature, JSON.stringify(definition));
+      }
+
       _packages[component] = definition;
 
       // marshalling some JSONified code into code
@@ -238,13 +238,15 @@
 
     var really_necessary = [];
     // Gotta see if we have this package version saved in _storage somewhere
-    _.each(necessary_packages, function(pkg) {
+    _.each(packages, function(pkg) {
       if (_versions.pkg[pkg] && _component_storage.getItem(_versions.pkg[pkg])) {
         var definition = _component_storage.getItem(_versions.pkg[pkg]);
 
         if (definition) {
           bootloader.from_storage.pkg[pkg] = _versions.pkg[pkg];
           define_package(pkg, JSON.parse(definition));
+
+          loaded_modules[pkg] = _packages[pkg];
 
           return;
         }
@@ -255,7 +257,7 @@
 
     if (!really_necessary.length) {
       if (cb) {
-        cb();
+        cb(loaded_modules);
       }
       return;
     }
@@ -272,10 +274,11 @@
         _signatures[v.signature] = k;
 
         define_package(k, v);
+        loaded_modules[k] = _packages[k];
       });
 
       if (cb) {
-        cb();
+        cb(loaded_modules);
       }
     });
   }
