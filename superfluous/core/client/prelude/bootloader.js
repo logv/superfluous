@@ -28,21 +28,6 @@
     _component_storage = _blank_storage;
   }
 
-  try {
-    var signatures = JSON.parse(_component_storage.getItem("_signatures"));
-    _.extend(_signatures, signatures);
-  } catch(e) {}
-
-  try {
-    var versions = JSON.parse(_component_storage.getItem("_versions"));
-    _.each(versions, function(def, type) {
-      _.extend(_versions[type], def);
-      _.extend(_signatures, _.object(_.map(def, function(v, k) {
-        return [v, k];
-      })));
-    });
-  } catch(ee) {}
-
   window.SF.once("bridge/socket", function(socket) {
     socket.on("update_version", function(type, entry, old_hash, new_hash) {
       var component = _signatures[old_hash];
@@ -65,9 +50,31 @@
     });
   });
 
+  function sync_metadata() {
+
+    try {
+      var signatures = JSON.parse(_component_storage.getItem("_signatures"));
+      _.extend(_signatures, signatures);
+    } catch(e) {}
+
+    try {
+      var versions = JSON.parse(_component_storage.getItem("_versions"));
+      _.each(versions, function(def, type) {
+        _.extend(_versions[type], def);
+        _.extend(_signatures, _.object(_.map(def, function(v, k) {
+          return [v, k];
+        })));
+      });
+    } catch(ee) {}
+
+  }
 
   function sync_storage() {
-    var key;
+
+    // read metadata
+    sync_metadata();
+
+    // write metadata
     _component_storage.setItem("_versions", JSON.stringify(_versions));
 
     // sync versions and signatures to our known ones
@@ -80,6 +87,8 @@
 
     _component_storage.setItem("_signatures", JSON.stringify(_signatures));
 
+    // remove old keys
+    var key;
     for (key in localStorage) {
       if (key === "_versions" || key === "_signatures") {
         continue;
@@ -87,6 +96,7 @@
 
       if (!_signatures[key] ) {
         try {
+          console.log("Removing old localStorage key", key);
           localStorage.removeItem(key);
         } catch(e) {};
       }
@@ -272,12 +282,13 @@
         _versions.pkg[k] = v.signature;
         _signatures[v.signature] = k;
 
-        define_package(k, v);
-        loaded_modules[k] = _packages[k];
-
         if (!_component_storage.getItem(v.signature)) {
           _component_storage.setItem(v.signature, JSON.stringify(v));
         }
+
+
+        define_package(k, v);
+        loaded_modules[k] = _packages[k];
 
       });
 
