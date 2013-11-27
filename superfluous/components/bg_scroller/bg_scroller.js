@@ -13,7 +13,7 @@ module.exports = {
       'images/about/voltairse_sizeable.jpg',
       'images/about/banjobird.jpg',
       'images/about/Drawing-CuteSpiderMonkey.jpg',
-      'images/about/king2-17.jpg'
+      'images/about/futurebot.jpg'
     ];
     var last_bg = null;
 
