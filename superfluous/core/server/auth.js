@@ -6,7 +6,6 @@ var session = require_core("server/session");
 var context = require_core("server/context");
 var config = require_core("server/config");
 var readfile = require("./readfile");
-var htpasswd = require("htpasswd");
 var session = require_core("server/session");
 var parseCookie = require("express").cookieParser(session.secret());
 
