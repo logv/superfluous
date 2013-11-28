@@ -56,11 +56,6 @@ function setup() {
   }
 
 
-
-  // parse POST request body bits
-  app.use(express.bodyParser());
-
-
   //app.use(express.logger());
   app.use(express.compress());
 
