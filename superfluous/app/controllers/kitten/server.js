@@ -1,25 +1,19 @@
-var template = require_core("server/template");
-var page = require_core("server/page");
-var context = require_core("server/context");
-var bridge = require_core("server/bridge");
-var Component = require_core("server/component");
-var auth = require_core("server/auth");
-
+"use strict";
 var db = require_core("server/db");
 
 // TODO: if this is a single page app, streamline the process of rendering the
 // template, fetching data and hooking up views into a simpler idea
-function index() {
+function index(ctx, api) {
   var async_button = function(options) {
       var button = $C("button", options);
-      return page.async(function(flush) {
+      return api.page.async(function(flush) {
         _.delay(function() {
           flush(button.toString());
         }, (Math.random() * 1000) + 1000);
     });
   };
 
-  template.add_stylesheet("scrollers.css");
+  api.template.add_stylesheet("scrollers.css");
 
   this.set_title("kitty browser");
 
@@ -32,8 +26,8 @@ function index() {
     });
 
   var render_sidebar = function() {
-    return template.partial("kitten/sidebar.html.erb", {
-      sidebar_notice: page.async(function(flush) {
+    return api.template.partial("kitten/sidebar.html.erb", {
+      sidebar_notice: api.page.async(function(flush) {
         _.delay(function() {
           flush("<div class='alert'>here it is. this is where sidebar details could show up.</div>");
         }, 3000);
@@ -42,13 +36,13 @@ function index() {
   };
 
   var kitten = this.get_shared_value("kitten") || 1;
-  var user = context("req").user;
+  var user = ctx.req.user;
   var username;
   if (user) {
     username = user.username;
   }
 
-  var template_str = template.controller("kitten.html.erb", {
+  var template_str = api.template.controller("kitten.html.erb", {
     render_button1: async_button({ name: "Sync", behavior: "kitten/go_button"}),
     render_button2: async_button({ name: "Reset", behavior: "kitten/reset_button"}),
     render_sidebar: render_sidebar,
@@ -57,7 +51,7 @@ function index() {
     render_logout_button: logout_button.toString
   });
 
-  page.render({content: template_str});
+  api.page.render({content: template_str});
 }
 
 var __id = 0;

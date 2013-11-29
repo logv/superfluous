@@ -22,6 +22,17 @@ var install_socket = function(io) {
   socket.install(io, Controllers);
 };
 
+var template = require_core("server/template");
+var bridge = require_core("server/bridge");
+var readfile = require_core("server/readfile");
+
+var API = {
+  bridge: bridge,
+  page: page,
+  template: template,
+  readfile: readfile
+};
+
 function request_handler_factory(route, handler) {
   return function handle_req(req, res) {
     context.create({ req: req, res: res }, function(ctx) {
@@ -32,7 +43,8 @@ function request_handler_factory(route, handler) {
 
       debug("Starting request", ctx.id, ctx.req.url);
       res.set("Transfer-Encoding", "chunked");
-      handler();
+
+      handler(ctx, API);
 
       page.emit("main_duration");
       debug("Ending main request", ctx.id, ctx.req.url);

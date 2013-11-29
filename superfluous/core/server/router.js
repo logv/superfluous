@@ -15,7 +15,7 @@ module.exports = {
     function run_route(handler) {
       return function() {
         context("controller", "bootloader");
-        inst[handler]();
+        inst[handler].apply(inst, arguments);
       };
     }
 
@@ -39,7 +39,7 @@ module.exports = {
       function run_route(handler) {
         return function() {
           context("controller", controller);
-          inst[handler]();
+          inst[handler].apply(inst, arguments);
         };
       }
 

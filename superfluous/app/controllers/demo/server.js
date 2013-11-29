@@ -1,17 +1,14 @@
 "use strict";
 
-var page = require_core("server/page");
-var template = require_core("server/template");
-
 var _total = 0;
 module.exports = {
   routes: {
     "" : "index"
   },
 
-  index: function() {
-    var template_str = template.render("controllers/demo.html.erb", { total: _total });
-    page.render({ content: template_str, socket: true});
+  index: function(ctx, api) {
+    var template_str = api.template.render("controllers/demo.html.erb", { total: _total });
+    api.page.render({ content: template_str, socket: true});
   },
 
   socket: function(socket) {

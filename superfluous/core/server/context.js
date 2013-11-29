@@ -97,3 +97,4 @@ _.extend(module.exports, {
     };
   }
 });
+Function.prototype.wrap = module.exports.wrap;

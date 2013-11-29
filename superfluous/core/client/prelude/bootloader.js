@@ -439,11 +439,14 @@
 
 
 
-    insert_pagelet();
 
     if (options.css) {
-      bootloader.css(options.css, display_pagelet);
+      bootloader.css(options.css, function() {
+        insert_pagelet();
+        display_pagelet();
+      });
     } else {
+      insert_pagelet();
       display_pagelet();
     }
 
