@@ -65,6 +65,9 @@ _.extend(module.exports, {
       id: __id++,
       name: app_name,
       domain: d,
+      inspect: function() {
+        return "CTX:" + _.keys(ctx).sort();
+      },
       wrap: function(f) {
         var self = this;
         d.run(function() {

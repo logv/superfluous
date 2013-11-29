@@ -30,8 +30,17 @@ var API = {
   bridge: bridge,
   page: page,
   template: template,
-  readfile: readfile
+  readfile: readfile,
+  inspect: function() {
+    return "API: " + _.keys(API).sort().join(", ");
+  }
 };
+
+_.each(API, function(v, k) {
+  v.inspect = function() {
+    return k + ":" + _.keys(v).sort().join(",");
+  };
+});
 
 function request_handler_factory(route, handler) {
   return function handle_req(req, res) {
