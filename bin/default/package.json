@@ -1,0 +1,10 @@
+{
+  "name": "superfluous",
+    "description": "a node.js server/client understanding",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+      "superfluous" : "x"
+    }
+}
+

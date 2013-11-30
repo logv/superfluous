@@ -423,7 +423,6 @@
       var payload_el = document.getElementById("pl_" + options.id);
 
       if (payload_el) {
-
         var payload_data = payload_el.innerHTML;
 
         var payload = strip_comment_wrap(payload_data);
@@ -440,9 +439,9 @@
 
 
 
-    if (options.css) {
+    if (options.css && options.css.length) {
+      insert_pagelet();
       bootloader.css(options.css, function() {
-        insert_pagelet();
         display_pagelet();
       });
     } else {

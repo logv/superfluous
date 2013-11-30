@@ -1,3 +1,5 @@
+"use strict";
+
 var fs = require("fs");
 var _ = require_vendor("underscore");
 var template = require_core("server/template");
@@ -40,7 +42,7 @@ function multi_pack(dir, extension, prepack) {
         });
 
       } else {
-        fs.readFile(filename + "." + extension, function(err, data) {
+        readfile.both(filename + "." + extension, function(err, data) {
           if (err) {
             data = template.render_core("helpers/missing_resource.html.erb", {
               name: module,
@@ -75,7 +77,7 @@ var js_prelude = function() {
   var req = context("req");
   var res = context("res");
 
-  var data = readfile("core/client/prelude.json");
+  var data = readfile.core("core/client/prelude.json");
 
   data = JSON.parse(data);
   res.set("Content-Type", "text/javascript");
@@ -86,17 +88,11 @@ var js_prelude = function() {
   // The files need to be ordered properly
   async.each(data.vendor.concat(data.files),
     function(item, cb) {
-      fs.readFile(item, function(err, data) {
-        if (err) {
-          console.log("Error reading", item);
-          return cb();
-        }
+      var data = readfile.both(item);
+      var ret = data.toString();
+      contents[item] = ret;
 
-        var ret = data.toString();
-        contents[item] = ret;
-
-        cb();
-      });
+      cb();
     },
     function(err) {
       _.each(data.vendor.concat(data.files), function(file) {
@@ -110,13 +106,13 @@ var get_status = function() {
   var res = context("res");
   res.write("OK");
   res.end();
-}
+};
 
 var css_prelude = function() {
   var res = context("res");
 
   // Shrink wrap the prelude files
-  var data = readfile("core/client/prelude.json");
+  var data = readfile.core("core/client/prelude.json");
 
   data = JSON.parse(data);
   res.set("Content-Type", "text/css");
@@ -149,7 +145,7 @@ var css_prelude = function() {
       });
       res.end();
     });
-}
+};
 
 var component = function() {
   var req = context("req");
@@ -170,25 +166,25 @@ var component = function() {
 
       res.end(JSON.stringify(loaded));
     });
-}
+};
 
 function validate_versions(versions, socket) {
   _.each(versions.css, function(old_hash, css) {
     var hash = quick_hash(readfile("app/static/styles/" + css + ".css"));
-    if (hash != old_hash) {
+    if (hash !== old_hash) {
       socket.emit("update_version", 'css', css, old_hash, hash);
     }
   });
   _.each(versions.js, function(old_hash, js) {
-    var hash = quick_hash(readfile(js + ".js"));
-    if (hash != old_hash) { 
-      socket.emit("update_version", 'js', js, old_hash, hash); 
+    var hash = quick_hash(readfile.both(js + ".js"));
+    if (hash !== old_hash) {
+      socket.emit("update_version", 'js', js, old_hash, hash);
     }
   });
   _.each(versions.pkg, function(old_hash, pkg) {
     Component.build_package(pkg, function(ret) {
-      if (old_hash != ret.signature) { 
-        socket.emit("update_version", 'pkg', pkg, old_hash, ret.signature); 
+      if (ret && old_hash !== ret.signature) {
+        socket.emit("update_version", 'pkg', pkg, old_hash, ret.signature);
       }
     });
   });

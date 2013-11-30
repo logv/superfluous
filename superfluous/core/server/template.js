@@ -14,11 +14,12 @@ var load_template = function(template, core) {
   var root_path;
   if (core) {
     root_path = "core/static/templates/";
+    return readfile.core(root_path + template);
   } else {
     root_path = "app/static/templates/";
+    return readfile(root_path + template);
   }
 
-  return readfile(root_path + template);
 
 };
 

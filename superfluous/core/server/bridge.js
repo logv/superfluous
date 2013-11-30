@@ -32,7 +32,7 @@ module.exports = {
     var module = args.shift();
     var func = args.shift();
 
-    var hash = quick_hash(readfile(module + ".js"));
+    var hash = quick_hash(readfile.both(module + ".js"));
 
     context("BRIDGE_CALLS").push([module, func, args, hash]);
   },
@@ -48,7 +48,7 @@ module.exports = {
     var hash = quick_hash(data);
     args.push(hash);
 
-    var chash = quick_hash(readfile("core/client/controller.js"));
+    var chash = quick_hash(readfile.core("core/client/controller.js"));
 
 
     context("BRIDGE_CALLS").push(["core/client/controller", "call", args, chash]);

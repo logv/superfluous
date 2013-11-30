@@ -55,7 +55,12 @@ var _packages = {};
 Component.build_package = function(component, cb) {
   var package_ = {};
   var base_dir = "./components/" + component + "/";
+
   var package_data = readfile(base_dir + "package.json");
+  if (!package_data) {
+    cb();
+    return;
+  }
   var pkg = JSON.parse(package_data);
   // Look for package.json file in component dir
   // this will contain dependencies, stylesheets, etc

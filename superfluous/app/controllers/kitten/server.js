@@ -1,5 +1,4 @@
 "use strict";
-var db = require_core("server/db");
 
 // TODO: if this is a single page app, streamline the process of rendering the
 // template, fetching data and hooking up views into a simpler idea

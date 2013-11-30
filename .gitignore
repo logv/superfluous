@@ -9,3 +9,4 @@ superfluous/config/local/
 superfluous/config/users.htpasswd
 output
 comments
+dist/

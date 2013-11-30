@@ -5,7 +5,9 @@ var module_grapher = require("module-grapher");
 var async = require("async");
 var _ = require_vendor("underscore");
 var less = require("less");
+var path = require("path");
 var quick_hash = require_core("server/hash");
+var readfile = require_core("server/readfile");
 
 function package_less(includes, cb) {
   var included = _.map(includes, function(s) { return s.trim(); });
@@ -67,10 +69,9 @@ function package_js(includes, cb) {
   var ret = {};
   _.each(included, function(inc) {
     module_grapher.graph(inc, {
-        paths: [ './', './static' ]
+        paths: [ './', './static', path.join(__dirname, '../../') ]
       }, function(__, resolved) {
         if (!resolved || !resolved.modules) {
-          console.log(__);
           return cb("console.log('Error loading module " + inc + "');");
         }
 
@@ -79,18 +80,12 @@ function package_js(includes, cb) {
         async.each(
           modules,
           function(module, done) {
-            fs.readFile(module + ".js", function(err, data) {
-              if (err) {
-                console.log("TROUBLE READING", module);
-              } else {
-                var read = data.toString();
-                ret[module] = {
-                  code: read,
-                  signature: quick_hash(read)
-                };
-              }
-              done();
-            });
+            var data = readfile.both(module + ".js");
+            ret[module] = {
+              code: data,
+              signature: quick_hash(data)
+            };
+            done();
           },
           function(err) {
             cb(ret);

@@ -1,0 +1,18 @@
+.expander, .collapser {
+  @media (max-width: 767px) {
+    display: block;
+  }
+  @media (min-width: 767px) {
+    display: none;
+  }
+}
+
+a.content-link {
+  padding-left: 5px;
+  border-left: 1px gray dotted;
+}
+
+.active a.content-link {
+  color: #fff;
+  font-weight: bold;
+}
