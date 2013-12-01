@@ -1,7 +1,0 @@
-{
-  "main" : "bg_scroller",
-  "helpers": [],
-  "style": "bg_scroller.css",
-  "styles": [],
-  "template": "bg_scroller.html.erb"
-}

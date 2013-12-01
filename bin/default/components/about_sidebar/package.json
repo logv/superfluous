@@ -1,7 +1,0 @@
-{
-  "main" : "about_sidebar",
-  "helpers": [],
-  "style": "about_sidebar.css",
-  "styles": [],
-  "template": "about_sidebar.html.erb"
-}
