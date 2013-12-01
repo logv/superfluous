@@ -1,6 +1,6 @@
 {
-  "name": "superfluous",
-    "description": "a node.js server/client understanding",
+  "name": "app.sf",
+    "description": "another superfluous app",
     "version": "0.0.1",
     "private": true,
     "dependencies": {

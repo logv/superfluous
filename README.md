@@ -2,22 +2,23 @@ superfluous
 ===========
 
 *superfluous* is a node.js app & component server. at its core, it deals with
-how the server & client communicate in the modern app environment.
-
-there are two major pieces of communication during the app life cycle. The
-initial delivery, and subsequent interactions. superfluous connects the two :-D
+how the server & client communicate in the modern app environment.  there are
+two major pieces of communication during the app life cycle. The initial
+delivery, and subsequent interactions. superfluous connects the two :-D
 
 ## Quick Start
 
 ### 0) get it running
 
-    git clone superfluous.git
-
     # install node (>= 0.8) and mongo-db
 
     # get the code and dependencies for superfluous
-    cd superfluous/superfluous
+    npm install superfluous
+    superfluous create my_first_app
+
+    cd my_first_app
     npm install
+    vim package.json # edit your app name here
 
     # start the server with the dev environment for
     # localhost
@@ -25,9 +26,8 @@ initial delivery, and subsequent interactions. superfluous connects the two :-D
 
     # visit http://localhost:3300
 
-### 1) hack away
-
-    vim superfluous/app/controllers/about/server.js
+    # get hacking
+    vim app/controllers/home/server.js
 
 ## Fundamentals
 
@@ -66,4 +66,17 @@ See the guide [locally](http://localhost:3300) or [online](http://sf.nicesho.es)
   3. `heroku config:add HTTPHOST=my_todo_app.herokuapp.com` (or whatever you use)
   4. `heroku config:add GPLUS\_DOMAIN=yourcompanydomain.com` (or change heroku.js to configure auth)
 1. push everything under the superfluous directory (in particular the Procfile) to your heroku git repo. If you have git subtree, use: `git subtree push --prefix superfluous heroku master`
+
+## Hacking on the core
+    # install node (>= 0.8) and mongo-db
+    git clone superfluous.git
+
+    # get the code and dependencies for superfluous
+    cd superfluous/superfluous
+    npm install
+
+    ENV=localhost nodemon app.js
+
+    # start hacking in core/
+    vim superfluous/core/server/main.js
 
