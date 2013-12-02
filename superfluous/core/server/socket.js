@@ -63,6 +63,9 @@ module.exports = {
       io.set('transports', ['xhr-polling', 'htmlfile', 'jsonp-polling']);
     }
 
+    io.set("browser client gzip", true);
+    io.set("browser client minification", true);
+
     var routes = require('./routes');
     routes.socket(io);
 
