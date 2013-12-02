@@ -40,27 +40,25 @@
 
   window.SF.on("validate/versions", function(socket) {
     socket.emit("validate_versions", _versions, function(versions) {
-      _.each(versions, function(defs, type) {
-        _.each(defs, function(v, k) {
-          _versions[type][k] = v;
-        });
-      });
-
       SF.trigger("updated_versions");
     });
   });
 
+  // When pulling info out of localStorage...
+  // if we see a version for a pkg we already have, we reset it's value once
+  // the next time we read it, if it is the same value, we use that value
   function sync_metadata() {
 
     try {
       var signatures = JSON.parse(_component_storage.getItem("_signatures"));
-      _.extend(_signatures, signatures);
+      _.defaults(_signatures, signatures);
     } catch(e) {}
 
     try {
       var versions = JSON.parse(_component_storage.getItem("_versions"));
       _.each(versions, function(def, type) {
-        _.extend(_versions[type], def);
+        // Maybe?
+        _.defaults(_versions[type], def);
         _.extend(_signatures, _.object(_.map(def, function(v, k) {
           return [v, k];
         })));
