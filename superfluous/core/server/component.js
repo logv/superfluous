@@ -79,14 +79,13 @@ Component.build_package = function(component, cb) {
 
   function process_file(obj, file, key, cb) {
     return function(cb) {
-      fs.readFile(file, function(err, data) {
-        if (err) {
-          obj[key] = "console.log('Couldnt find helper " + key + " for " + component + " component');";
-        } else {
-          obj[key] = data.toString();
-        }
-        cb();
-      });
+      var data = readfile(file);
+      if (!data) {
+        obj[key] = "console.log('Couldnt find helper " + key + " for " + component + " component');";
+      } else {
+        obj[key] = data;
+      }
+      cb();
     };
   }
 

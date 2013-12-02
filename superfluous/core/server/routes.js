@@ -5,13 +5,14 @@ var page = require("./page");
 var router = require("./router");
 var socket = require("./socket");
 var fs = require("fs");
+var readfile = require("./readfile");
 
 var _ = require_vendor("underscore");
 
 
 // Read the routes in from an external file
 // TODO: make this more automagic
-var Controllers = JSON.parse(fs.readFileSync("routes.json"));
+var Controllers = JSON.parse(readfile("routes.json"));
 
 var routes = router.collect(Controllers);
 console.log('INSTANTIATED ROUTES', routes);

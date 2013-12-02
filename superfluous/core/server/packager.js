@@ -14,20 +14,19 @@ function package_less(includes, cb) {
 
   var ret = {};
   async.each(included, function(module, done) {
-    fs.readFile(module + ".css", function(err, data) {
-      if (!err) {
-        var hash = quick_hash(data.toString());
-        less.render(data.toString(), function(err, css) {
-          ret[module] = {
-            code: css,
-            signature: hash
-          };
-          done();
-        });
-      } else {
+    var data = readfile(module + ".css");
+    if (data) {
+      var hash = quick_hash(data.toString());
+      less.render(data.toString(), function(err, css) {
+        ret[module] = {
+          code: css,
+          signature: hash
+        };
         done();
-      }
-    });
+      });
+    } else {
+      done();
+    }
 
   }, function(err) {
     cb(ret);
@@ -36,20 +35,19 @@ function package_less(includes, cb) {
 
 function package_and_scope_less(component, module, cb) {
   var ret = {};
-  fs.readFile(module + ".css", function(err, data) {
-    var module_css = "[data-cmp=" + component + "] {\n";
-    var module_end = "\n}";
-    var hash = quick_hash(data.toString());
-    less.render(module_css + data.toString() + module_end, function(err, css) {
-      ret[module] = {
-        code: css,
-        signature: hash
-      };
+  var data = readfile(module + ".css");
 
-      cb(ret);
-    });
+  var module_css = "[data-cmp=" + component + "] {\n";
+  var module_end = "\n}";
+  var hash = quick_hash(data.toString());
+  less.render(module_css + (data || "") + module_end, function(err, css) {
+    ret[module] = {
+      code: css,
+      signature: hash
+    };
+
+    cb(ret);
   });
-
 }
 
 function package_js(includes, cb) {

@@ -72,6 +72,7 @@ var js = multi_pack("", "js", packager.js);
 var css = multi_pack("app/static/styles", "css", packager.less);
 
 
+var _js_prelude;
 var js_prelude = function() {
   // Shrink wrap the prelude files
   var req = context("req");
@@ -82,24 +83,29 @@ var js_prelude = function() {
   data = JSON.parse(data);
   res.set("Content-Type", "text/javascript");
 
-
-  var contents = {};
-
-  // The files need to be ordered properly
-  async.each(data.vendor.concat(data.files),
-    function(item, cb) {
-      var data = readfile.both(item);
-      var ret = data.toString();
-      contents[item] = ret;
-
-      cb();
-    },
-    function(err) {
-      _.each(data.vendor.concat(data.files), function(file) {
-        res.write(contents[file]);
-      });
-      res.end();
+  function after_read_prelude(err) {
+    _.each(data.vendor.concat(data.files), function(file) {
+      res.write(_js_prelude[file]);
     });
+    res.end();
+  }
+
+
+  if (!_js_prelude) {
+    _js_prelude = {};
+    // The files need to be ordered properly
+    async.each(data.vendor.concat(data.files),
+      function(item, cb) {
+        var data = readfile.both(item);
+        var ret = data.toString();
+        _js_prelude[item] = ret;
+
+        cb();
+      },
+      after_read_prelude);
+  } else {
+    after_read_prelude();
+  }
 };
 
 var get_status = function() {
@@ -108,6 +114,7 @@ var get_status = function() {
   res.end();
 };
 
+var _css_prelude;
 var css_prelude = function() {
   var res = context("res");
 
@@ -117,34 +124,40 @@ var css_prelude = function() {
   data = JSON.parse(data);
   res.set("Content-Type", "text/css");
 
-  var css_datas = {};
-  async.each(
-    data.styles,
-    function(file, cb) {
-      fs.readFile(file, function(err, css_data) {
-        if (!err) {
-          less.render(css_data.toString(), function(err, data) {
+  function after_read_prelude(err) {
+    _.each(data.styles, function(file) {
+      if (_css_prelude[file]) {
+        res.write(_css_prelude[file]);
+      }
+    });
+    res.end();
+  }
+
+  if (!_css_prelude) {
+    _css_prelude = {};
+    async.each(
+      data.styles,
+      function(file, cb) {
+        var css_data = readfile(file);
+        if (css_data) {
+          less.render(css_data, function(err, data) {
             if (!err) {
-              css_datas[file] = data;
+              _css_prelude[file] = data;
             } else {
               console.log("Error lessing", file, ", sending uncompiled version");
-              css_datas[file] = css_data.toString();
+              _css_prelude[file] = css_data.toString();
             }
           });
         } else {
           console.log("Error reading", file);
         }
-      cb();
-      });
-    },
-    function(err) {
-      _.each(data.styles, function(file) {
-        if (css_datas[file]) {
-          res.write(css_datas[file]);
-        }
-      });
-      res.end();
-    });
+
+        cb();
+      },
+      after_read_prelude);
+  } else {
+    after_read_prelude();
+  }
 };
 
 var component = function() {
