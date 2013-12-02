@@ -11,6 +11,7 @@ var async = require("async");
 var readfile = require_core("server/readfile");
 var quick_hash = require_core("server/hash");
 var less = require("less");
+var stringify = require("json-stable-stringify");
 
 function multi_pack(dir, extension, prepack) {
   return function() {
@@ -70,27 +71,14 @@ function multi_pack(dir, extension, prepack) {
 
 var js = multi_pack("", "js", packager.js);
 var css = multi_pack("app/static/styles", "css", packager.less);
-
-
 var _js_prelude;
-var js_prelude = function() {
-  // Shrink wrap the prelude files
-  var req = context("req");
-  var res = context("res");
+var _css_prelude;
 
+
+function get_js_prelude(after_read_prelude) {
   var data = readfile.core("core/client/prelude.json");
 
   data = JSON.parse(data);
-  res.set("Content-Type", "text/javascript");
-
-  function after_read_prelude(err) {
-    _.each(data.vendor.concat(data.files), function(file) {
-      res.write(_js_prelude[file]);
-    });
-    res.end();
-  }
-
-
   if (!_js_prelude) {
     _js_prelude = {};
     // The files need to be ordered properly
@@ -106,33 +94,13 @@ var js_prelude = function() {
   } else {
     after_read_prelude();
   }
-};
+}
 
-var get_status = function() {
-  var res = context("res");
-  res.write("OK");
-  res.end();
-};
-
-var _css_prelude;
-var css_prelude = function() {
-  var res = context("res");
-
+function get_css_prelude(after_read_prelude) {
   // Shrink wrap the prelude files
   var data = readfile.core("core/client/prelude.json");
 
   data = JSON.parse(data);
-  res.set("Content-Type", "text/css");
-
-  function after_read_prelude(err) {
-    _.each(data.styles, function(file) {
-      if (_css_prelude[file]) {
-        res.write(_css_prelude[file]);
-      }
-    });
-    res.end();
-  }
-
   if (!_css_prelude) {
     _css_prelude = {};
     async.each(
@@ -158,6 +126,68 @@ var css_prelude = function() {
   } else {
     after_read_prelude();
   }
+
+}
+
+function get_js_prelude_hash(cb) {
+  get_js_prelude(function() {
+    var str = stringify(_js_prelude);
+    cb(quick_hash(str));
+  });
+}
+
+function get_css_prelude_hash(cb) {
+  get_css_prelude(function() {
+    var str = stringify(_css_prelude);
+    cb(quick_hash(str));
+  });
+
+}
+
+var write_js_prelude = function() {
+  // Shrink wrap the prelude files
+  var req = context("req");
+  var res = context("res");
+
+  res.set("Content-Type", "text/javascript");
+  var maxAge = 60 * 1000 * 60 * 24 * 365;
+  if (!res.getHeader('Cache-Control')) {
+    res.setHeader('Cache-Control', 'public, max-age=' + (maxAge / 1000));
+  }
+
+
+  get_js_prelude(function after_read_prelude(err) {
+    _.each(_js_prelude, function(data, file) {
+      res.write(_js_prelude[file]);
+    });
+    res.end();
+  });
+
+};
+
+var get_status = function() {
+  var res = context("res");
+  res.write("OK");
+  res.end();
+};
+
+var write_css_prelude = function() {
+  var res = context("res");
+
+  res.set("Content-Type", "text/css");
+  var maxAge = 60 * 1000 * 60 * 24 * 365;
+  if (!res.getHeader('Cache-Control')) {
+    res.setHeader('Cache-Control', 'public, max-age=' + (maxAge / 1000));
+  }
+
+  get_css_prelude(function after_read_prelude(err) {
+    _.each(_css_prelude, function(data, file) {
+      if (_css_prelude[file]) {
+        res.write(_css_prelude[file]);
+      }
+    });
+    res.end();
+  });
 };
 
 var component = function() {
@@ -206,8 +236,10 @@ function validate_versions(versions, socket) {
 module.exports = {
   js: js,
   css: css,
-  js_prelude: js_prelude,
-  css_prelude: css_prelude,
+  get_js_prelude_hash: get_js_prelude_hash,
+  get_css_prelude_hash: get_css_prelude_hash,
+  write_js_prelude: write_js_prelude,
+  write_css_prelude: write_css_prelude,
   component: component,
   get_status: get_status,
   validate_versions: validate_versions,
@@ -217,7 +249,7 @@ module.exports = {
     "/css" : "css",
     "/js" : "js",
     "/component" : "component",
-    "/prelude.js" : "js_prelude",
-    "/prelude.css" : "css_prelude"
+    "/prelude.js" : "write_js_prelude",
+    "/prelude.css" : "write_css_prelude"
   }
-}
+};

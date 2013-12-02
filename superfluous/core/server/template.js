@@ -97,23 +97,24 @@ var render_partial = function(template, options) {
   return render_template("partials/" + template, options);
 }
 
-var js_header = function() {
+var js_header = function(prelude_hash) {
   var ret = "";
   _.forEach(context("JS_DEPS"), function(v, k) {
       ret += render_js_link(k) + "\n";
   });
 
   ret += render_core_template("helpers/js_link.html.erb", {
-    path: "/pkg/prelude.js"
+    path: "/pkg/prelude.js",
+    hash: prelude_hash
   });
-
   return ret;
 };
 
-var css_header = function() {
+var css_header = function(prelude_hash) {
   var ret = "";
   ret += render_core_template("helpers/css_link.html.erb", {
-    path: "/pkg/prelude.css"
+    path: "/pkg/prelude.css",
+    hash: prelude_hash
   });
 
   return ret;

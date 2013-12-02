@@ -1,1 +1,6 @@
-<script src="<%= path %>" ></script>
+<% set_default("hash", "") %>
+<% set_default("hash_str", "") %>
+<% if (hash) { %>
+  <% hash_str = "?" + hash; %>
+<% } %>
+<script src="<%= path %><%= hash_str %>" ></script>

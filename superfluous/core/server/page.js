@@ -7,6 +7,7 @@ var component = require("./component");
 var EventEmitter = require('events').EventEmitter;
 var quick_hash = require_core("server/hash");
 var readfile = require_core("server/readfile");
+var bootloader_controller = require_core("controllers/bootloader/server");
 
 var cheerio = require("cheerio");
 
@@ -103,39 +104,55 @@ var render_page = function(page_options) {
 
   // render into page format
   var hash = quick_hash(readfile("app/controllers/" + controller + "/client.js"));
-  var page = component.build("page", {
-    header: page_options.header,
-    sidebar: sidebar_content,
-    controller: controller,
-    hash: hash,
-    socket: page_options.socket,
-    title: $$.title || "SF",
-    id: context("id"),
-    js_header: template.js_header(), // TODO: make this the dynamic list of modules to load
-    css_header: template.css_header() // TODO: make this the packaged CSS early dependency file
-    });
+  var css_hash, js_hash;
 
-  var pagePrefix = "<!DOCTYPE html>\n";
-  var pageStr = pagePrefix + page.toString();
+  var after = _.after(3, function() {
+    var page = component.build("page", {
+      header: page_options.header,
+      sidebar: sidebar_content,
+      controller: controller,
+      hash: hash,
+      socket: page_options.socket,
+      title: $$.title || "SF",
+      id: context("id"),
+      js_header: template.js_header(js_hash), // TODO: make this the dynamic list of modules to load
+      css_header: template.css_header(css_hash) // TODO: make this the packaged CSS early dependency file
+      });
 
-  // TODO: work on how the order of things are initialized happens
-  try {
-    $$.res.write(pageStr);
+      var pagePrefix = "<!DOCTYPE html>\n";
+      var pageStr = pagePrefix + page.toString();
 
-    // Update the name of the controller on the page, when we can.
-    // This also sets the $page element on the controller, inevitably
-    bridge.call("core/client/controller", "set", controller, page.id, hash);
+      // TODO: work on how the order of things are initialized happens
+      try {
+        $$.res.write(pageStr);
 
-    bridge.flush_data(page_options.content, "page_content");
+        // Update the name of the controller on the page, when we can.
+        // This also sets the $page element on the controller, inevitably
+        bridge.call("core/client/controller", "set", controller, page.id, hash);
 
-    $$.res.write(bridge.render());
-  } catch(e) {
-    console.error(e);
-    return;
-  }
+        bridge.flush_data(page_options.content, "page_content");
 
-  resolve_futures();
+        $$.res.write(bridge.render());
+      } catch(e) {
+        console.error(e);
+        return;
+      }
 
+      resolve_futures();
+
+  });
+
+  bootloader_controller.get_css_prelude_hash(function(hash) {
+    css_hash = hash;
+    after();
+  });
+
+  bootloader_controller.get_js_prelude_hash(function(hash) {
+    js_hash = hash;
+    after();
+  });
+
+  after();
 };
 
 var emitter = new EventEmitter();
