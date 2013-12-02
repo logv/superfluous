@@ -124,6 +124,7 @@ var render_page = function(page_options) {
 
       // TODO: work on how the order of things are initialized happens
       try {
+        $$.res.setHeader('Content-Type', 'text/html');
         $$.res.write(pageStr);
 
         // Update the name of the controller on the page, when we can.
