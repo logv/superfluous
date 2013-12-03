@@ -158,6 +158,9 @@ module.exports = {
         controller.get_shared_value = function(key) {
           return _controller_caches[name][key];
         };
+        controller.get_socket = function() {
+          return controller_socket;
+        };
 
         if (controller.realtime) {
           controller.realtime(controller_socket);
