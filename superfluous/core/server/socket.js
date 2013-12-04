@@ -7,18 +7,53 @@ var context = require_core("server/context");
 var _handlers = {};
 var config = require_core("server/config");
 var db = require_core("server/db");
+var Primus = require("primus.io");
 
 var _sockets = [];
 var _dirty = false;
 
 var _controller_caches = {};
+var _primus = null;
+
+var _socket_id = 0;
+function wrap_socket(socket) {
+  _socket_id += 1;
+
+  var socket_id = _socket_id;
+
+  var ret = {};
+  ret.emit = function(evt, data) {
+    socket.send.apply(socket, arguments);
+  };
+
+  ret.broadcast = {
+    emit: function(evt, data) {
+      socket.channel.send(evt, data);
+    }
+  };
+
+  ret.on = function(evt, cb) {
+    socket.on(evt, cb);
+  };
+
+  ret.socket = socket;
+
+  // incoming connections have headers
+  if (socket.headers) {
+    ret.session = socket.headers.session;
+    ret.sid = socket.headers.sid;
+  }
+
+  // a place to hang some data
+  ret.manager = {};
+  return ret;
+
+}
 
 function setup_new_socket(controller_cache, name, controller, socket) {
   if (controller.socket) {
     controller.socket(socket);
   }
-
-  socket.handshake.controller = name;
 
   _sockets.push(socket);
 
@@ -48,32 +83,30 @@ function setup_new_socket(controller_cache, name, controller, socket) {
   socket.on('close', function() {
     _sockets = _.without(_sockets, socket);
   });
-
 }
+
+function get_socket(io, path) {
+  return wrap_socket(io.channel(path));
+}
+
 module.exports = {
   setup_io: function(app, server) {
     // Setup Socket.IO
     var io;
-    io = require('socket.io').listen(server);
-
-    io.set('log level', 1); // reduce logging
-    if (!config.sockets) {
-      console.log("Falling back to xhr-polling");
-      // disable socket.io websockets for people behind proxies
-      io.set('transports', ['xhr-polling', 'htmlfile', 'jsonp-polling']);
-    }
-
-    io.set("browser client gzip", true);
-    io.set("browser client minification", true);
+    var primus = new Primus(server, {
+      transformer: 'socket.io'
+    });
+    // add rooms to Primus
+    _primus = primus;
 
     var routes = require('./routes');
-    routes.socket(io);
+    routes.socket(primus);
 
     var shutdown = require_core('server/shutdown');
-    shutdown.install(io);
+    shutdown.install(primus);
 
     var auth = require_core("server/auth");
-    auth.install(app, io);
+    auth.install(app, primus);
 
     return io;
   },
@@ -154,7 +187,7 @@ module.exports = {
         }
         var controller_cache = _controller_caches[name];
 
-        var controller_socket = io.of(path);
+        var controller_socket = get_socket(io, name);
         controller.get_shared_value = function(key) {
           return _controller_caches[name][key];
         };
@@ -166,7 +199,10 @@ module.exports = {
           controller.realtime(controller_socket);
         }
 
-        controller_socket.on('connection', function(socket) {
+        controller_socket.socket.on('connection', function(s) {
+          var socket = wrap_socket(s);
+          socket.channel = controller_socket;
+
           context.create({ socket: socket }, function(ctx) {
             var old_on = socket.on;
 
@@ -193,5 +229,8 @@ module.exports = {
   },
   get_open_sockets: function() {
     return _sockets;
+  },
+  get_socket_library: function() {
+    return _primus.library();
   }
 };

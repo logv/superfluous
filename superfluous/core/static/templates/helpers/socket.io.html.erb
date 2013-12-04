@@ -1,16 +1,22 @@
-<script src="/socket.io/socket.io.v0.9.16.js"></script>
 <script>
 
   var ua = navigator.userAgent.toLowerCase();
   var isAndroid = ua.indexOf("android") > -1;
 
   function init_socket() { 
-    var socket = io.connect('//<%= host %>/<%= name %>');
+    var primus = Primus.connect('//<%= host %>/');
+    var _socket = primus.channel("<%= name %>");
+
+    var socket = {
+      emit: function() {
+        _socket.send.apply(_socket, arguments);
+      },
+      on: function() {
+        _socket.on.apply(_socket, arguments);
+      }
+    };
 
     bootloader.install_socket("<%= name %>", socket);
-    socket.on('init', function (data) {
-      console.log(data);
-    });
   }
 
   if (isAndroid) {
@@ -25,7 +31,6 @@
     jQuery.fx.off = true;
 
   } else {
-    init_socket();
+    _.delay(init_socket, 100);
   }
 </script>
-

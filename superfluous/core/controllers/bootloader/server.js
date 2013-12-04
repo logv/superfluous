@@ -7,9 +7,11 @@ var page = require_core("server/page");
 var context = require_core("server/context");
 var packager = require_core("server/packager");
 var Component = require_core("server/component");
-var async = require("async");
+var socket = require_core("server/socket");
 var readfile = require_core("server/readfile");
 var quick_hash = require_core("server/hash");
+
+var async = require("async");
 var less = require("less");
 var stringify = require("json-stable-stringify");
 
@@ -81,6 +83,8 @@ function get_js_prelude(after_read_prelude) {
   data = JSON.parse(data);
   if (!_js_prelude) {
     _js_prelude = {};
+
+    _js_prelude.sockets = socket.get_socket_library();
     // The files need to be ordered properly
     async.each(data.vendor.concat(data.files),
       function(item, cb) {

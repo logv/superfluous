@@ -12,13 +12,12 @@ var parseCookie = require("express").cookieParser(session.secret());
 var https = require('https');
 
 module.exports = {
-
   install: function(app, io) {
     this.app = app;
     this.io = io;
 
 
-    io.set('authorization', function(handshake_data, cb) {
+    io.authorize(function(handshake_data, cb) {
       var that = this;
       var cookie = handshake_data.headers.cookie;
       parseCookie(handshake_data, null, function() {
@@ -32,7 +31,8 @@ module.exports = {
                 return cb(err, false);
               }
 
-              handshake_data.sid = sid;
+              handshake_data.headers.sid = sid;
+              handshake_data.headers.session = session;
               cb(null, true);
             });
           } catch(e) {
