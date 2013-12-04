@@ -43,9 +43,14 @@ _.each(API, function(v, k) {
   };
 });
 
+var zlib = require("zlib");
 function request_handler_factory(route, handler) {
   return function handle_req(req, res) {
-    context.create({ req: req, res: res }, function(ctx) {
+    var stream = zlib.createGzip();
+    stream._flush = zlib.Z_SYNC_FLUSH;
+    stream.pipe(res);
+
+    context.create({ req: req, res: res, stream: stream }, function(ctx) {
 
       page.emit("start", {
         route: route

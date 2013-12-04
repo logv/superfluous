@@ -38,7 +38,7 @@ module.exports = {
   },
 
   raw: function(str) {
-    context("res").write("<script>" + str + " </script>");
+    context("stream").write("<script>" + str + " </script>");
   },
 
   controller: function() {
@@ -55,7 +55,7 @@ module.exports = {
   },
 
   flush_data: function(data, id, cb) {
-    var res = context("res");
+    var res = context("stream");
 
     if (!res) {
       throw "NO RESPONSE AVAILABLE FOR REQUEST";

@@ -67,7 +67,7 @@ function resolve_futures() {
       } else {
         module.exports.emit("async");
         module.exports.emit("finished");
-        context("res").end();
+        context("stream").end();
       }
     } catch(e) {
       console.error(e);
@@ -125,7 +125,8 @@ var render_page = function(page_options) {
       // TODO: work on how the order of things are initialized happens
       try {
         $$.res.setHeader('Content-Type', 'text/html');
-        $$.res.write(pageStr);
+        $$.res.setHeader('Content-Encoding', 'gzip');
+        $$.stream.write(pageStr);
 
         // Update the name of the controller on the page, when we can.
         // This also sets the $page element on the controller, inevitably
@@ -133,7 +134,8 @@ var render_page = function(page_options) {
 
         bridge.flush_data(page_options.content, "page_content");
 
-        $$.res.write(bridge.render());
+        $$.stream.write(bridge.render());
+        $$.stream.flush();
       } catch(e) {
         console.error(e);
         return;
