@@ -38,7 +38,7 @@ ENV=localhost nodemon app.js
 
 <p>
   <b>Speed</b> - <s>superfluous</s> has the initial delivery speed of a server app,
-  but the rich interactions of a client heavy app. By delivering the main core
+  and the rich interactions of a client heavy app. By delivering the main core
   of the page to the client ASAP, the client can display the app and
   download assets while the slower parts of the page are still generating.
 </p>
@@ -126,7 +126,6 @@ app developer are in app/, components/ &amp; config/
   config/               # options for your app and dev environments
     config.js           # default app configuration
     override.js         # use this with `ENV=override node app.js`
-  core/                 # <s>superfluous</s> core code and assets
   node_modules/         # node modules installed by npm
   package.json          # information about your app
   routes.json           # the route -&gt; app mapping in the app
@@ -142,9 +141,9 @@ instantiate the app that the user will be interacting with.  </p>
 
 <p>
 App Routes are configured in the <b>routes.json</b> file - it is a global index
-of what apps the server is going to be serving and where. Inside each, app the
-server controller has a routes member that tells the router which functions to
-hand requests to.
+of what apps the server is going to be serving and where. Inside the
+routes.json, each server controller has an entry that tells the router which
+controller to hand requests to.
 </p>
 
 <div class="mtl mbl">
@@ -276,17 +275,6 @@ static HTML, to concat'd templates, to jQuery div builders, to full components,
 the basics are there.
 </p>
 
-<h4>A danceparty demo</h4>
-<p>
-It's also possible using templates, sockets and controllers to make a slightly more complex app: <a href="http://github.com/okayzed/danceparty.sf">Check out the code</a>
-</p>
-
-<p>
-  This example opens the web cam and uploads a client recorded file to the
-  server. When a new GIF is uploaded, all clients are notified. Easy :-D
-</p>
-
-
 <div class="components">
   <h3>Components</h3>
 
@@ -407,6 +395,16 @@ setup communication between each other.
       in the dynamic packaging endpoints. Each endpoint can dynamically serve
       multiple files at once, reducing the number of simultaneous requests in
       flight.
+    </p>
+    <p>
+      unlike some other JS frameworks, <s>superfluous</s> does *not* create one
+      large JS bundle. Instead, it serves versioned resources and components on
+      demand.
+    </p>
+    <p>
+      This both speeds up the time to display for the user, as well as allows
+      multiple large apps to be served from one site without bloating all the
+      pages on the site.
     </p>
 
     <h3>Pipelined Page Delivery</h3>
@@ -566,6 +564,21 @@ setup communication between each other.
     synchronize the currently displayed kitten among each other. Not very
     exciting...  but the potential for something more is here :-D
   </p>
+  <h3>A danceparty demo</h3>
+  <p>
+    It's also possible using templates, sockets and controllers to make a
+    <a href="http://dance.nicesho.es">slightly more complex app :-)</a>.
+
+
+  </p>
+
+  <p>
+    This example opens the web cam and uploads a client recorded file to the
+    server. When a new GIF is uploaded, all clients are notified. Easy... :-D
+    <a href="http://github.com/okayzed/danceparty.sf">Check out the code</a>
+  </p>
+
+
 
 
   <h3>An app in the wild</h3>
