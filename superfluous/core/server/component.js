@@ -77,6 +77,18 @@ Component.build_package = function(component, cb) {
   cmp.helpers = {};
   _packages[component] = cmp;
 
+  function process_template(obj, file, key, cb) {
+    return function(cb) {
+      var data = readfile(file);
+      if (!data) {
+        obj[key] = null;
+      } else {
+        obj[key] = data;
+      }
+      cb();
+    };
+  }
+
   function process_file(obj, file, key, cb) {
     return function(cb) {
       var data = readfile(file);
@@ -103,8 +115,8 @@ Component.build_package = function(component, cb) {
   var js_dir = "app/static/";
   var jobs = [
     process_file(cmp, base_dir + pkg.main + ".js", "main"),
-    process_file(cmp, base_dir + pkg.template, "template"),
     process_file(cmp, base_dir + "events.js", "events"),
+    process_template(cmp, base_dir + pkg.template, "template"),
     process_style(cmp, base_dir + pkg.style.replace(".css", ""), "style")
   ];
 
