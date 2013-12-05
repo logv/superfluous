@@ -438,7 +438,9 @@
     if (options.css && options.css.length) {
       insert_pagelet();
       bootloader.css(options.css, function() {
-        display_pagelet();
+        // Delay the pagelet display ~10ms until the next browser work cycle,
+        // so CSS can hopefully be parsed by then.
+        setTimeout(display_pagelet, 10);
       });
     } else {
       insert_pagelet();
