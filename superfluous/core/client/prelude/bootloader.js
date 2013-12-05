@@ -69,9 +69,6 @@
 
   function sync_storage() {
 
-    // read metadata
-    sync_metadata();
-
     // write metadata
     _component_storage.setItem("_versions", JSON.stringify(_versions));
 
@@ -104,6 +101,7 @@
 
   // We need to sync our _versions with server versions
   setInterval(sync_storage, 10000);
+  sync_metadata();
   sync_storage();
 
   if (window._query.clear_storage) {
