@@ -429,7 +429,16 @@
     }
 
     function display_pagelet() {
-      $(el).fadeIn();
+      // Instead of asking element to fadeIn alone,
+      // also add a style to the page
+      var id = $(el).attr("id");
+
+      if (!id) {
+        id = _.uniqueId("pd_");
+        $(el).attr('id', id);
+      }
+
+      inject_css("_display_" + options.id, "#" + id + "{ display: block !important; }");
     }
 
 
@@ -440,7 +449,7 @@
       bootloader.css(options.css, function() {
         // Delay the pagelet display ~10ms until the next browser work cycle,
         // so CSS can hopefully be parsed by then.
-        setTimeout(display_pagelet, 10);
+        display_pagelet();
       });
     } else {
       insert_pagelet();
