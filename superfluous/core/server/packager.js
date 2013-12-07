@@ -9,14 +9,8 @@ var path = require("path");
 var quick_hash = require_core("server/hash");
 var readfile = require_core("server/readfile");
 
-var less_header =
-  '@mobile:   ~"only screen and (min-width: 200px) and (max-width: 599px)";\n' +
-  '@tablet:   ~"only screen and (min-width: 600px) and (max-width: 767px)";\n' +
-  '@device:   ~"only screen and (min-width: 200px) and (max-width: 767px)";\n' +
-  '@netbook:   ~"only screen and (min-width: 768px) and (max-width: 1199px)";\n' +
-  '@desktop:   ~"only screen and (min-width: 1200px) and (max-width: 1899px)";\n' +
-  '@computer:   ~"only screen and (min-width: 768px)";\n' +
-  '@large_screen:   ~"only screen and (min-width: 1900px)";\n';
+var less_header = readfile("app/static/styles/definitions.less") +
+  readfile("core/static/styles/definitions.less");
 
 function package_less(includes, cb) {
   var included = _.map(includes, function(s) { return s.trim(); });
