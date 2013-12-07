@@ -4,7 +4,7 @@
 
 
 <p> <b><s>superfluous</s></b> is an <b>app framework</b> (*gasp* another
-framework!) that simplifies the writing of web apps.  <s>superfluous</s> makes
+    framework!) that simplifies the writing of web apps.  <s>superfluous</s> makes
 app development easier by connecting <b>app delivery</b> and <b>user
 interactions</b> (aka <b>the app</b>) into a coherent structure. since it's a
 node.js server, the app is written in <b>one language</b>, leaving the
@@ -37,18 +37,18 @@ ENV=localhost nodemon app.js
 <h2>Features</h2>
 
 <p>
-  <b>Speed</b> - <s>superfluous</s> has the initial delivery speed of a server app,
+<b>Speed</b> - <s>superfluous</s> has the initial delivery speed of a server app,
   and the rich interactions of a client heavy app. By delivering the main core
   of the page to the client ASAP, the client can display the app and
   download assets while the slower parts of the page are still generating.
-</p>
-<p>
+  </p>
+  <p>
   <b>Flexibility</b> - <s>superfluous</s> handles many boilerplate tasks but still
   leaves the developer freedom to architect their web app - whether it's
   choosing how to render, which data layer to use or how much work should be
   done on the server or client.
-</p>
-<p>
+  </p>
+  <p>
   <b>Reusability</b> - Components encapsulate re-usable portions of rendering,
   event handling and data synchronization code. Using components on a site adds
   structure, well defined behaviors and division of responsibilities.
@@ -58,107 +58,105 @@ ENV=localhost nodemon app.js
 
   <div class="alert">Many large web codebases today are using Component based
   page generation on the server to minimize development friction.</div>
-</p>
+  </p>
 
-<p>
+  <p>
   <b>Familiarity</b> - Components are simple backbone views with a known
-  lifecycle: initialize, render, destroy.  Whether it's using MVVM and a data
-  binding engine or jQuery selectors, What goes inside each component is up to
-  the developer. If you don't like the idea of templates auto-syncing to data
-  models, don't do it. If you do... go for it :-D
-</p>
-
-<p>
+  lifecycle: initialize, render, destroy.  How the component updates its DOM
+  tree is up to the developer. It could be MVVM and a data binding engine or
+  jQuery selectors - it's up to you. if  you don't like the idea of templates
+  auto-syncing to data models, don't do it. If you do... go for it :-D </p>
+  <p>
   <b>Server - Client Cohesion</b> - sometimes, coupling is a good thing. Using
   two controllers allows the app to organize itself in a way that makes sense
   for the server and the client, allowing components to exist in many contexts.
-</p>
+  </p>
 
 
-<h1>Fundamentals</h1>
+  <h1>Fundamentals</h1>
 
-<h3>Server</h3>
+  <h3>Server</h3>
 
-<p>
-In superfluous, the server is an <a href="http://expressjs.com">express app</a>
-running on <a href="http://nodejs.org">node.js</a>. The server is responsible
-for sending <b>apps</b> (a <b>page</b> can be considered a type of app) to the
-client. Each server can host one or more web apps, each living at its own top
-level URL.
-</p>
+  <p>
+  In superfluous, the server is an <a href="http://expressjs.com">express app</a>
+  running on <a href="http://nodejs.org">node.js</a>. The server is responsible
+  for sending <b>apps</b> (a <b>page</b> can be considered a type of app) to the
+  client. Each server can host one or more web apps, each living at its own top
+  level URL.
+  </p>
 
-<p>
-In addition to delivering the app to the client, the server is generally
-responsible for performing business logic and manipulating the database in
-response to client actions.
-</p>
+  <p>
+  In addition to delivering the app to the client, the server is generally
+  responsible for performing business logic and manipulating the database in
+  response to client actions.
+  </p>
 
-<p class="alert">
-superfluous is not opinionated about being a client heavy or server heavy app.
-how much work is done on the server and how much on the client is left up to
-the developer.
-</p>
+  <p class="alert">
+  superfluous is not opinionated about being a client heavy or server heavy app.
+  how much work is done on the server and how much on the client is left up to
+  the developer.
+  </p>
 
-<h3>Apps &amp; Pages</h3>
+  <h3>Apps &amp; Pages</h3>
 
-<p>
-In <s>superfluous</s>, <b>apps</b> and <b>pages</b> are very similar, but with
-one difference: a page has no client controller, while an app does. Apps and
-pages live at top level URLs and are responsible for delivering a rendered page
-to the client web browser.
-</p>
+  <p>
+  In <s>superfluous</s>, <b>apps</b> and <b>pages</b> are very similar, but with
+  one difference: a page has no client controller, while an app does. Apps and
+  pages live at top level URLs and are responsible for delivering a rendered page
+  to the client web browser.
+  </p>
 
-<h3>File Layout</h3>
+  <h3>File Layout</h3>
 
-<s>superfluous</s> very much cares about file layout, and expects files to be in
-certain locations. The majority of the files you'll be working with as an
-app developer are in app/, components/ &amp; config/
+  <s>superfluous</s> very much cares about file layout, and expects files to be in
+  certain locations. The majority of the files you'll be working with as an
+  app developer are in app/, components/ &amp; config/
 
-<pre class="mtl prettyprint lang-bash"><code><s>superfluous</s>/
+  <pre class="mtl prettyprint lang-bash"><code><s>superfluous</s>/
   app/                  # application specific code and assets
-    client/             # client specific code and helpers
-    controllers/        # controllers
-    main.js             # server setup code goes in here
-    server/             # server specific logic
-    static/             # assets and templates used by controllers
+  client/             # client specific code and helpers
+  controllers/        # controllers
+  main.js             # server setup code goes in here
+  server/             # server specific logic
+  static/             # assets and templates used by controllers
   app.js                # This is the app entry point. Run this file
   components/           # components that this app uses
   config/               # options for your app and dev environments
-    config.js           # default app configuration
-    override.js         # use this with `ENV=override node app.js`
+  config.js           # default app configuration
+  override.js         # use this with `ENV=override node app.js`
   node_modules/         # node modules installed by npm
   package.json          # information about your app
   routes.json           # the route -&gt; app mapping in the app
   scripts/              # scripts for maintaining this app
-</code></pre>
+  </code></pre>
 
-<div class="controllers">
-<h3>Routes and the Router</h3>
-<p>
-Every app has an entry point on the server, accessed via its top level URL (or
-<b>route</b>). The route tells the router where to find the controllers to
-instantiate the app that the user will be interacting with.  </p>
+  <div class="controllers">
+  <h3>Routes and the Router</h3>
+  <p>
+  Every app has an entry point on the server, accessed via its top level URL (or
+      <b>route</b>). The route tells the router where to find the controllers to
+  instantiate the app that the user will be interacting with.  </p>
 
-<p>
-App Routes are configured in the <b>routes.json</b> file - it is a global index
-of what apps the server is going to be serving and where. Inside the
-routes.json, each server controller has an entry that tells the router which
-controller to hand requests to.
-</p>
+  <p>
+  App Routes are configured in the <b>routes.json</b> file - it is a global index
+  of what apps the server is going to be serving and where. Inside the
+  routes.json, each server controller has an entry that tells the router which
+  controller to hand requests to.
+  </p>
 
-<div class="mtl mbl">
+  <div class="mtl mbl">
 
   <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#routes_example">
-    see example routes.json
+  see example routes.json
   </button>
 
   <div id="routes_example" class="collapse no-transition">
-<pre class="prettyprint"><code>{
-  "/": "about",
-  "/demo": "demo",
-  "/kitten": "kitten"
-}</code></pre>
-  </div>
+  <pre class="prettyprint"><code>{
+    "/": "about",
+      "/demo": "demo",
+      "/kitten": "kitten"
+  }</code></pre>
+</div>
 </div>
 
 <h3>MVC</h3>
@@ -170,45 +168,45 @@ them as MVC. (Models, Views &amp; Controllers).
 
 <p>
 <s>superfluous</s> is <b>not</b> a full MVC solution. It takes care of Views (Templates &amp;
-Components) and Controllers (Client &amp; Server) like MVC, but leaves the
+    Components) and Controllers (Client &amp; Server) like MVC, but leaves the
 Model layer up to the developer.
 </p>
 
-  <h3>Controllers</h3>
+<h3>Controllers</h3>
 
-  <p>
-  Each app has two controllers, the <b>client controller</b> and the <b>server
-  controller</b>. The server controller is the entry point for the app. It
-  renders the app by placing <b>components</b> into <b>templates</b> and
-  <b>partials</b> and delivers the constructed app to the browser, where the
-  client controller is initialized.
-  </p>
+<p>
+Each app has two controllers, the <b>client controller</b> and the <b>server
+controller</b>. The server controller is the entry point for the app. It
+renders the app by placing <b>components</b> into <b>templates</b> and
+<b>partials</b> and delivers the constructed app to the browser, where the
+client controller is initialized.
+</p>
 
-  <div class="mtl mbl">
+<div class="mtl mbl">
 
-    <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#server_controller_example">
-      see example server controller code
-    </button>
+<button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#server_controller_example">
+see example server controller code
+</button>
 
-    <div id="server_controller_example" class="collapse no-transition">
-  <pre class="prettyprint"> <code><%= server_controller_code %></code> </pre>
-    </div>
-  </div>
+<div id="server_controller_example" class="collapse no-transition">
+<pre class="prettyprint"> <code><%= server_controller_code %></code> </pre>
+</div>
+</div>
 
-  <p>
+<p>
   The <b>client controller</b> is responsible for handling the UI interactions of
-  the user and syncing state with the server. (it runs on the client)
+the user and syncing state with the server. (it runs on the client)
   </p>
 
   <div class="mtl mbl">
 
-    <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#client_controller_example">
-      see example client controller code
-    </button>
+  <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#client_controller_example">
+  see example client controller code
+  </button>
 
-    <div id="client_controller_example" class="collapse no-transition">
+  <div id="client_controller_example" class="collapse no-transition">
   <pre class="prettyprint"> <code><%= client_controller_code %></code> </pre>
-    </div>
+  </div>
   </div>
 
   <p>
@@ -216,10 +214,10 @@ Model layer up to the developer.
   <b>bridge</b> to talk to the client and run JS. After the app is delivered,
   the two controllers communicate via <b>sockets</b> that are set up during
   the app delivery process.
-   </p>
+  </p>
 
   <p class="alert">
-    Use <b>scripts/create_controller.sh controller_name</b> to generate a new controller
+  Use <b>scripts/create_controller.sh controller_name</b> to generate a new controller
   </p>
 
   <p>
@@ -229,53 +227,53 @@ Model layer up to the developer.
   introducing a layer of <b>encapsulation</b> and <b>re-usability</b> for components.
   </p>
 
-</div>
+  </div>
 
-<h3>Templates</h3>
+  <h3>Templates</h3>
 
-<p>
-Templates are used by controllers and components to render HTML. When the
-server handles an app request, it will render data and components into a
-template and send that to the client. By default, templates are based on
-underscore's ERB template syntax.
+  <p>
+  Templates are used by controllers and components to render HTML. When the
+  server handles an app request, it will render data and components into a
+  template and send that to the client. By default, templates are based on
+  underscore's ERB template syntax.
 
-</p>
+  </p>
 
-<div class="mtl mbl">
+  <div class="mtl mbl">
 
   <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#template_example">
-    see example template code
+  see example template code
   </button>
 
   <div id="template_example" class="collapse no-transition">
-<pre class="prettyprint"> <code><%- template_code %></code> </pre>
+  <pre class="prettyprint"> <code><%- template_code %></code> </pre>
   </div>
-</div>
+  </div>
 
-<p class="alert">
+  <p class="alert">
   Use <b>scripts/create_partial.sh controller partial_name</b> to generate a
   new partial template
-</p>
+  </p>
 
-<h4>A componentless demo</h4>
+  <h4>A componentless demo</h4>
 
-<p>
-With the above code (the <b>client controller</b>, the <b>server controller</b>
-and a <b>template</b>), we have enough to run a very simple <s>superfluous</s> app. <a
-href="/demo">Click here</a> to see it in action. It doesn't do much... just
-increments a variable on the server and propagates those changes to any other
-connected clients.
+  <p>
+  With the above code (the <b>client controller</b>, the <b>server controller</b>
+      and a <b>template</b>), we have enough to run a very simple <s>superfluous</s> app. <a
+  href="/demo">Click here</a> to see it in action. It doesn't do much... just
+  increments a variable on the server and propagates those changes to any other
+  connected clients.
 
-</p>
+  </p>
 
-<p>
-You'll notice that there's no database access or components in this example.
-It's possible to render many styles of web application with <s>superfluous</s> - from
-static HTML, to concat'd templates, to jQuery div builders, to full components,
-the basics are there.
-</p>
+  <p>
+  You'll notice that there's no database access or components in this example.
+  It's possible to render many styles of web application with <s>superfluous</s> - from
+  static HTML, to concat'd templates, to jQuery div builders, to full components,
+  the basics are there.
+  </p>
 
-<div class="components">
+  <div class="components">
   <h3>Components</h3>
 
   <p>
@@ -291,82 +289,82 @@ the basics are there.
   </p>
 
   <p>
-    A component is split into several files: the main <b>component.js</b> file,
-    the <b>events</b> file, the <b>style</b> file and the <b>template</b>.
+  A component is split into several files: the main <b>component.js</b> file,
+  the <b>events</b> file, the <b>style</b> file and the <b>template</b>.
 
   <div>
-    <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#button_example">
-      see example button component files
-    </button>
+  <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#button_example">
+  see example button component files
+  </button>
 
-    <div id="button_example" class="collapse no-transition">
+  <div id="button_example" class="collapse no-transition">
 
-    components/button/events.js
-    <pre class="prettyprint"><code>module.exports = { events: {
-      "click" :  "handle_button_click"
-    },
+  components/button/events.js
+  <pre class="prettyprint"><code>module.exports = { events: {
+    "click" :  "handle_button_click"
+  },
 
-    handle_button_click: function() {
-    }
+handle_button_click: function() {
+                     }
   };
-    </code></pre>
+</code></pre>
 
-    components/button/button.js
-    <pre class="prettyprint"><code>module.exports = { tagName: "div",
-    className: "btn",
+components/button/button.js
+<pre class="prettyprint"><code>module.exports = { tagName: "div",
+  className: "btn",
 
-    set_title: function(title) {
-      this.$el.attr('title', title);
-    }
-  };
-    </code></pre>
+  set_title: function(title) {
+    this.$el.attr('title', title);
+  }
+};
+</code></pre>
 
-    components/button/button.html.erb
-    <pre class="prettyprint"><code>&lt;% set_default("title", "") %&gt;
+components/button/button.html.erb
+<pre class="prettyprint"><code>&lt;% set_default("title", "") %&gt;
 
-  &lt;div class="name" title="&lt;%= title %&gt;"&gt;
-    &lt;%= name %&gt;
-  &lt;/div&gt;
+&lt;div class="name" title="&lt;%= title %&gt;"&gt;
+&lt;%= name %&gt;
+&lt;/div&gt;
 
-    </code></pre>
-  </div>
+</code></pre>
+</div>
 
-  <p>
-  The <b>main component</b> file is responsible for a component's core logic
-  and rendering. The <b>events</b> file is responsible for event handling in
-  the component and is only loaded on the client.  The <b>style</b> file
-  contains CSS that will be automatically scoped to the component, and the
-  <b>template</b> is the basic HTML used to construct the component.
-  </p>
+<p>
+The <b>main component</b> file is responsible for a component's core logic
+and rendering. The <b>events</b> file is responsible for event handling in
+the component and is only loaded on the client.  The <b>style</b> file
+contains CSS that will be automatically scoped to the component, and the
+<b>template</b> is the basic HTML used to construct the component.
+</p>
 
-  <p class="alert">
-    Use <b>scripts/create_component.sh component_name</b> to generate a new component
-  </p>
+<p class="alert">
+Use <b>scripts/create_component.sh component_name</b> to generate a new component
+</p>
 
-  <h4>Client specific work</h4>
-  <p>
-  To run code only on the client, add a 'client' member to the component and voila.
-  </p>
+<h4>Client specific work</h4>
+<p>
+To run code only on the client, add a 'client' member to the component and voila.
+</p>
 
-  <h4>Server specific work</h4>
-  <p>
-  there's no server only work that is done in components. instead, that should be
-  left in the controller or a related file, and data should be handed to the
-  component. this is because Components need to be creatable on the client side
-  (without communication to the server).
-  </p>
+<h4>Server specific work</h4>
+<p>
+there's no server only work that is done in components. instead, that should be
+left in the controller or a related file, and data should be handed to the
+component. this is because Components need to be creatable on the client side
+(without communication to the server).
+</p>
 
-  </div>
+</div>
 </div>
 
 <div>
-  <h3>The Bridge</h3>
+<h3>The Bridge</h3>
 
-  <p>
-  During the initial app delivery, the bridge is used by the server to run code
-  on the client. It lets the server run client code and takes care of downloading
-  the required files before doing so.
-  </p>
+<p>
+During the initial app delivery, the bridge is used by the server to run code
+on the client. It lets the server run client code and takes care of downloading
+the required files before doing so.
+</p>
 </div>
 
 <h3>Sockets</h3>
@@ -378,247 +376,326 @@ setup communication between each other.
 </p>
 
 <div class="developers">
-  <h1>Boilerplate</h1>
+<h1>Boilerplate</h1>
 
-  <div>
-    <s>superfluous</s> is very concerned (again :-) with app delivery and
-    communication, as such it automates and simplifies some specific
-    functionality.
-  </div>
+<div>
+<s>superfluous</s> is very concerned (again :-) with app delivery and
+communication, as such it automates and simplifies some specific
+functionality.
+</div>
 
-  <div class="">
-    <h3>App Packaging</h3>
+<div class="">
+<h3>App Packaging</h3>
 
-    <p>
-      <s>superfluous</s> handles packaging the code and assets for the app,
-      dynamically. code minification, LESS compilation, etc, are all included
-      in the dynamic packaging endpoints. Each endpoint can dynamically serve
-      multiple files at once, reducing the number of simultaneous requests in
-      flight.
-    </p>
-    <p>
-      unlike some other JS frameworks, <s>superfluous</s> does *not* create one
-      large JS bundle. Instead, it serves versioned resources and components on
-      demand.
-    </p>
-    <p>
-      This both speeds up the time to display for the user, as well as allows
-      multiple large apps to be served from one site without bloating all the
-      pages on the site.
-    </p>
-
-    <h3>Pipelined Page Delivery</h3>
-
-    <p>
-    The traditional web server generates a blob of HTML that it sends down to the
-    client web browser for rendering. In this model, the generation of the webpage
-    is considered mostly linear.
-    </p>
-
-    <p>
-    In <s>superfluous</s>, asynchronous delivery lets you inject a placeholder into a
-    template and whenever you run a callback with new data, the new data will be
-    injected into that spot of the page.
-
-    This is particularly well suited to data fetching and the callback heavy
-    style of node.js. Using pipelined page delivery, the server can delivery
-    each portion of the page as it is ready, greatly increasing the speed at
-    which the page is loaded.
-
-    See <a
-    href="https://www.facebook.com/notes/facebook-engineering/bigpipe-pipelining-web-pages-for-high-performance/389414033919">facebook's
-    note on bigpipe</a> for more info on this concept.
-    </p>
-
-    <div class="mtl mbl">
-
-      <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#async_example">
-        see example async rendering
-      </button>
-
-
-      <div id="async_example" class="collapse no-transition">
-
-    in app/controllers/async/server.js
-    <pre class="prettyprint"><code>module.exports = {
-      routes: {
-        "": "index"
-      },
-      index: function() {
-        var flush;
-        var async_render = page.async(function(cb) {
-          var options = {};
-          // Pretend to do some asynchronous work, here.
-          do_some_db_call(options, function(err, data) {
-            // When cb is called, the data will be injected on the client into
-            // where async_render was originally called.
-            cb(data);
-          }, 1000);
-        });
-
-        page.render({content: async_render()});
-      }
-    }</code></pre>
-      </div>
-    </div>
-  </div>
-
-  <div class="">
-    <h3>Component Delivery</h3>
-    <s>superfluous</s> loads components from the server in one endpoint (including
-    templates, styles and scripts), allowing the client to load any component on
-    demand. It takes care of bootloading in their dependencies and any helpers, so
-    that the developer can focus on building the app, not packaging it.
-  </div>
-
-  <h3>Component Marshalling</h3>
+<p>
+<s>superfluous</s> handles packaging the code and assets for the app,
+  dynamically. code minification, LESS compilation, etc, are all included
+  in the dynamic packaging endpoints. Each endpoint can dynamically serve
+  multiple files at once, reducing the number of simultaneous requests in
+  flight.
+  </p>
   <p>
-  Most web frameworks implement a templating + rendering engine, but <s>superfluous</s>
-  goes a step further. Many of the UI components that we want to use on a webpage
-  are generated on the server and then hooked up on the client.  This process can
-  be ungainly, but frameworks do their best to make it easy to do.
+  unlike some other JS frameworks, <s>superfluous</s> does *not* create one
+  large JS bundle. Instead, it serves versioned resources and components on
+  demand.
+  </p>
+  <p>
+  This both speeds up the time to display for the user, as well as allows
+  multiple large apps to be served from one site without bloating all the
+  pages on the site.
+  </p>
+
+  <h3>Pipelined Page Delivery</h3>
+
+  <p>
+  The traditional web server generates a blob of HTML that it sends down to the
+  client web browser for rendering. In this model, the generation of the webpage
+  is considered mostly linear.
   </p>
 
   <p>
-  In rails or django, these are usually known as 'tag helpers' or 'template tags'
-  and help the developer insert dynamic components into templates.
+  In <s>superfluous</s>, asynchronous delivery lets you inject a placeholder into a
+  template and whenever you run a callback with new data, the new data will be
+  injected into that spot of the page.
+
+  This is particularly well suited to data fetching and the callback heavy
+  style of node.js. Using pipelined page delivery, the server can delivery
+  each portion of the page as it is ready, greatly increasing the speed at
+  which the page is loaded.
+
+  See <a
+  href="https://www.facebook.com/notes/facebook-engineering/bigpipe-pipelining-web-pages-for-high-performance/389414033919">facebook's
+  note on bigpipe</a> for more info on this concept.
   </p>
 
-  <p>
-  In <s>superfluous</s>, components can be created on the server or client and are
-  automatically marshalled and handed to the client app when their necessary
-  files are loaded. It's possible to create a component in the server
-  controller and hand it to the client controller for further use, as though they
-  are regular JS objects.
-  </p>
+  <div class="mtl mbl">
 
-  <button type="button" class="btn btn-danger mbl " data-toggle="collapse" data-target="#component_example">
-    See marshalling components
+  <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#async_example">
+  see example async rendering
   </button>
 
-  <div id="component_example" class="collapse mtl no-transition">
-    Server Code
-    <pre class="prettyprint"><code><%= about_server_code %>
-    </pre></code>
 
-    Client Code
-    <pre class="prettyprint"><code><%= about_client_code %></pre></code>
-  </div>
+  <div id="async_example" class="collapse no-transition">
 
+  in app/controllers/async/server.js
+  <pre class="prettyprint"><code>module.exports = {
+routes: {
+          "": "index"
+        },
+index: function() {
+         var flush;
+         var async_render = page.async(function(cb) {
+             var options = {};
+             // Pretend to do some asynchronous work, here.
+             do_some_db_call(options, function(err, data) {
+               // When cb is called, the data will be injected on the client into
+               // where async_render was originally called.
+               cb(data);
+               }, 1000);
+             });
 
-  <div class="">
-    <h3>Component Scoped CSS</h3>
-    In <s>superfluous</s>, every component's CSS is dynamically scoped to only that
-    component, reducing the cross contamination of styles between components.
-  </div>
+         page.render({content: async_render()});
+       }
+  }</code></pre>
+</div>
+</div>
+</div>
 
+<div class="">
+<h3>Component Delivery</h3>
+<s>superfluous</s> loads components from the server in one endpoint (including
+    templates, styles and scripts), allowing the client to load any component on
+demand. It takes care of bootloading in their dependencies and any helpers, so
+that the developer can focus on building the app, not packaging it.
+</div>
 
+<h3>Component Marshalling</h3>
+<p>
+Most web frameworks implement a templating + rendering engine, but <s>superfluous</s>
+goes a step further. Many of the UI components that we want to use on a webpage
+are generated on the server and then hooked up on the client.  This process can
+be ungainly, but frameworks do their best to make it easy to do.
+</p>
 
-  <div class="">
+<p>
+In rails or django, these are usually known as 'tag helpers' or 'template tags'
+and help the developer insert dynamic components into templates.
+</p>
 
+<p>
+In <s>superfluous</s>, components can be created on the server or client and are
+automatically marshalled and handed to the client app when their necessary
+files are loaded. It's possible to create a component in the server
+controller and hand it to the client controller for further use, as though they
+are regular JS objects.
+</p>
 
+<button type="button" class="btn btn-danger mbl " data-toggle="collapse" data-target="#component_example">
+See marshalling components
+</button>
 
-    <h3>Auto Socket Setup</h3>
+<div id="component_example" class="collapse mtl no-transition">
+Server Code
+<pre class="prettyprint"><code><%= about_server_code %>
+</pre></code>
 
-    When a controller enables sockets, <b>primus</b> handles the rest. The
-    client and server controller can immediately begin talking to one another.
-
-    When a user authenticates, their socket is authenticated as well and the
-    session carries over.
-  </div>
-
-  <div class="">
-    <h3>Request Local Storage</h3>
-
-    <p>
-    Even though node.js doesn't really have threads, you can allocate variables
-    into a request specific <b>context</b> from any function, without holding onto
-    a request object.
-    </p>
-
-    <p>
-    This allows your app to communicate between friendly modules without threading
-    a request object through every callback. <a href="https://groups.google.com/forum/#!topic/nodejs-dev/gBpJeQr0fWM">See this google groups thread for more info</a>
-    </p>
-  </div>
-
-  <h3>Client Synchronization</h3>
-
-  <p><s>superfluous</s> comes with multi-client synchronization features. These
-  can be used via SF.watch &amp;, SF.set on the client to let all connected
-  clients share &amp; watch shared variables for changes. Which variables
-  persist across reboots and servers is configurable.</p>
-
-
-  <h1>Demos</h1>
-  <h3>A demo with components</h3>
-
-  <p>
-  With the above features (<b>async delivery</b>, <b>multi-client
-  synchronization</b> , <b>sockets</b> and  <b>components</b>), we have enough to
-  run a slightly more complex <s>superfluous</s> app. <a href="/kitten">Click here</a>
-  to see it in action.  </p>
-
-  <p>
-    This example renders the <b>kitten_tile</b> component and allows users to
-    synchronize the currently displayed kitten among each other. Not very
-    exciting...  but the potential for something more is here :-D
-  </p>
-  <h3>A danceparty demo</h3>
-  <p>
-    It's also possible using templates, sockets and controllers to make a
-    <a href="http://dance.superfluous.io">slightly more complex app</a>.
+Client Code
+<pre class="prettyprint"><code><%= about_client_code %></pre></code>
+</div>
 
 
-  </p>
-
-  <p>
-    This example opens the web cam and uploads a client recorded file to the
-    server. When a new GIF is uploaded, all clients are notified. Easy... :-D
-    <a href="http://github.com/okayzed/danceparty.sf">Check out the code</a>
-  </p>
+<div class="">
+<h3>Component Scoped CSS</h3>
+In <s>superfluous</s>, every component's CSS is dynamically scoped to only that
+component, reducing the cross contamination of styles between components.
+</div>
 
 
 
+<div class="">
 
-  <h3>An app in the wild</h3>
 
-  <s>superfluous</s> was refactored out of snorkel, and is mostly alpha quality. Check
-  out <a href="http://github.com/okayzed/snorkel">snorkel's code</a>, if you want
-  to see a much more heinous use of javascript.
 
-  <h1>Left to the developer</h1>
+<h3>Auto Socket Setup</h3>
 
-    <p>
-    <s>superfluous</s> leaves a lot of app building questions up to the developer, since
-    it is mainly concerned how the app is created, delivered and interacted with.
+When a controller enables sockets, <b>primus</b> handles the rest. The
+client and server controller can immediately begin talking to one another.
 
-    Most of these can be answered with out of the box solutions and middleware.
-    </p>
+When a user authenticates, their socket is authenticated as well and the
+session carries over.
+</div>
 
-    <h3>Caching Data</h3>
+<div class="">
+<h3>Request Local Storage</h3>
 
-    How data is cached on the client and server is unanswered. It could be in
-    localstorage, it could be RAM, it could be memcache. That's up to you :-D
+<p>
+Even though node.js doesn't really have threads, you can allocate variables
+into a request specific <b>context</b> from any function, without holding onto
+a request object.
+</p>
 
-    <h3>ORM &amp; DB</h3>
+<p>
+This allows your app to communicate between friendly modules without threading
+a request object through every callback. <a href="https://groups.google.com/forum/#!topic/nodejs-dev/gBpJeQr0fWM">See this google groups thread for more info</a>
+</p>
+</div>
 
-    Similarly, no ORM or DB is preferred for holding your data. If you choose
-    to use one at all. Check out node-orm2, though, if you do want to use one
-    :-D
+<h3>Client Synchronization</h3>
 
-    <h3>DOM Data Binding</h3>
+<p><s>superfluous</s> comes with multi-client synchronization features. These
+can be used via SF.watch &amp;, SF.set on the client to let all connected
+clients share &amp; watch shared variables for changes. Which variables
+persist across reboots and servers is configurable.</p>
 
-    For data binding, Rivets goes well with Backbone and the template structure
-    of Components. It keeps the DOM and models in sync in your app, easily.
 
-    <h3>Authentication</h3>
+<h1>Demos</h1>
+<h3>A demo with components</h3>
 
-    Authentication Authentishmation. Check out passport.
+<p>
+With the above features (<b>async delivery</b>, <b>multi-client
+    synchronization</b> , <b>sockets</b> and  <b>components</b>), we have enough to
+run a slightly more complex <s>superfluous</s> app. <a href="/kitten">Click here</a>
+to see it in action.  </p>
 
-    <h3>Scaling</h3>
+<p>
+This example renders the <b>kitten_tile</b> component and allows users to
+synchronize the currently displayed kitten among each other. Not very
+exciting...  but the potential for something more is here :-D
+</p>
+<h3>A danceparty demo</h3>
+<p>
+It's also possible using templates, sockets and controllers to make a
+<a href="http://dance.superfluous.io">slightly more complex app</a>.
 
-      maybe consider this server for smale to medium size sites, for now :-D
+
+</p>
+
+<p>
+This example opens the web cam and uploads a client recorded file to the
+server. When a new GIF is uploaded, all clients are notified. Easy... :-D
+<a href="http://github.com/okayzed/danceparty.sf">Check out the code</a>
+</p>
+
+
+
+
+<h3>An app in the wild</h3>
+
+<s>superfluous</s> was refactored out of snorkel, and is mostly alpha quality. Check
+out <a href="http://github.com/okayzed/snorkel">snorkel's code</a>, if you want
+to see a much more heinous use of javascript.
+
+<h1>Extending</h1>
+
+<h3>Initializing the app</h3>
+
+To do any core initialization (adding performance tracking, error monitoring,
+authorization, etc), you can add them to the setup() function inside
+app/main.js
+
+<button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#second_main_example">
+example app/main.js file with setup()
+</button>
+<div id="second_main_example" class="collapse no-transition">
+<pre class="prettyprint"><code>"use strict";
+
+var auth = require_app("server/auth");
+var perf = require_app("server/perf");
+var express = require('express');
+
+module.exports = {
+  setup: function(options) {
+     if (options.collector) {
+       require_app("controllers/data/server").setup_collector();
+     }
+
+     perf.setup();
+     auth.install();
+  }
+};
+
+
+</code></pre>
+</div>
+
+<h3>Using express middleware</h3>
+
+Superfluous is built on express - if you'd like to use middleware, it's
+straightforward! In app/main.js, add any middleware to the app inside the
+setup_app function.
+
+<p class="alert">middleware that loads or packages assets will probably conflict
+with superfluous' packaging scheme. </p>
+
+
+<button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#main_example">
+example app/main.js with setup_app()
+</button>
+<div id="main_example" class="collapse no-transition">
+<pre class="prettyprint"><code>"use strict";
+
+var express = require('express');
+
+module.exports = {
+setup_app: function(app) {
+             var passport = require('passport');
+             app.use(passport.initialize());
+             app.use(passport.session());
+             app.use(express.bodyParser());
+           },
+};
+</code></pre>
+</div>
+
+<h3>Adding to the prelude.js</h3>
+
+<p>
+Superfluous's delivery is phased - it delivers the <b>prelude</b> of the page
+and an HTML skeleton as soon as possible. when other portions of the page
+are delivered, the prelude downloads their dependencies and displays them.
+</p>
+<p>
+If you'd like to put more JS into the prelude, you can add it to
+app/client/prelude.json to be served inside the initial prelude.js payload.
+</p>
+<p>
+Currently, the prelude contains <b>underscore</b>, <b>backbone</b> and
+<b>bootstrap</b> and the <b>socket</b> library is delivered separately.
+</p>
+
+<h1>Left to the developer</h1>
+
+<p>
+<s>superfluous</s> leaves a lot of app building questions up to the developer, since
+it is mainly concerned how the app is created, delivered and interacted with.
+
+Most of these can be answered with out of the box solutions and middleware.
+</p>
+
+<h3>Caching Data</h3>
+
+How data is cached on the client and server is unanswered. It could be in
+localstorage, it could be RAM, it could be memcache. That's up to you :-D
+
+<h3>ORM &amp; DB</h3>
+
+Similarly, no ORM or DB is preferred for holding your data. If you choose
+to use one at all. Check out node-orm2, though, when you do want to use one
+:-D
+
+
+<h3>DOM Data Binding</h3>
+
+For data binding, Rivets goes well with Backbone and the template structure
+of Components. It keeps the DOM and models in sync in your app, easily.
+
+<h3>Authentication</h3>
+
+Authentication Authentishmation. Check out passport.
+
+<h3>Scaling</h3>
+
+maybe consider this server for smale to medium size sites, for now :-D
 
 </div>
 
