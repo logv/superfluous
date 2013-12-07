@@ -69,6 +69,54 @@
 
   function sync_storage() {
 
+    // remove old keys
+    var key;
+    for (key in localStorage) {
+      if (key === "_versions" || key === "_signatures") {
+        continue;
+      }
+
+      if (!_signatures[key] ) {
+        try {
+          var item = localStorage.getItem(key);
+          if (!item) {
+            localStorage.removeItem(key);
+            return;
+          }
+
+          var parsed = JSON.parse(item);
+          var type = parsed.type;
+          var name = parsed.name;
+          var ts = parsed.timestamp;
+          if (type && name) {
+            var current_version = _versions[type][name];
+            console.log("CURRENT VERSION", current_version);
+            var unparsed = localStorage.getItem(current_version);
+            if (unparsed) {
+              current_data = JSON.parse(unparsed);
+              var current_ts = current_data.timestamp;
+              if (ts > current_ts) {
+                _versions[type][name] = parsed.signature;
+                _signatures[parsed.signature] = unparsed;
+                localStorage.removeItem(current_version);
+                console.log("Upgrading in memory version of", name, "due to old timestamp", parsed.signature);
+
+                return;
+              }
+            }
+
+            console.log("Expiring old localStorage entry", key, name);
+          }
+
+          localStorage.removeItem(key);
+        } catch(e) {
+          console.log(e);
+          localStorage.removeItem(key);
+        }
+      }
+
+    }
+
     // write metadata
     _component_storage.setItem("_versions", JSON.stringify(_versions));
 
@@ -82,25 +130,10 @@
 
     _component_storage.setItem("_signatures", JSON.stringify(_signatures));
 
-    // remove old keys
-    var key;
-    for (key in localStorage) {
-      if (key === "_versions" || key === "_signatures") {
-        continue;
-      }
-
-      if (!_signatures[key] ) {
-        try {
-          console.log("Removing old localStorage key", key);
-          localStorage.removeItem(key);
-        } catch(e) {};
-      }
-
-    }
   }
 
   // We need to sync our _versions with server versions
-  setInterval(sync_storage, 10000);
+  setInterval(sync_storage, 3000);
   sync_metadata();
   sync_storage();
 
@@ -184,14 +217,16 @@
           _.each(data, function(v, k) {
 
             v.module = k;
-            _storage.setItem(v.signature, JSON.stringify(v));
+            if (v.signature) {
+              _storage.setItem(v.signature, JSON.stringify(v));
+              versions[k] = v.signature;
+            }
 
             if (postload) {
               v.code = postload(k, v.code);
             }
 
             loaded_modules[k] = v.code;
-            versions[k] = v.signature;
           });
 
           _.extend(module_dict, loaded_modules);
@@ -275,13 +310,14 @@
 
     req.done(function(data) {
       _.each(data, function(v, k) {
-        _versions.pkg[k] = v.signature;
-        _signatures[v.signature] = k;
 
-        if (!_component_storage.getItem(v.signature)) {
-          _component_storage.setItem(v.signature, JSON.stringify(v));
+        if (v.signature) {
+          _versions.pkg[k] = v.signature;
+          _signatures[v.signature] = k;
+          if (!_component_storage.getItem(v.signature)) {
+            _component_storage.setItem(v.signature, JSON.stringify(v));
+          }
         }
-
 
         define_package(k, v);
         loaded_modules[k] = _packages[k];

@@ -13,14 +13,17 @@ function package_less(includes, cb) {
   var included = _.map(includes, function(s) { return s.trim(); });
 
   var ret = {};
-  async.each(included, function(module, done) {
-    var data = readfile(module + ".css");
+  async.each(included, function(mod, done) {
+    var data = readfile(mod + ".css");
     if (data) {
       var hash = quick_hash(data.toString());
       less.render(data.toString(), function(err, css) {
-        ret[module] = {
+        ret[mod] = {
           code: css,
-          signature: hash
+          signature: hash,
+          name: mod,
+          type: "css",
+          timestamp: parseInt(+Date.now() / 1000)
         };
         done();
       });
@@ -43,7 +46,9 @@ function package_and_scope_less(component, module, cb) {
   less.render(module_css + (data || "") + module_end, function(err, css) {
     ret[module] = {
       code: css,
-      signature: hash
+      signature: hash,
+      name: module,
+      type: "css"
     };
 
     cb(ret);
@@ -77,11 +82,14 @@ function package_js(includes, cb) {
         var modules = _.map(resolved.modules, function(v, k) { return v; });
         async.each(
           modules,
-          function(module, done) {
-            var data = readfile.both(module + ".js");
-            ret[module] = {
+          function(mod, done) {
+            var data = readfile.both(mod + ".js");
+            ret[mod.id] = {
               code: data,
-              signature: quick_hash(data)
+              signature: quick_hash(data),
+              type: "js",
+              name: mod.id,
+              timestamp: parseInt(+Date.now() / 1000, 10)
             };
             done();
           },

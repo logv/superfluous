@@ -138,6 +138,9 @@ Component.build_package = function(component, cb) {
     _versions[component] = hash;
 
     cmp.signature = hash;
+    cmp.name = component;
+    cmp.type = "pkg";
+    cmp.timestamp = parseInt(+Date.now() / 1000, 10);
     if (cb) {
       cb(cmp);
     }

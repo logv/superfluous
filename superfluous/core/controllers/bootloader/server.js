@@ -111,7 +111,7 @@ function get_js_prelude(after_read_prelude) {
     }
 
     // The files need to be ordered properly
-    async.each(data.vendor.concat(data.files),
+    async.each(filelist,
       function(item, cb) {
         var data = readfile.both(item);
         var ret = data.toString();
