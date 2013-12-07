@@ -53,9 +53,9 @@ body .content .sidebar {
     color: #000;
   }
 
-  @media (max-width: 767px) {
+  @media @device {
   }
-  @media (min-width: 767px) {
+  @media @computer {
     height: 100%;
     position: fixed;
     min-width: 200px;
@@ -63,10 +63,10 @@ body .content .sidebar {
 }
 
 body .content .contents {
-  @media (max-width: 767px) {
+  @media @device {
     margin: 0;
   }
-  @media (min-width: 767px) {
+  @media @computer {
     margin-left: 250px;
     max-width: 620px;
   }

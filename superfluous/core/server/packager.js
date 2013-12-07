@@ -9,6 +9,15 @@ var path = require("path");
 var quick_hash = require_core("server/hash");
 var readfile = require_core("server/readfile");
 
+var less_header =
+  '@mobile:   ~"only screen and (min-width: 200px) and (max-width: 599px)";\n' +
+  '@tablet:   ~"only screen and (min-width: 600px) and (max-width: 767px)";\n' +
+  '@device:   ~"only screen and (min-width: 200px) and (max-width: 767px)";\n' +
+  '@netbook:   ~"only screen and (min-width: 768px) and (max-width: 1199px)";\n' +
+  '@desktop:   ~"only screen and (min-width: 1200px) and (max-width: 1899px)";\n' +
+  '@computer:   ~"only screen and (min-width: 768px)";\n' +
+  '@large_screen:   ~"only screen and (min-width: 1900px)";\n';
+
 function package_less(includes, cb) {
   var included = _.map(includes, function(s) { return s.trim(); });
 
@@ -17,13 +26,17 @@ function package_less(includes, cb) {
     var data = readfile(mod + ".css");
     if (data) {
       var hash = quick_hash(data.toString());
-      less.render(data.toString(), function(err, css) {
+      less.render(less_header + data.toString(), function(err, css) {
+        if (err) {
+          console.log("Error rendering less module:", mod, err);
+        }
+
         ret[mod] = {
           code: css,
           signature: hash,
           name: mod,
           type: "css",
-          timestamp: parseInt(+Date.now() / 1000)
+          timestamp: parseInt(+Date.now() / 1000, 10)
         };
         done();
       });
@@ -43,7 +56,7 @@ function package_and_scope_less(component, module, cb) {
   var module_css = "[data-cmp=" + component + "] {\n";
   var module_end = "\n}";
   var hash = quick_hash(data.toString());
-  less.render(module_css + (data || "") + module_end, function(err, css) {
+  less.render(less_header + module_css + (data || "") + module_end, function(err, css) {
     ret[module] = {
       code: css,
       signature: hash,
