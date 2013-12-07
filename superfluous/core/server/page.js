@@ -124,7 +124,6 @@ var render_page = function(page_options) {
     });
   }], 
   function () { // after everything finishes
-    console.log("SOCKET HEADER", page_options.socket, socket_hash);
     var page = component.build("page", {
       header: page_options.header,
       sidebar: sidebar_content,

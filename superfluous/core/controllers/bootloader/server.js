@@ -93,11 +93,23 @@ function get_socket_library(after_read_socket) {
 
 
 function get_js_prelude(after_read_prelude) {
-  var data = readfile.core("core/client/prelude.json");
-
-  data = JSON.parse(data);
   if (!_js_prelude) {
     _js_prelude = {};
+    var data = readfile.core("core/client/prelude.json");
+
+    data = JSON.parse(data);
+    var filelist = data.vendor.concat(data.files);
+
+    try {
+      var app_data = readfile.app("app/client/prelude.json");
+      if (app_data) {
+        app_data = JSON.parse(app_data);
+        filelist = filelist.concat(app_data.vendor.concat(app_data.files));
+      }
+    } catch (e) {
+      console.log("Couldn't load app prelude", e);
+    }
+
     // The files need to be ordered properly
     async.each(data.vendor.concat(data.files),
       function(item, cb) {
