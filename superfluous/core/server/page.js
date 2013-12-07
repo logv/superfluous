@@ -8,6 +8,7 @@ var EventEmitter = require('events').EventEmitter;
 var quick_hash = require_core("server/hash");
 var readfile = require_core("server/readfile");
 var bootloader_controller = require_core("controllers/bootloader/server");
+var async = require("async");
 
 var cheerio = require("cheerio");
 
@@ -104,15 +105,32 @@ var render_page = function(page_options) {
 
   // render into page format
   var hash = quick_hash(readfile("app/controllers/" + controller + "/client.js"));
-  var css_hash, js_hash;
+  var css_hash, js_hash, socket_hash;
 
-  var after = _.after(3, function() {
+  async.parallel([function(after) {
+    bootloader_controller.get_css_prelude_hash(function(hash) {
+      css_hash = hash;
+      after();
+    });
+  }, function(after) {
+    bootloader_controller.get_js_prelude_hash(function(hash) {
+      js_hash = hash;
+      after();
+    });
+  }, function(after) {
+    bootloader_controller.get_socket_hash(function(hash) {
+      socket_hash = hash;
+      after();
+    });
+  }], 
+  function () { // after everything finishes
+    console.log("SOCKET HEADER", page_options.socket, socket_hash);
     var page = component.build("page", {
       header: page_options.header,
       sidebar: sidebar_content,
       controller: controller,
       hash: hash,
-      socket: page_options.socket,
+      socket_header: page_options.socket && template.socket_header(socket_hash),
       title: $$.title || "SF",
       id: context("id"),
       js_header: template.js_header(js_hash), // TODO: make this the dynamic list of modules to load
@@ -144,18 +162,6 @@ var render_page = function(page_options) {
       resolve_futures();
 
   });
-
-  bootloader_controller.get_css_prelude_hash(function(hash) {
-    css_hash = hash;
-    after();
-  });
-
-  bootloader_controller.get_js_prelude_hash(function(hash) {
-    js_hash = hash;
-    after();
-  });
-
-  after();
 };
 
 var emitter = new EventEmitter();

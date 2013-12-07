@@ -75,6 +75,21 @@ var js = multi_pack("", "js", packager.js);
 var css = multi_pack("app/static/styles", "css", packager.less);
 var _js_prelude;
 var _css_prelude;
+var _socket_lib;
+
+function get_socket_hash(after_read_socket_hash) {
+  if (!_socket_lib) {
+    _socket_lib = socket.get_socket_library();
+  }
+  after_read_socket_hash(quick_hash(_socket_lib)); 
+}
+
+function get_socket_library(after_read_socket) {
+  if (!_socket_lib) {
+    _socket_lib = socket.get_socket_library();
+  }
+  after_read_socket({ sockets: _socket_lib });
+}
 
 
 function get_js_prelude(after_read_prelude) {
@@ -83,8 +98,6 @@ function get_js_prelude(after_read_prelude) {
   data = JSON.parse(data);
   if (!_js_prelude) {
     _js_prelude = {};
-
-    _js_prelude.sockets = socket.get_socket_library();
     // The files need to be ordered properly
     async.each(data.vendor.concat(data.files),
       function(item, cb) {
@@ -147,6 +160,24 @@ function get_css_prelude_hash(cb) {
   });
 
 }
+
+var write_socket_library = function() {
+  // Shrink wrap the prelude files
+  var req = context("req");
+  var res = context("res");
+
+  res.set("Content-Type", "text/javascript");
+  var maxAge = 60 * 1000 * 60 * 24 * 365;
+  if (!res.getHeader('Cache-Control')) {
+    res.setHeader('Cache-Control', 'public, max-age=' + (maxAge / 1000));
+  }
+
+
+  get_socket_library(function after_read_prelude() {
+    res.write(_socket_lib);
+    res.end();
+  });
+};
 
 var write_js_prelude = function() {
   // Shrink wrap the prelude files
@@ -240,10 +271,12 @@ function validate_versions(versions, socket) {
 module.exports = {
   js: js,
   css: css,
+  get_socket_hash: get_socket_hash,
   get_js_prelude_hash: get_js_prelude_hash,
   get_css_prelude_hash: get_css_prelude_hash,
   write_js_prelude: write_js_prelude,
   write_css_prelude: write_css_prelude,
+  write_socket_library: write_socket_library,
   component: component,
   get_status: get_status,
   validate_versions: validate_versions,
@@ -254,6 +287,7 @@ module.exports = {
     "/js" : "js",
     "/component" : "component",
     "/prelude.js" : "write_js_prelude",
-    "/prelude.css" : "write_css_prelude"
+    "/prelude.css" : "write_css_prelude",
+    "/socket" : "write_socket_library"
   }
 };

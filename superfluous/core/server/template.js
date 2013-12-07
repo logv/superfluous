@@ -58,7 +58,6 @@ function setup_render_context(options) {
   return _.extend(options, {
     add_stylesheet: add_stylesheet,
     add_javascript: add_js,
-    add_socket: add_socket,
     render_template: render_template,
     render_partial: render_partial,
     set_default: function(key, value) {
@@ -96,6 +95,20 @@ var render_template = function(template, options, core) {
 var render_partial = function(template, options) {
   return render_template("partials/" + template, options);
 }
+
+var socket_header = function(prelude_hash) {
+
+  if (prelude_hash) {
+    var ret = render_core_template("helpers/js_link.html.erb", {
+      path: "/pkg/socket",
+      hash: prelude_hash
+    });
+
+    ret += add_socket();
+
+    return ret;
+  }
+};
 
 var js_header = function(prelude_hash) {
   var ret = "";
@@ -136,8 +149,8 @@ module.exports = {
   controller: render_controller_template,
   add_stylesheet: add_stylesheet,
   add_js: add_js,
-  add_socket: add_socket,
   js_header: js_header,
   css_header: css_header,
+  socket_header: socket_header,
   setup_context: setup_render_context
 };

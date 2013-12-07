@@ -50,7 +50,7 @@ function index(ctx, api) {
     render_logout_button: logout_button.toString
   });
 
-  api.page.render({content: template_str});
+  api.page.render({content: template_str, socket: true});
 }
 
 var __id = 0;
