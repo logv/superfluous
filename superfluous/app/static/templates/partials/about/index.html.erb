@@ -593,7 +593,7 @@ To do any core initialization (adding performance tracking, error monitoring,
 authorization, etc), you can add them to the setup() function inside
 app/main.js
 
-<button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#second_main_example">
+<button type="button" class="btn btn-danger mbl mtm" data-toggle="collapse" data-target="#second_main_example">
 example app/main.js file with setup()
 </button>
 <div id="second_main_example" class="collapse no-transition">
@@ -655,8 +655,10 @@ and an HTML skeleton as soon as possible. when other portions of the page
 are delivered, the prelude downloads their dependencies and displays them.
 </p>
 <p>
-If you'd like to put more JS into the prelude, you can add it to
-app/client/prelude.json to be served inside the initial prelude.js payload.
+If you'd like to put more JS files into the prelude, you can add them to
+<b>app/client/prelude.json</b> to be served inside the initial prelude.js
+payload. If there is just some core JS, you can put it inside
+<b>app/client/prelude.js</b> and will be appended to the prelude package.
 </p>
 <p>
 Currently, the prelude contains <b>underscore</b>, <b>backbone</b> and
