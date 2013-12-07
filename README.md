@@ -37,7 +37,7 @@ Everything needed to build your own app!
 * Components
 * Templates
 
-See the guide [locally](http://localhost:3300) or [online](http://sf.nicesho.es)
+See the guide [locally](http://localhost:3300) or [online](http://superfluous.io)
 
 ### Extra Features!
 
