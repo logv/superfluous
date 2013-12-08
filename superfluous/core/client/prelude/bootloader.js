@@ -1,7 +1,12 @@
 (function() {
   var _injected_css = {};
   var _css_defs = {};
-  var _modules = {};
+  var _modules = {
+    // blacklisted modules
+    util: {},
+    stream: {},
+    url: {}
+  };
   var _module_defs = {};
   var _template_defs = {};
   var _packages = {};
@@ -18,7 +23,12 @@
     setItem: function() {}
   };
   var _storage = _blank_storage;
-  var _component_storage = window.localStorage || _blank_storage;
+  var _component_storage = _blank_storage;
+
+  if (window.localStorage) {
+    console.log("Caching components in LocalStorage");
+    _component_storage = window.localStorage;
+  }
 
   if (window._query.use_storage) {
     _storage = (window.localStorage || _storage);
@@ -30,8 +40,13 @@
 
   window.SF.once("bridge/socket", function(socket) {
     socket.on("update_version", function(type, entry, old_hash, new_hash) {
+      console.log("Updated version", type, entry, old_hash, new_hash);
       var component = _signatures[old_hash];
       delete _versions[type][old_hash];
+
+      try {
+        localStorage.removeItem(old_hash);
+      } catch(e) {}
       _versions[type][entry] = new_hash;
     });
 
@@ -177,6 +192,11 @@
 
   function bootload_factory(type, module_dict, postload) {
     return function(modules, cb) {
+      if (bootloader.__use_storage && _storage === _blank_storage) {
+        console.log("Caching assets in LocalStorage");
+        _storage = _component_storage;
+      }
+
       if (_.isString(modules)) {
         modules = [modules];
       }

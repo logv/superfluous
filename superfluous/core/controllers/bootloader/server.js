@@ -280,9 +280,15 @@ function validate_versions(versions, socket, cb) {
   var after = _.after(_.keys(versions.pkg).length, cb);
   _.each(versions.pkg, function(old_hash, pkg) {
     Component.build_package(pkg, function(ret) {
-      if (ret && old_hash !== ret.signature) {
+      if (!ret) {
+        socket.emit("update_version", 'pkg', pkg, old_hash, null);
+        return;
+      }
+
+      if (old_hash !== ret.signature) {
         socket.emit("update_version", 'pkg', pkg, old_hash, ret.signature);
       }
+
       after();
     });
   });

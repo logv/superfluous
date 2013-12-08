@@ -13,7 +13,7 @@ delivery, and subsequent interactions. superfluous connects the two :-D
     # install node (>= 0.8) and mongo-db
 
     # get the code and dependencies for superfluous
-    npm install superfluous
+    npm install -g superfluous
     superfluous create my_first_app
 
     cd my_first_app
