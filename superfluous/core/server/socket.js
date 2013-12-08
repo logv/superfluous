@@ -202,6 +202,7 @@ module.exports = {
         controller_socket.socket.on('connection', function(s) {
           var socket = wrap_socket(s);
           socket.channel = controller_socket;
+          socket.controller = name;
 
           context.create({ socket: socket }, function(ctx) {
             var old_on = socket.on;
