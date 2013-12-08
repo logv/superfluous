@@ -78,6 +78,7 @@ _.extend(module.exports, {
 
     d.domain = ctx.id;
     d.on('error', function(err) {
+      console.trace();
       console.log("Error", err, "happened in context", ctx.id);
     });
 
@@ -101,3 +102,4 @@ _.extend(module.exports, {
   }
 });
 Function.prototype.wrap = module.exports.wrap;
+Function.prototype.intercept = module.exports.wrap;

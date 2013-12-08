@@ -5,11 +5,19 @@
     _sockets[name] = socket;
 
     socket.on("store", SF.data_sync);
+
+    // when the page refreshes, let's first expire our localStorage cache, if
+    // we can.
     socket.on("refresh", function(data) {
       function refresh_page() {
         var promise = $.get(
           "/pkg/status", function() {
-            window.location.reload();
+
+            SF.trigger("validate/versions", SF.socket());
+            SF.on("updated_versions", function() {
+              bootloader.sync();
+              window.location.reload();
+            });
           });
 
         promise.fail(function() {

@@ -258,7 +258,8 @@ var component = function() {
     });
 };
 
-function validate_versions(versions, socket) {
+function validate_versions(versions, socket, cb) {
+  cb = cb || function() { };
   _.each(versions.css, function(old_hash, css) {
     var hash = quick_hash(readfile("app/static/styles/" + css + ".css"));
     if (hash !== old_hash) {
@@ -271,11 +272,18 @@ function validate_versions(versions, socket) {
       socket.emit("update_version", 'js', js, old_hash, hash);
     }
   });
+
+  if (!versions.pkg) {
+    return cb();
+  }
+
+  var after = _.after(_.keys(versions.pkg).length, cb);
   _.each(versions.pkg, function(old_hash, pkg) {
     Component.build_package(pkg, function(ret) {
       if (ret && old_hash !== ret.signature) {
         socket.emit("update_version", 'pkg', pkg, old_hash, ret.signature);
       }
+      after();
     });
   });
 }

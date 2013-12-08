@@ -77,7 +77,7 @@ function setup_new_socket(controller_cache, name, controller, socket) {
 
   socket.on('validate_versions', function(versions, cb) {
     var bootloader = require_core("controllers/bootloader/server");
-    bootloader.validate_versions(versions, socket);
+    bootloader.validate_versions(versions, socket, cb);
   });
 
   socket.on('close', function() {

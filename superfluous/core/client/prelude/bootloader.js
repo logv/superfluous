@@ -510,6 +510,10 @@
     deliver: deliver_pagelet,
     versions: _versions,
     signatures: _signatures,
+    sync: function() {
+      sync_metadata();
+      sync_storage();
+    },
     from_storage: {
       js: {},
       css: {},
