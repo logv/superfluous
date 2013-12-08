@@ -14,7 +14,7 @@ var _ = require_vendor("underscore");
 function marshall_args() {
   var args = _.toArray(arguments);
   _.each(args, function(arg, index) {
-    if (arg.isComponent) {
+    if (arg && arg.isComponent) {
       args[index] = { id: arg.id, isComponent: true };
     }
   });

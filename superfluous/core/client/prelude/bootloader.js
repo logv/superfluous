@@ -90,7 +90,7 @@
           var ts = parsed.timestamp;
           if (type && name) {
             var current_version = _versions[type][name];
-            console.log("CURRENT VERSION", current_version);
+            console.log("Current version of", name, "is", current_version);
             var unparsed = localStorage.getItem(current_version);
             if (unparsed) {
               current_data = JSON.parse(unparsed);

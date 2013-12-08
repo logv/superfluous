@@ -1,6 +1,7 @@
+<% set_default("use_storage", false) %>
+
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <%= css_header %>
     <%= js_header %>
@@ -12,18 +13,18 @@
   </head>
 
 
-  <body data-page-id="<%= id %>">
+  <body data-page-id="<%= id %>" id="<%= id %>">
 
   <% if (controller) { %>
-    <script>
-      bootloader.__controller_name = '<%= controller %>';
-    </script>
+    <script> bootloader.__controller_name = '<%= controller %>'; </script>
   <% } %>
 
   <% if (hash) { %>
-    <script>
-      bootloader.__controller_hash = '<%= hash %>';
-    </script>
+    <script> bootloader.__controller_hash = '<%= hash %>'; </script>
+  <% } %>
+
+  <% if (use_storage) { %>
+    <script> bootloader.__use_storage = true; </script>
   <% } %>
 
   <% if (header) { %>
@@ -36,10 +37,8 @@
   </div>
 
   <% if (socket_header) { %>
-    <%= socket_header %>
+      <%= socket_header %>
   <% } %>
-
-
 
 </body>
 </html>

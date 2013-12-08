@@ -11,6 +11,7 @@ var bootloader_controller = require_core("controllers/bootloader/server");
 var async = require("async");
 
 var cheerio = require("cheerio");
+var app = require_core("server/main").app;
 
 
 var __async_id = 0;
@@ -124,42 +125,47 @@ var render_page = function(page_options) {
     });
   }], 
   function () { // after everything finishes
+    var misc_header = "";
     var use_socket = page_options.socket || context("added_socket");
-    var page = component.build("page", {
+    var pageId = _.uniqueId("pg_");
+    var page = template.render_core("helpers/page.html.erb", {
       header: page_options.header,
       sidebar: sidebar_content,
       controller: controller,
+      use_storage: app.settings.env === "production",
       hash: hash,
       socket_header: use_socket && template.socket_header(socket_hash),
       title: $$.title || "SF",
-      id: context("id"),
-      js_header: template.js_header(js_hash), // TODO: make this the dynamic list of modules to load
-      css_header: template.css_header(css_hash) // TODO: make this the packaged CSS early dependency file
-      });
+      id: pageId,
+      misc_header: misc_header,
+      js_header: template.js_header(js_hash),
+      css_header: template.css_header(css_hash)
+    });
 
-      var pagePrefix = "<!DOCTYPE html>\n";
-      var pageStr = pagePrefix + page.toString();
+    var pagePrefix = "<!DOCTYPE html>\n";
+    var pageStr = pagePrefix + page.toString();
 
-      // TODO: work on how the order of things are initialized happens
-      try {
-        $$.res.setHeader('Content-Type', 'text/html');
-        $$.res.setHeader('Content-Encoding', 'gzip');
-        $$.stream.write(pageStr);
+    // TODO: work on how the order of things are initialized happens
+    try {
+      $$.res.setHeader('Content-Type', 'text/html');
+      $$.res.setHeader('Content-Encoding', 'gzip');
+      $$.stream.write(pageStr);
 
-        // Update the name of the controller on the page, when we can.
-        // This also sets the $page element on the controller, inevitably
-        bridge.call("core/client/controller", "set", controller, page.id, hash);
+      // Update the name of the controller on the page, when we can.
+      // This also sets the $page element on the controller, inevitably
+      bridge.call("core/client/controller", "set", controller, pageId, hash);
 
-        bridge.flush_data(page_options.content, "page_content");
+      bridge.flush_data(page_options.content, "page_content");
 
-        $$.stream.write(bridge.render());
-        $$.stream.flush();
-      } catch(e) {
-        console.error(e);
-        return;
-      }
+      $$.stream.write(bridge.render());
+      $$.stream.flush();
+    } catch(e) {
+      console.trace();
+      console.error(e);
+      return;
+    }
 
-      resolve_futures();
+    resolve_futures();
 
   });
 };

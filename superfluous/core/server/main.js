@@ -101,6 +101,7 @@ function try_restart(server, port) {
 }
 module.exports = {
   name: app_name,
+  app: app,
   run: function() {
     var services = { web_server: true };
     if (!config.separate_services) { services.collector = true; }

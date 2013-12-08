@@ -21,7 +21,7 @@
           });
 
         promise.fail(function() {
-          setTimeout(refresh_page, 1500);
+          setTimeout(refresh_page, 500);
         });
       }
 
@@ -57,7 +57,7 @@
   function marshall_args(args, cb) {
     var count = 0;
     _.each(args, function(arg, index) {
-      if (arg.isComponent) {
+      if (arg && arg.isComponent) {
         count += 1;
       }
     });
@@ -67,7 +67,7 @@
     });
 
     _.each(args, function(arg, index) {
-      if (arg.isComponent) {
+      if (arg && arg.isComponent) {
         SF.do_when(window.$G, "core/client/component", function() {
           $G(arg.id, function(cmp) {
             args[index] = cmp;
