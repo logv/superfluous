@@ -58,6 +58,7 @@ function setup_render_context(options) {
   return _.extend(options, {
     add_stylesheet: add_stylesheet,
     add_javascript: add_js,
+    add_socket: add_socket,
     render_template: render_template,
     render_partial: render_partial,
     set_default: function(key, value) {
@@ -104,7 +105,10 @@ var socket_header = function(prelude_hash) {
       hash: prelude_hash
     });
 
-    ret += add_socket();
+    if (!context("added_socket")) {
+      ret += add_socket();
+    }
+
 
     return ret;
   }
@@ -134,6 +138,10 @@ var css_header = function(prelude_hash) {
 };
 
 var add_socket = function(socket) {
+  if (!socket) {
+    context("added_socket", true);
+  }
+
   return render_core_template("helpers/socket.io.html.erb", {
     name: (socket || context("controller")),
     host: context("req").headers.host

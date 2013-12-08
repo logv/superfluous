@@ -124,12 +124,13 @@ var render_page = function(page_options) {
     });
   }], 
   function () { // after everything finishes
+    var use_socket = page_options.socket || context("added_socket");
     var page = component.build("page", {
       header: page_options.header,
       sidebar: sidebar_content,
       controller: controller,
       hash: hash,
-      socket_header: page_options.socket && template.socket_header(socket_hash),
+      socket_header: use_socket && template.socket_header(socket_hash),
       title: $$.title || "SF",
       id: context("id"),
       js_header: template.js_header(js_hash), // TODO: make this the dynamic list of modules to load
