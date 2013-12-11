@@ -20,10 +20,12 @@ body {
 
   .alert {
     opacity: 0.8;
+    background-color: #0f0f0f; // doxy.css
   }
 
-  pre {
+  pre.prettyprint {
     opacity: 0.8;
+    border-radius: 0px;
   }
 
 }
