@@ -1,3 +1,14 @@
+/**
+ * This module deals with how templates are rendered and the functions exposed
+ * to the rendering context. In general, controllers will render templates, while Components
+ * have their template rendering handled for them, so this class is mostly
+ * called into from the Server Controller of the currently running app.
+ * 
+ * @class template (server)
+ * @module Superfluous
+ * @submodule Server
+ */
+
 var fs = require("fs");
 var _ = require_vendor("underscore");
 var context = require("./context");
@@ -151,10 +162,31 @@ var add_socket = function(socket) {
 module.exports = {
   load: load_template,
   load_core: load_core_template,
+  /**
+   * Renders a template into a string
+   *
+   * @method render
+   */
   render: render_template,
   render_core: render_core_template,
+  /**
+   * Renders a partial into a string
+   *
+   * @method partial
+   *
+   */
   partial: render_partial,
+  /**
+   * Renders a controller's template into a string
+   *
+   * @method controller
+   */
   controller: render_controller_template,
+  /**
+   * Adds a stylesheet to load before inserting the current template
+   *
+   * @method add_stylesheet
+   */
   add_stylesheet: add_stylesheet,
   add_js: add_js,
   js_header: js_header,

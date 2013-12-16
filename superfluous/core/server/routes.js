@@ -1,3 +1,13 @@
+/**
+ * The routes module is responsible for calling a route in a controller. It is
+ * the entry point for all route handling on the server and is where the
+ * context is created.
+ *
+ * @class routes (server)
+ * @module Superfluous
+ * @submodule Server
+ */
+
 "use strict";
 
 var context = require("./context");

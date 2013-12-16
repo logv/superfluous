@@ -1,3 +1,10 @@
+/**
+ * This module is responsible for instantiating controllers on the client side
+ * and calling into the controller on directions from the bridge.
+ *
+ * @class controller (client)
+ */
+
 "use strict";
 
 

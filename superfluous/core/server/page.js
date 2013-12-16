@@ -1,3 +1,14 @@
+/**
+ * This module deals with how pages are generated, rendered and delivered to
+ * the client. Each server controller is expected to use this API (or the res
+ * object) to send a response to the client.
+ *
+ * @class page (server)
+ * @module Superfluous
+ * @submodule Server
+ *
+ */
+
 "use strict";
 
 var template = require("./template");
@@ -17,7 +28,12 @@ var app = require_core("server/main").app;
 var __async_id = 0;
 context.setDefault("ASYNC_FUTURES", []);
 
-// This function will also contain logic for rendering async pages
+/**
+ * Async page rendering function. It takes a function to run inside an async context
+ * and returns a placeholder to be rendered in its placed.
+ *
+ * @method async
+ */
 var render_async = function(func) {
   var div = cheerio("<div class='async'/>");
   var futures = context("ASYNC_FUTURES");
@@ -94,6 +110,12 @@ function resolve_futures() {
 }
 
 
+/**
+ * The main page rendering function. It takes an array of options specifying
+ * what to render in the page.
+ *
+ * @method render
+ */
 var render_page = function(page_options) {
   var $$ = context.get();
 

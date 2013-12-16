@@ -1,3 +1,17 @@
+/** 
+ *
+ * The core Server module in superfluous contains code related to routing,
+ * authentication, page generation, template rendering and input handling.
+ *
+ * @module Superfluous
+ * @submodule Server
+ */
+
+/**
+ * @class auth (server)
+ * @private
+ */
+
 "use strict";
 
 var db = require_core("server/db");
@@ -12,6 +26,17 @@ var parseCookie = require("express").cookieParser(session.secret());
 var https = require('https');
 
 module.exports = {
+
+  /**
+   * After the http and socket servers are setup, the app and socket server are
+   * passed to the install method, so they be hooked together via auth.
+   *
+   *
+   * @private
+   * @method install
+   * @param {Object} express_app
+   * @param {Object} socket_server (primus, socket.io, etc)
+   */
   install: function(app, io) {
     this.app = app;
     this.io = io;

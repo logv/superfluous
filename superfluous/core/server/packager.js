@@ -1,3 +1,13 @@
+/**
+ * The packager contains logic for compiling components and javascript
+ * dependencies, as well as the endpoints for serving them as multiplexed XHR
+ * Requests.
+ *
+ * @class packager (server)
+ * @module Superfluous
+ * @submodule Server
+ */
+
 "use strict";
 
 var fs = require("fs");

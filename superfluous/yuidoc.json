@@ -1,0 +1,11 @@
+{
+  "name": "API",
+    "url": "http://superfluous.io",
+    "header" : "app/static/favicon.ico",
+    "logo" : "/favicon.ico",
+    "options": {
+      "outdir": "app/static/docs",
+      "exclude" : "node_modules,static,components",
+      "theme" : "Simple"
+    }
+}

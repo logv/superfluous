@@ -1,6 +1,24 @@
 /**
- * This module represents a request level context.
  *
+ * The Context module is how the server carries around request specific
+ * information.
+ *
+ * During the request execution and app render, the superfluous core code will
+ * use this context to coordinate information between modules. This is a sort
+ * of "Request Local Storage", that is available in PHP or other thread based
+ * web handlers. As a convenicence, it allows any variable to be stored and
+ * retrieved from the context, without having to reference the request
+ * explicitly.
+ *
+ * When a request is handled in a controller, it is placed into its own domain.
+ * It is important that when using asynchronous operation, any callbacks passed into
+ * them are wrapped by the context, which will re-instantiate the current domain before
+ * running the callback.
+ *
+ *
+ * @class context (server)
+ * @module Superfluous
+ * @submodule Server
  */
 
 "use strict";
@@ -22,10 +40,22 @@ module.exports = function(key, val) {
 
 var context = module.exports;
 _.extend(module.exports, {
+  /**
+   * Sets the current context in use
+   *
+   * @private
+   * @method set
+   */
   set: function(ctx) {
     process.domain.ctx = ctx;
   },
 
+  /**
+   * Sets the current context in use
+   *
+   * @private
+   * @method get
+   */
   get: function() {
     var ctx =  process.domain.ctx;
 
@@ -54,6 +84,13 @@ _.extend(module.exports, {
     }
   },
 
+  /**
+   * Creates a new context (with prefilled globals) for a request to use.
+   *
+   * @method create
+   * @param {Object} defaults The default options to pass into the domain
+   * @param {Function} cb the callback to run after this context is created
+   */
   create: function(defaults, cb) {
     defaults = defaults || {};
     var d = domain.create();
@@ -89,13 +126,26 @@ _.extend(module.exports, {
 
   },
 
+  /**
+   *
+   * Pulls the current domain out of the global namespace and makes sure that
+   * before 'func' is called, the domain is placed back into the global
+   * namespace. When running any async IO operations that potentially create
+   * domains, you should place the callback inside a wrap call. As a
+   * convenience, any function can have .wrap() or .intercept() called on it to
+   * do this automatically
+   *
+   * @method wrap
+   *
+   *
+   */
   wrap: function(func) {
     var d = process.domain;
     if (!d) { return func; }
 
     return function() {
       var args = arguments;
-      d.run(function() { 
+      d.run(function() {
         func.apply(func, args);
       });
     };

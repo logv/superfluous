@@ -1,3 +1,17 @@
+/**
+ * @module Superfluous
+ * @submodule Client
+ */
+
+/**
+ * The bootloader is responsible for managing the assets on the page. It
+ * exposes an API to load javascript, styles and components asynchronously and run
+ * a callback when they are loaded.
+ *
+ *
+ * @class bootloader (client)
+ */
+
 (function() {
   var _injected_css = {};
   var _css_defs = {};
@@ -519,14 +533,43 @@
 
   var bootloader = {
     raw_import: raw_import,
+    /**
+     * Bootload in a js file or array of css files
+     * @method css
+     */
     css: bootload_factory("css", _css_defs, inject_css),
+    /**
+     * @method inject_css
+     */
     inject_css: inject_css,
+    /**
+     * Bootload in a js file or array of js files
+     * @method js
+     */
     js: bootload_factory("js", _module_defs),
+    /**
+     * Bootload in a component or array of components
+     *
+     * @method pkg
+     */
     pkg: bootload_pkg,
     defs: _module_defs,
     css_defs: _css_defs,
     modules: _modules,
+
+    /**
+     * Load a javascript module.  (works like require.js)
+     *
+     * @method require
+     */
     require: require_js,
+
+    /**
+     * Inserts an asynchronous pagelet into the page
+     *
+     * @method deliver
+     * @private
+     */
     deliver: deliver_pagelet,
     versions: _versions,
     signatures: _signatures,

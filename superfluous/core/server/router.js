@@ -1,3 +1,13 @@
+/**
+ * The router hooks up the routes on the server to the express app. It pull the
+ * routes off the bootloader, as well as any controllers listed in routes.json
+ * and creates their 'routes' and 'post_routes' handlers on behalf of the controller.
+ *
+ * @class router (server)
+ * @module Superfluous
+ * @submodule Server
+ */
+
 "use strict";
 
 var _ = require_vendor("underscore");

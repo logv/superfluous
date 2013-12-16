@@ -1,7 +1,20 @@
-'use strict';
+/**
+ * The core Client module contains code related to page delivery, asset
+ * management, socket setup and controller management.
+ *
+ * @module Superfluous
+ * @submodule Client
+ */
 
-// TODO: add a component registrar for knowing when
-// components finish downloading
+
+/**
+ *
+ * This class is responsible for creating, instantiating and rendering
+ * components on the client.
+ *
+ * @class component (client)
+ */
+'use strict';
 
 require("components/component");
 

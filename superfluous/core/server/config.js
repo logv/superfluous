@@ -1,3 +1,18 @@
+/**
+ * This module loads the configuration for the superfluous app. 
+ *
+ * It first loads config/config.js for a base set of configuration options.
+ * It then loads config/override.js for any local overrides (this file should be placed .gitignore)
+ * It then loads config/${ENV}.js (this should be something like 'localhost', 'production', etc
+ *
+ * When requiring this module, the cascading objects will be available as
+ * properties on it.
+ *
+ * @class config (server)
+ * @module Superfluous
+ * @submodule Server
+ **/
+
 var _config = {};
 
 var env = process.env.ENV;

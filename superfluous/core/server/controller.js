@@ -1,3 +1,16 @@
+/**
+ *
+ * The Server Controller is the entry point for every app. Each server
+ * controller dwells at a top level URL (which is registered in routes.json).
+ * This module deals with loading server controllers and convenience functions
+ * exposed to them.
+ *
+ * @private
+ * @class controller (server)
+ * @module Superfluous
+ * @submodule Server
+ */
+
 "use strict";
 var url = require("url");
 var context = require_core("server/context");
@@ -20,6 +33,14 @@ module.exports = {
     });
     return mod;
   },
+
+  /**
+   * Forces this route to check for HTTPS before serving it. This lets you make sure endpoints are secured.
+   *
+   * @method require_https
+   * @param {Function} A route handler to wrap
+   *
+   */
   require_https: function() {
     var req = context("req");
     if (req.secure) {
@@ -60,6 +81,12 @@ module.exports = {
     return true;
 
   },
+  /**
+   * Deserializes a URL param from jquery and returns it as an array.
+   *
+   * @method array_of
+   *
+   */
   array_of: function(arr, key) {
     var ret = [];
     _.each(arr, function(field) {
@@ -70,6 +97,12 @@ module.exports = {
 
     return ret;
   },
+  /**
+   * Deserializes a URL param from jquery and returns it as a value.
+   *
+   * @method value_of
+   *
+   */
   value_of: function(arr, key, default_) {
     var ret = default_;
     _.each(arr, function(field) {
