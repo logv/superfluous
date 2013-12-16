@@ -176,8 +176,15 @@
   var MODULE_PREFIX="var module = {}; (function() {\n";
   var MODULE_SUFFIX="})(); module.exports";
 
-  function raw_import(str) {
-    return eval(MODULE_PREFIX + str + MODULE_SUFFIX);
+  function raw_import(str, module_name) {
+
+    var toval = "";
+    if (module_name) {
+      toval = "//# sourceURL=" + module_name + ".js\n";
+    }
+    toval += MODULE_PREFIX + str + MODULE_SUFFIX;
+
+    return eval(toval);
   }
 
   function load_def_from_storage(module_dict, module, version, type, postload) {
@@ -294,8 +301,8 @@
       _packages[component] = definition;
 
       // marshalling some JSONified code into code
-      _packages[component].exports = raw_import(definition.main);
-      _packages[component].events = raw_import(definition.events);
+      _packages[component].exports = raw_import(definition.main, component);
+      _packages[component].events = raw_import(definition.events, component + "_events");
     }
   }
 
@@ -431,7 +438,7 @@
     }
 
     if (_module_defs[module]) {
-      _modules[module] = raw_import(_module_defs[module]);
+      _modules[module] = raw_import(_module_defs[module], module);
       if (cb) {
         cb(_modules[module]);
       }
@@ -439,7 +446,7 @@
       bootloader.js([module], function() {
         // race to evaluate! but only once
         if (!_modules[module]) {
-          var data = raw_import(_module_defs[module]);
+          var data = raw_import(_module_defs[module], module);
           _modules[module] = data;
         }
 

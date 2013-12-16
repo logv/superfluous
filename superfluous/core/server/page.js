@@ -150,12 +150,14 @@ var render_page = function(page_options) {
     var misc_header = "";
     var use_socket = page_options.socket || context("added_socket");
     var use_storage = false; // TODO: turn this on for production environments
+    var use_fullscreen = $$.use_fullscreen;
     var pageId = _.uniqueId("pg_");
     var page = template.render_core("helpers/page.html.erb", {
       header: page_options.header,
       sidebar: sidebar_content,
       controller: controller,
       use_storage: use_storage,
+      use_fullscreen: use_fullscreen,
       hash: hash,
       socket_header: use_socket && template.socket_header(socket_hash),
       title: $$.title || "SF",

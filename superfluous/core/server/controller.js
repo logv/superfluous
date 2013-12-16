@@ -27,6 +27,9 @@ module.exports = {
     var mod = require_app("controllers/" + name + "/server");
     mod.name = name;
     _.extend(mod, {
+      set_fullscreen: function(val) {
+        context("use_fullscreen", val);
+      },
       set_title: function(title) {
         context("title", title);
       }
