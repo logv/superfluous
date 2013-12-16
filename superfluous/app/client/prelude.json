@@ -1,9 +1,9 @@
 {
   "files" : [
-    "core/client/prelude/hide_addressbar.js",
+    "core/client/prelude/hide_addressbar.js"
   ],
   "vendor" : [
-    "core/static/vendor/bootstrap.min.js",
+    "app/static/vendor/bootstrap.min.js",
     "app/static/vendor/jquery.deserialize.js",
     "app/static/vendor/jquery-deparam.js",
     "app/static/vendor/fastclick.js",

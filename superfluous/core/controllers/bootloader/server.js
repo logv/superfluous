@@ -130,10 +130,26 @@ function get_css_prelude(after_read_prelude) {
   var data = readfile.core("core/client/prelude.json");
 
   data = JSON.parse(data);
+
+  var app_data;
+  try {
+    app_data = readfile.app("app/client/prelude.json");
+    if (app_data) {
+      app_data = JSON.parse(app_data);
+    }
+  } catch (e) {
+    console.log("Couldn't load app prelude", e);
+  }
+
+  var styles_to_load = data.styles;
+  if (app_data && app_data.styles) {
+    styles_to_load = styles_to_load.concat(app_data.styles);
+  }
+
   if (!_css_prelude) {
     _css_prelude = {};
     async.each(
-      data.styles,
+      styles_to_load,
       function(file, cb) {
         var css_data = readfile(file);
         if (css_data) {
