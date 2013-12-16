@@ -85,6 +85,7 @@ function build(component, options, cb) {
 
           cmpInstance.html(rendered);
           cmpInstance.$el.attr("data-cmp", component);
+          cmpInstance.$el.addClass("cmp-" + component);
           cmpInstance.id = id;
         }
       }
