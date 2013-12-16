@@ -1,6 +1,6 @@
 {
   "name": "API",
-    "url": "http://superfluous.io",
+    "url": "http://superfluous.io/docs/",
     "header" : "app/static/favicon.ico",
     "logo" : "/favicon.ico",
     "options": {
