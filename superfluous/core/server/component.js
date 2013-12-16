@@ -221,6 +221,8 @@ Component.build = function(component, options, cb) {
     className += " " + additionalClasses;
   }
 
+  className += " cmp-" + component;
+
   if (cmp.template) {
     var render_options = _.extend({
       id: id,

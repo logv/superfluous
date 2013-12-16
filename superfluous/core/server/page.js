@@ -165,8 +165,7 @@ var render_page = function(page_options) {
       css_header: template.css_header(css_hash)
     });
 
-    var pagePrefix = "<!DOCTYPE html>\n";
-    var pageStr = pagePrefix + page.toString();
+    var pageStr = page.toString();
 
     // TODO: work on how the order of things are initialized happens
     try {

@@ -57,7 +57,7 @@ function package_and_scope_less(component, module, cb) {
   var ret = {};
   var data = readfile(module + ".css");
 
-  var module_css = "[data-cmp=" + component + "] {\n";
+  var module_css = ".cmp-" + component + " {\n";
   var module_end = "\n}";
   var hash = quick_hash(data.toString());
   less.render(less_header + module_css + (data || "") + module_end, function(err, css) {
