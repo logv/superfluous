@@ -9,6 +9,7 @@ var globals = require("./globals");
 globals.install();
 
 var config = require_core("server/config");
+var hooks = require_core("server/hooks");
 
 var package_json = require_core("../package.json");
 var app_name = package_json.name;
@@ -17,33 +18,6 @@ var app_name = package_json.name;
 var http_server,
     https_server;
 
-
-/**
- * Calls a hook on the main module
- *
- * @private
- * @method call_hook
- * @param {Module} module the main app module to invoke the function on
- * @param {String} hook name of function invoke
- * @param {Function} [cb] the cb to call instead of the hook
- */
-function call_hook_or() {
-  var args = _.toArray(arguments);
-  var main = args.shift();
-  var hook = args.shift();
-  var cb = args.pop();
-
-
-  // The callback can prevent default installation by returning true;
-  if (main[hook]) {
-    var ret = main[hook].apply(main, args);
-    if (ret) {
-      return;
-    }
-  }
-
-  cb.apply(null, args);
-}
 
 var socket = require_core("server/socket");
 function setup() {
@@ -69,33 +43,39 @@ function setup() {
   // Add timestamps
   require("./console").install();
 
-  call_hook_or(main, "setup_error_handling", app, function(app) {
+  hooks.call(main, "setup_error_handling", app, function(app) {
     // setup error handling
     //var errorHandlers = require_core("server/error_handlers");
     //app.use(errorHandlers.default);
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   });
 
-  call_hook_or(main, "setup_cookies", app, function() {
+  hooks.call(main, "setup_cookies", app, function() {
     app.use(express.cookieParser());
   });
 
   // This is where the session store is created
-  call_hook_or(main, "setup_session", app, function() {
+  hooks.call(main, "setup_store", app, function(app) {
+    var store = require("./store");
+    store.install(app);
+  });
+
+  // This is where the session store is created
+  hooks.call(main, "setup_session", app, function(app) {
     var session = require("./session");
     session.install(app);
   });
 
-  call_hook_or(main, "setup_app", app, function() {
+  hooks.call(main, "setup_app", app, function() {
   
   });
 
-  call_hook_or(main, "setup_compression", app, function(app) {
+  hooks.call(main, "setup_compression", app, function(app) {
     console.log(app);
     app.use(express.compress());
   });
 
-  call_hook_or(main, "setup_caching", app, function(app) {
+  hooks.call(main, "setup_caching", app, function(app) {
     // setup static helpers
     var oneDay = 1000 * 60 * 60 * 24;
     var oneYear = oneDay * 365;
@@ -104,7 +84,7 @@ function setup() {
   });
 
 
-  call_hook_or(main, "setup_routing", app, function(app) {
+  hooks.call(main, "setup_routing", app, function(app) {
     var routes = require('./routes');
     routes.setup(app);
   });
@@ -143,11 +123,12 @@ module.exports = {
     if (!config.separate_services) { services.collector = true; }
     setup_services(services);
 
-    call_hook_or(main, "setup_io", app, http_server, function(app, http_server) {
+    hooks.call(main, "setup_io", app, http_server, function(app, http_server) {
       socket.setup_io(app, http_server);
     });
 
 
+    
     var http_port = config.http_port;
     var https_port = config.https_port;
     http_server.listen(http_port);
@@ -155,14 +136,14 @@ module.exports = {
 
     console.log("Listening for HTTP connections on port", http_port);
 
-    call_hook_or(main, "setup", services, function() {
+    hooks.call(main, "setup", services, function() {
 
     });
 
     // Setting up SSL server
     if (https_server && https_port) {
       console.log("Listening for HTTPS connections on port", https_port);
-      call_hook_or(main, "setup_io", app, https_server, function(app, https_server) {
+      hooks.call(main, "setup_io", app, https_server, function(app, https_server) {
         socket.setup_io(app, https_server);
       });
 

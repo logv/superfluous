@@ -8,6 +8,7 @@ var _handlers = {};
 var config = require_core("server/config");
 var db = require_core("server/db");
 var Primus = require("primus.io");
+var hooks = require_core("server/hooks");
 
 var _sockets = [];
 var _dirty = false;
@@ -105,8 +106,11 @@ module.exports = {
     var shutdown = require_core('server/shutdown');
     shutdown.install(primus);
 
-    var auth = require_core("server/auth");
-    auth.install(app, primus);
+    var main = require_app("main");
+    hooks.call(main, "setup_auth", app, primus, function(app, primus) {
+      var auth = require_core("server/auth");
+      auth.install(app, primus);
+    });
 
     return io;
   },

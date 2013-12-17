@@ -14,13 +14,11 @@
 
 "use strict";
 
-var db = require_core("server/db");
-
 var session = require_core("server/session");
-var context = require_core("server/context");
 var config = require_core("server/config");
 var readfile = require("./readfile");
 var session = require_core("server/session");
+var store = require_core("server/store");
 var parseCookie = require("express").cookieParser(session.secret());
 
 var https = require('https');
@@ -41,17 +39,14 @@ module.exports = {
     this.app = app;
     this.io = io;
 
-
     io.authorize(function(handshake_data, cb) {
-      var that = this;
-      var cookie = handshake_data.headers.cookie;
       parseCookie(handshake_data, null, function() {
         var sid = handshake_data.signedCookies['connect.sid'];
-        var store = session.store();
+        var used_store = store.get();
 
         if (sid) {
           try {
-            store.get(sid, function(err, session) {
+            used_store.get(sid, function(err, session) {
               if (err) {
                 return cb(err, false);
               }
