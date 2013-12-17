@@ -8,7 +8,7 @@ var MongoStore = require('connect-mongo')(express);
 
 var _store, _session;
 
-var SESSION_SECRET = 'keyboard cat';
+var SESSION_SECRET = config.session_secret || 'keyboard cat';
 
 module.exports = {
   install: function(app) {
