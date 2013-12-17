@@ -22,12 +22,20 @@ var readfile = require_core("server/readfile");
 var less_header = readfile("app/static/styles/definitions.less") +
   readfile("core/static/styles/definitions.less");
 
+function readstyle(mod) {
+  var data = readfile(mod + ".css");
+  if (!data) {    
+    data = readfile(mod + ".less");
+  }
+  return data;
+}
+
 function package_less(includes, cb) {
   var included = _.map(includes, function(s) { return s.trim(); });
 
   var ret = {};
   async.each(included, function(mod, done) {
-    var data = readfile(mod + ".css");
+    var data = readstyle(mod);
     if (data) {
       var hash = quick_hash(data.toString());
       less.render(less_header + data.toString(), function(err, css) {
@@ -55,7 +63,7 @@ function package_less(includes, cb) {
 
 function package_and_scope_less(component, module, cb) {
   var ret = {};
-  var data = readfile(module + ".css");
+  var data = readstyle(module);
 
   var module_css = ".cmp-" + component + " {\n";
   var module_end = "\n}";
