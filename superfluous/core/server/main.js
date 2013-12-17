@@ -19,10 +19,10 @@ var http_server,
     https_server;
 
 
+require("longjohn");
 var socket = require_core("server/socket");
 function setup() {
   // Better stack traces
-  require("longjohn");
 
   if (config.behind_proxy) {
     app.enable('trust proxy');

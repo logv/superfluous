@@ -115,120 +115,61 @@ module.exports = {
     return io;
   },
 
-  save_cache: function(cb) {
-    if (!_dirty) {
-      return;
-    }
-
-    _dirty = false;
-    cb = context.wrap(cb);
-    db.get("socket", "cache", function(collection) {
-      var after = _.after(_controller_caches.length, cb);
-      _.each(_controller_caches, function(cache, controller) {
-        var instance = load_controller(controller);
-        if (!instance.socket_cache_whitelist) {
-          return after();
-        }
-
-        if (_.isFunction(instance.socket_cache_whitelist)) {
-          cache = _.pick.call(_, cache, instance.socket_cache_whitelist());
-        } else {
-          cache = _.pick.call(_, cache, instance.socket_cache_whitelist);
-        }
-
-        collection.findOne({name: controller}, function(err, obj) {
-          if (!err && obj) {
-            collection.update( {_id: obj._id}, {name: controller, data: cache }, function(err, results) { });
-          } else {
-            collection.insert( {name: controller, data: cache }, function(err, results) { });
-          }
-
-          after();
-        });
-      });
-    });
-
-  },
-
-  read_cache: function(cb) {
-    cb = context.wrap(cb);
-    db.get("socket", "cache", function(collection) {
-      collection.find({}, function(err, cur) {
-        cur.toArray(function(err, results) {
-          if (!err) {
-            _.each(results, function(cache) {
-              _controller_caches[cache.name] = cache.data;
-            });
-          }
-        });
-
-        if (cb) {
-          cb();
-        }
-      });
-    });
-  },
-
   get_cache: function(cb) {
     cb(_controller_caches);
   },
 
   install: function(io, controllers) {
     var self = this;
-    setInterval(function() {
-      self.save_cache();
-    }, 3000);
-    this.read_cache(function() {
-      _.each(controllers, function(name, path) {
-        var controller = load_controller(name);
+    _.each(controllers, function(name, path) {
+      var controller = load_controller(name);
 
-        if (!controller.socket) {
-          return;
-        }
+      if (!controller.socket) {
+        return;
+      }
 
-        if (!_controller_caches[name]) {
-          _controller_caches[name] = {};
-        }
-        var controller_cache = _controller_caches[name];
+      if (!_controller_caches[name]) {
+        _controller_caches[name] = {};
+      }
+      var controller_cache = _controller_caches[name];
 
-        var controller_socket = get_socket(io, name);
-        controller.get_shared_value = function(key) {
-          return _controller_caches[name][key];
-        };
-        controller.get_socket = function() {
-          return controller_socket;
-        };
+      var controller_socket = get_socket(io, name);
+      controller.get_shared_value = function(key) {
+        return _controller_caches[name][key];
+      };
+      controller.get_socket = function() {
+        return controller_socket;
+      };
 
-        if (controller.realtime) {
-          controller.realtime(controller_socket);
-        }
+      if (controller.realtime) {
+        controller.realtime(controller_socket);
+      }
 
-        controller_socket.socket.on('connection', function(s) {
-          var socket = wrap_socket(s);
-          socket.channel = controller_socket;
-          socket.controller = name;
+      controller_socket.socket.on('connection', function(s) {
+        var socket = wrap_socket(s);
+        socket.channel = controller_socket;
+        socket.controller = name;
 
-          context.create({ socket: socket }, function(ctx) {
-            var old_on = socket.on;
+        context.create({ socket: socket }, function(ctx) {
+          var old_on = socket.on;
 
-            // Wrapping the context forward (or so i think)
-            socket.on = function() {
-              var args = _.toArray(arguments);
-              var last_func = args.pop();
-              last_func = context.wrap(last_func);
-              args.push(last_func);
+          // Wrapping the context forward (or so i think)
+          socket.on = function() {
+            var args = _.toArray(arguments);
+            var last_func = args.pop();
+            last_func = context.wrap(last_func);
+            args.push(last_func);
 
-              old_on.apply(socket, args);
-            };
+            old_on.apply(socket, args);
+          };
 
-            try {
-              setup_new_socket(controller_cache, name, controller, socket);
-            } catch(e) {
-              console.log("Couldn't setup socket for new client on", name, "controller", e);
-            }
-          });
-
+          try {
+            setup_new_socket(controller_cache, name, controller, socket);
+          } catch(e) {
+            console.log("Couldn't setup socket for new client on", name, "controller", e);
+          }
         });
+
       });
     });
   },
