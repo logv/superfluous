@@ -11,10 +11,17 @@ var SESSION_SECRET = config.session_secret || 'keyboard cat';
 
 module.exports = {
   install: function(app) {
-    _session = express.session({
+    var persistence_store = store.get();
+    if (persistence_store) {
+      _session = express.session({
         secret: SESSION_SECRET,
-        store: store.get()
+        store: persistence_store
       });
+    } else {
+      _session = express.cookieSession({
+        secret: SESSION_SECRET
+      });
+    }
 
     app.use(_session);
 

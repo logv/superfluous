@@ -50,17 +50,18 @@ function setup() {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   });
 
+  // Setting up some cookie parsing goodness
   hooks.call(main, "setup_cookies", app, function() {
     app.use(express.cookieParser());
   });
 
-  // This is where the session store is created
+  // This is where the persistance store is created
   hooks.call(main, "setup_store", app, function(app) {
     var store = require("./store");
     store.install(app);
   });
 
-  // This is where the session store is created
+  // This is where the session is created
   hooks.call(main, "setup_session", app, function(app) {
     var session = require("./session");
     session.install(app);
@@ -71,7 +72,6 @@ function setup() {
   });
 
   hooks.call(main, "setup_compression", app, function(app) {
-    console.log(app);
     app.use(express.compress());
   });
 

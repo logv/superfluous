@@ -44,22 +44,35 @@ module.exports = {
         var sid = handshake_data.signedCookies['connect.sid'];
         var used_store = store.get();
 
-        if (sid) {
-          try {
-            used_store.get(sid, function(err, session) {
-              if (err) {
-                return cb(err, false);
-              }
-
-              handshake_data.headers.sid = sid;
-              handshake_data.headers.session = session;
-              cb(null, true);
-            });
-          } catch(e) {
-            cb(e, false);
-          }
+        if (!sid) {
+          cb("No SID specified");
+          return;
         }
 
+        // check to see if session is being held in the cookie proper, if there 
+        // is no server side store being used
+        if (!used_store) {
+          var session = handshake_data.signedCookies['connect.sess'];
+          handshake_data.headers.sid = sid;
+          handshake_data.headers.session = session;
+          cb(null, true);
+          return;
+        }
+
+        // if the cookie isn't holding the session, let's use our real persistence store
+        try {
+          used_store.get(sid, function(err, session) {
+            if (err) {
+              return cb(err, false);
+            }
+
+            handshake_data.headers.sid = sid;
+            handshake_data.headers.session = session;
+            cb(null, true);
+          });
+        } catch(e) {
+          cb(e, false);
+        }
       });
     });
   },
