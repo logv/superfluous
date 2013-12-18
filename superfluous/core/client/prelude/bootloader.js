@@ -57,11 +57,15 @@
       console.log("Updated version", type, entry, old_hash, new_hash);
       var component = _signatures[old_hash];
       delete _versions[type][old_hash];
+      delete _versions[type][entry];
 
       try {
         localStorage.removeItem(old_hash);
       } catch(e) {}
-      _versions[type][entry] = new_hash;
+
+      if (new_hash) {
+        _versions[type][entry] = new_hash;
+      }
     });
 
     SF.trigger("validate/versions", socket);
@@ -404,6 +408,10 @@
       _.extend(instance, Backbone.Events);
 
       _.extend(controller, instance);
+      controller.emit = function() {
+        var socket = SF.socket();
+        return socket.emit.apply(socket, arguments);
+      };
 
       // TODO: wishful thinking that this gets everyone
       _controllers[name] = controller;

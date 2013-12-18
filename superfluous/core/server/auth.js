@@ -18,9 +18,9 @@ var session = require_core("server/session");
 var config = require_core("server/config");
 var readfile = require("./readfile");
 var session = require_core("server/session");
-var store = require_core("server/store");
-var parseCookie = require("express").cookieParser(session.secret());
+var SessionStore = require("express").session.Store;
 
+var store = require_core("server/store");
 var https = require('https');
 
 module.exports = {
@@ -40,6 +40,8 @@ module.exports = {
     this.io = io;
 
     io.authorize(function(handshake_data, cb) {
+      var parseCookie = require("express").cookieParser(session.secret());
+
       parseCookie(handshake_data, null, function() {
         var sid = handshake_data.signedCookies['connect.sid'];
         var used_store = store.get();
@@ -49,7 +51,7 @@ module.exports = {
           return;
         }
 
-        // check to see if session is being held in the cookie proper, if there 
+        // check to see if session is being held in the cookie proper, if there
         // is no server side store being used
         if (!used_store) {
           var session = handshake_data.signedCookies['connect.sess'];
@@ -61,16 +63,18 @@ module.exports = {
 
         // if the cookie isn't holding the session, let's use our real persistence store
         try {
-          used_store.get(sid, function(err, session) {
-            if (err) {
-              return cb(err, false);
-            }
+          used_store.load(sid, function(err, sess) {
+            sess.reload(function() {
+              if (sess) {
+                handshake_data.headers.sid = sid;
+                handshake_data.headers.session = sess;
+              }
 
-            handshake_data.headers.sid = sid;
-            handshake_data.headers.session = session;
-            cb(null, true);
+              cb(err, true);
+            });
           });
         } catch(e) {
+          console.log(e);
           cb(e, false);
         }
       });
