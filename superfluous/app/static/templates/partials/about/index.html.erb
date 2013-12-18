@@ -43,8 +43,8 @@ ENV=localhost nodemon app.js
   download assets while the slower parts of the page are still generating.
   </p>
   <p>
-  <b>Flexibility</b> - <s>superfluous</s> handles many boilerplate tasks but still
-  leaves the developer freedom to architect their web app - whether it's
+  <b>Flexibility</b> - <s>superfluous</s> handles many boilerplate tasks but
+  still leaves the developer freedom to architect their web app - whether it's
   choosing how to render, which data layer to use or how much work should be
   done on the server or client.
   </p>
@@ -112,18 +112,19 @@ ENV=localhost nodemon app.js
   certain locations. The majority of the files you'll be working with as an
   app developer are in app/, components/ &amp; config/
 
-  <pre class="mtl prettyprint lang-bash"><code><s>superfluous</s>/
+  <pre class="mtl prettyprint lang-bash"><code><s>
+superfluous</s>/
   app/                  # application specific code and assets
-  client/             # client specific code and helpers
-  controllers/        # controllers
-  main.js             # server setup code goes in here
-  server/             # server specific logic
-  static/             # assets and templates used by controllers
+    client/             # client specific code and helpers
+    controllers/        # controllers
+    main.js             # server setup code goes in here
+    server/             # server specific logic
+    static/             # assets and templates used by controllers
   app.js                # This is the app entry point. Run this file
   components/           # components that this app uses
   config/               # options for your app and dev environments
-  config.js           # default app configuration
-  override.js         # use this with `ENV=override node app.js`
+    config.js           # default app configuration
+    override.js         # use this with `ENV=override node app.js`
   node_modules/         # node modules installed by npm
   package.json          # information about your app
   routes.json           # the route -&gt; app mapping in the app
@@ -133,9 +134,9 @@ ENV=localhost nodemon app.js
   <div class="controllers">
   <h3>Routes and the Router</h3>
   <p>
-  Every app has an entry point on the server, accessed via its top level URL (or
-      <b>route</b>). The route tells the router where to find the controllers to
-  instantiate the app that the user will be interacting with.  </p>
+  Every app has an entry point on the server, accessed via its top level URL
+  (or <b>route</b>). The route tells the router where to find the controllers
+  to instantiate the app that the user will be interacting with.  </p>
 
   <p>
   App Routes are configured in the <b>routes.json</b> file - it is a global index
@@ -194,8 +195,8 @@ see example server controller code
 </div>
 
 <p>
-  The <b>client controller</b> is responsible for handling the UI interactions of
-the user and syncing state with the server. (it runs on the client)
+  The <b>client controller</b> is responsible for handling the UI interactions
+  of the user and syncing state with the server. (it runs on the client)
   </p>
 
   <div class="mtl mbl">

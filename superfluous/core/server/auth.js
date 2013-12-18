@@ -1,4 +1,4 @@
-/** 
+/**
  *
  * The core Server module in superfluous contains code related to routing,
  * authentication, page generation, template rendering and input handling.
