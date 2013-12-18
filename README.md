@@ -49,12 +49,16 @@ See the guide [locally](http://localhost:3300) or [online](http://superfluous.io
 
 #### ORM Not Included
 
-## built with <3 on
+## built on
 
 * [backbone](http://backbonejs.org)
 * [underscore](http://underscorejs.org)
 * [express](http://expressjs.com)
 * [node.js](http://nodejs.org)
+
+## default app comes with
+
+* [bootstrap](http://getbootstrap.com)
 
 ## Deploying To Heroku
 
