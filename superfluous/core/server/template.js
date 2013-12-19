@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * This module deals with how templates are rendered and the functions exposed
  * to the rendering context. In general, controllers will render templates, while Components
@@ -9,10 +11,10 @@
  * @submodule Server
  */
 
-var fs = require("fs");
 var _ = require_vendor("underscore");
 var context = require("./context");
 var readfile = require("./readfile");
+var router = require("./router");
 
 context.setDefault("CSS_DEPS", {});
 context.setDefault("JS_DEPS", {});
@@ -51,14 +53,10 @@ function render_css_link(stylesheet) {
 }
 
 function render_js_link(script) {
-  var root_path = "scripts/"
+  var root_path = "scripts/";
   return render_core_template("helpers/js_link.html.erb", {
     path: root_path + script,
   });
-}
-
-var render_layout = function(layout, options) {
-  // similar to render template?
 }
 
 var render_controller_template = function(template, options) {
@@ -69,6 +67,7 @@ function setup_render_context(options) {
   return _.extend(options, {
     add_stylesheet: add_stylesheet,
     add_javascript: add_js,
+    url_for: build_url,
     add_socket: add_socket,
     render_template: render_template,
     render_partial: render_partial,
@@ -82,7 +81,7 @@ function setup_render_context(options) {
 
 var render_core_template = function(template, options) {
   return render_template(template, options, true);
-}
+};
 
 var render_template = function(template, options, core) {
   var template_data = load_template(template, core);
@@ -106,7 +105,7 @@ var render_template = function(template, options, core) {
 
 var render_partial = function(template, options) {
   return render_template("partials/" + template, options);
-}
+};
 
 var socket_header = function(prelude_hash) {
 
@@ -157,6 +156,16 @@ var add_socket = function(socket) {
     name: (socket || context("controller")),
     host: context("req").headers.host
   });
+};
+
+function build_url(options) {
+  var controller = options.controller || context("controller");
+  var controller_path = router.get_path(controller);
+
+  // need to do a bunch of lookup, eventually
+
+  var url = controller_path + "/" +  (options.path || "");
+  return url;
 }
 
 module.exports = {

@@ -16,10 +16,17 @@ var load_controller = require("./controller").load;
 var load_core_controller = require("./controller").core;
 
 module.exports = {
+  get_path: function(controller_name) {
+    return this.paths[controller_name];
+  },
+
   collect: function(controllers) {
     // Takes an enumerable of controller names, loads the controllers and then
     // harvests their routes
     var routes = [];
+    var self = this;
+    self.paths = {};
+    self.controllers = {};
 
     var inst = load_core_controller("bootloader");
     function run_route(handler) {
@@ -40,15 +47,14 @@ module.exports = {
 
 
     _.each(controllers, function(controller, path) {
-      // strip leading and trailing slashes in this path!
-      var stripped_path = path
-        .replace(/^\/*/, '')
-        .replace(/\/*$/, '');
       var inst = load_controller(controller);
+      self.paths[controller] = path;
+      self.controllers[path] = controller;
 
       function run_route(handler) {
         return function() {
           context("controller", controller);
+          context("controller_path", path);
           inst[handler].apply(inst, arguments);
         };
       }
