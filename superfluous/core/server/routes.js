@@ -74,6 +74,7 @@ function request_handler_factory(route, handler) {
       page.emit("main_duration");
       debug("Ending main request", ctx.id, ctx.req.url);
       // Nulling out context after request is over
+      ctx.exit();
     });
   };
 }

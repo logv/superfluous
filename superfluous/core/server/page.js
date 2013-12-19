@@ -64,6 +64,8 @@ function resolve_futures() {
   // Execute all future funcs, now
   var futures = context("ASYNC_FUTURES");
 
+  var ctx = context.get();
+  ctx.enter();
   context("ASYNC_FUTURES", []);
 
   var async_start = Date.now();
@@ -86,6 +88,7 @@ function resolve_futures() {
         module.exports.emit("async");
         module.exports.emit("finished");
         context("stream").end();
+        ctx.exit();
       }
     } catch(e) {
       console.error(e);

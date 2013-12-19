@@ -105,6 +105,12 @@ _.extend(module.exports, {
       inspect: function() {
         return "CTX:" + _.keys(ctx).sort();
       },
+      enter: function() {
+        d.enter();
+      },
+      exit: function() {
+        d.exit();
+      },
       wrap: function(f) {
         var self = this;
         d.run(function() {
