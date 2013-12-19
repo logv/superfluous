@@ -106,8 +106,9 @@ module.exports = {
     var shutdown = require_core('server/shutdown');
     shutdown.install(primus);
 
-    var main = require_app("main");
-    hooks.call(main, "setup_auth", app, primus, function(app, primus) {
+    hooks.call("socket", app, primus, function() { });
+
+    hooks.call("auth", app, primus, function(app, primus) {
       var auth = require_core("server/auth");
       auth.install(app, primus);
     });
