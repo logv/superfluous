@@ -43,15 +43,18 @@ ENV=localhost nodemon app.js
   download assets while the slower parts of the page are still generating.
   </p>
   <p>
+
   <b>Flexibility</b> - <s>superfluous</s> handles many boilerplate tasks but
   still leaves the developer freedom to architect their web app - whether it's
-  choosing how to render, which data layer to use or how much work should be
-  done on the server or client.
+  choosing how to render, which data layer to use or how to split the client and server
+  responsibilities.
   </p>
+
   <p>
-  <b>Reusability</b> - Components encapsulate re-usable portions of rendering,
+  <b>Re-usability</b> - Components encapsulate re-usable portions of rendering,
   event handling and data synchronization code. Using components on a site adds
   structure, well defined behaviors and division of responsibilities.
+  <br />
   Components can be rendered on the server or client and treated as the same
   instance. This eliminates much of the tedium of creating rich and re-usable
   interactions.
@@ -67,6 +70,7 @@ ENV=localhost nodemon app.js
   jQuery selectors - it's up to you. if  you don't like the idea of templates
   auto-syncing to data models, don't do it. If you do... go for it :-D </p>
   <p>
+
   <b>Server - Client Cohesion</b> - sometimes, coupling is a good thing. Using
   two controllers allows the app to organize itself in a way that makes sense
   for the server and the client, allowing components to exist in many contexts.
@@ -154,9 +158,9 @@ superfluous</s>/
   <div id="routes_example" class="collapse no-transition">
   <pre class="prettyprint"><code>{
     "/": "about",
-      "/demo": "demo",
-      "/kitten": "kitten"
-  }</code></pre>
+    "/demo": "demo",
+    "/kitten": "kitten"
+}</code></pre>
 </div>
 </div>
 
@@ -180,7 +184,7 @@ Each app has two controllers, the <b>client controller</b> and the <b>server
 controller</b>. The server controller is the entry point for the app. It
 renders the app by placing <b>components</b> into <b>templates</b> and
 <b>partials</b> and delivers the constructed app to the browser, where the
-client controller is initialized.
+client controller is initialized and handles further user interactions.
 </p>
 
 <div class="mtl mbl">
@@ -540,14 +544,6 @@ This allows your app to communicate between friendly modules without threading
 a request object through every callback. <a href="https://groups.google.com/forum/#!topic/nodejs-dev/gBpJeQr0fWM">See this google groups thread for more info</a>
 </p>
 </div>
-
-<h3>Client Synchronization</h3>
-
-<p><s>superfluous</s> comes with multi-client synchronization features. These
-can be used via SF.watch &amp;, SF.set on the client to let all connected
-clients share &amp; watch shared variables for changes. Which variables
-persist across reboots and servers is configurable.</p>
-
 
 <h1>Demos</h1>
 <h3>A demo with components</h3>
