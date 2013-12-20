@@ -10,7 +10,7 @@ delivery, and subsequent interactions. superfluous connects the two :-D
 
 ### 0) get it running
 
-    # install node (>= 0.8) and mongo-db
+    # install node (>= 0.8)
 
     # get the code and dependencies for superfluous
     npm install -g superfluous
