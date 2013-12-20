@@ -27,8 +27,9 @@ var domain = require('domain');
 
 var __defaults = {};
 var package_json = require_core("../package.json");
+var config = require_core("server/config");
 var app_name = package_json.name;
-var USE_CLS = false;
+var USE_CLS = config.use_cls;
 
 if (USE_CLS) {
   var ns = require("continuation-local-storage").createNamespace('superfluous');
@@ -86,8 +87,13 @@ _.extend(module.exports, {
 
   reset: function(k) {
     if (USE_CLS) {
-
-
+      if (!k) {
+        ns.active = {
+          id: "unset"
+        };
+      } else {
+        ns.set(k, _.clone(__defaults[k]));
+      }
     } else {
       if (!k) {
         process.domain.ctx = {
@@ -153,7 +159,7 @@ _.extend(module.exports, {
     });
 
     d.domain = ctx.id;
-   
+
     // for DOMAINS
     if (!USE_CLS) {
       d.on('error', function(err) {

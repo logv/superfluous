@@ -1,7 +1,7 @@
 {
   "name": "superfluous",
     "description": "a node.js server/client understanding",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "private": false,
     "dependencies": {
       "express": "3.x",
@@ -18,7 +18,8 @@
       "json-stable-stringify" : "x",
       "highlight.js" : "x",
       "commander" : "x",
-      "fs-extra" : "x"
+      "fs-extra" : "x",
+      "continuation-local-storage" : "x"
     },
     "bin" : {
       "superfluous" : "bin/superfluous"
