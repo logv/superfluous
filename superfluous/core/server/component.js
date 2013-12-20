@@ -207,7 +207,7 @@ Component.build = function(component, options, cb) {
   __id += 1;
   var main = require_root(base_dir + cmp.schema.main + ".js");
   var cmpClass = Component.extend(main);
-  var cmpInstance = new cmpClass({ id: id });
+  var cmpInstance = new cmpClass(_.extend({ id: id }, options));
 
   var additionalClasses = options.classes || "";
 

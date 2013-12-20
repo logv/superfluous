@@ -105,7 +105,11 @@ function build(component, options, cb) {
 
 
       register_component(id, cmpInstance);
-      cmpInstance.render();
+
+      if (options.render) {
+        cmpInstance.render();
+      }
+
       cmpInstance.delegateEvents();
     }
 
