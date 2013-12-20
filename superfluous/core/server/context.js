@@ -28,6 +28,11 @@ var domain = require('domain');
 var __defaults = {};
 var package_json = require_core("../package.json");
 var app_name = package_json.name;
+var USE_CLS = false;
+
+if (USE_CLS) {
+  var ns = require("continuation-local-storage").createNamespace('superfluous');
+}
 
 var __id = 0;
 module.exports = function(key, val) {
@@ -57,9 +62,14 @@ _.extend(module.exports, {
    * @method get
    */
   get: function() {
-    var ctx =  process.domain.ctx;
+    var ctx;
+    if (USE_CLS) {
+      ctx = ns.active;
+    } else {
+      ctx = process.domain.ctx;
+    }
 
-    if (!ctx) { throw("HOW IS THERE NO PROCESS DOMAIN CONTEXT") }
+    if (!ctx) { throw("HOW IS THERE NO PROCESS DOMAIN CONTEXT"); }
 
     _.each(__defaults, function(v, k) {
       if (!ctx[k]) {
@@ -75,12 +85,17 @@ _.extend(module.exports, {
   },
 
   reset: function(k) {
-    if (!k) {
-      process.domain.ctx = {
-        id: "unset"
-      };
+    if (USE_CLS) {
+
+
     } else {
-      process.domain.ctx[k] = _.clone(__defaults[k]);
+      if (!k) {
+        process.domain.ctx = {
+          id: "unset"
+        };
+      } else {
+        process.domain.ctx[k] = _.clone(__defaults[k]);
+      }
     }
   },
 
@@ -93,9 +108,20 @@ _.extend(module.exports, {
    */
   create: function(defaults, cb) {
     defaults = defaults || {};
-    var d = domain.create();
+
+    var d;
+    if (USE_CLS) {
+      d = ns;
+    } else {
+      d = domain.create();
+    }
+
     _.each(defaults, function(v) {
-      d.add(v);
+      if (USE_CLS) {
+        d.bind(v);
+      } else {
+        d.add(v);
+      }
     });
 
     var ctx = _.extend(defaults, {
@@ -106,10 +132,17 @@ _.extend(module.exports, {
         return "CTX:" + _.keys(ctx).sort();
       },
       enter: function() {
-        d.enter();
+        if (USE_CLS) {
+        } else {
+          d.enter();
+        }
       },
       exit: function() {
-        d.exit();
+        if (USE_CLS) {
+        } else {
+          d.exit();
+
+        }
       },
       wrap: function(f) {
         var self = this;
@@ -120,14 +153,24 @@ _.extend(module.exports, {
     });
 
     d.domain = ctx.id;
-    d.on('error', function(err) {
-      console.trace();
-      console.log("Error", err, "happened in context", ctx.id);
-    });
+   
+    // for DOMAINS
+    if (!USE_CLS) {
+      d.on('error', function(err) {
+        console.trace();
+        console.log("Error", err, "happened in context", ctx.id);
+      });
+    }
 
     d.run(function() {
-      context.set(ctx);
-      cb(ctx);
+      if (USE_CLS) {
+        _.extend(ns.active, ctx);
+        cb(ns.active);
+      } else {
+        context.set(ctx);
+        cb(ctx);
+      }
+
     });
 
   },
@@ -146,7 +189,12 @@ _.extend(module.exports, {
    *
    */
   wrap: function(func) {
-    var d = process.domain;
+    var d;
+    if (USE_CLS) {
+      d = ns;
+    } else {
+      d = process.domain;
+    }
     if (!d) { return func; }
 
     return function() {
