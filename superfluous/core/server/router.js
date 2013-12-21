@@ -60,16 +60,29 @@ module.exports = {
       }
 
       _.each(inst.routes, function(handler, subpath) {
+        var subberpath;
+        if (path === '/' && subpath !== '') {
+          subberpath = subpath;
+        } else {
+          subberpath = path + subpath;
+        }
+
         routes.push({
-          route: path + subpath,
+          route: subberpath,
           method: "get",
           handler: run_route(handler)
         });
       });
 
       _.each(inst.post_routes, function(handler, subpath) {
+        var subberpath;
+        if (path === '/' && subpath !== '') {
+          subberpath = subpath;
+        } else {
+          subberpath = path + subpath;
+        }
         routes.push({
-          route: path + subpath,
+          route: subberpath,
           method: "post",
           handler: run_route(handler)
         });
