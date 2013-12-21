@@ -250,11 +250,18 @@
         return;
       }
 
-      var req = $.ajax("/pkg/" + type, {
+      var config = {
         data: {
           m: JSON.stringify(necessary_modules)
         }
-      });
+      };
+
+      if (bootloader.__release) {
+          config.data.h = bootloader.__release;
+      }
+
+
+      var req = $.ajax("/pkg/" + type, config);
 
       req.done(function(data) {
         var versions = {};
@@ -347,11 +354,17 @@
       return;
     }
 
-    var req = $.ajax("/pkg/component", {
+    var config = {
       data: {
         m: JSON.stringify(really_necessary)
       }
-    });
+    };
+
+    if (bootloader.__release) {
+        config.data.h = bootloader.__release;
+    }
+
+    var req = $.ajax("/pkg/component", config);
 
     req.done(function(data) {
       _.each(data, function(v, k) {

@@ -19,6 +19,10 @@
 
   <body data-page-id="<%= id %>" id="<%= id %>">
 
+  <% if (release) { %>
+    <script> bootloader.__release = '<%= release %>'; </script>
+  <% } %>
+
   <% if (controller) { %>
     <script> bootloader.__controller_name = '<%= controller %>'; </script>
   <% } %>

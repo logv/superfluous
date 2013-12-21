@@ -14,7 +14,7 @@
 var template = require("./template");
 var context = require("./context");
 var bridge = require("./bridge");
-var component = require("./component");
+var config = require("./config");
 var EventEmitter = require('events').EventEmitter;
 var quick_hash = require_core("server/hash");
 var readfile = require_core("server/readfile");
@@ -162,6 +162,7 @@ var render_page = function(page_options) {
       use_storage: use_storage,
       use_fullscreen: use_fullscreen,
       hash: hash,
+      release: config.RELEASE,
       socket_header: use_socket && template.socket_header(socket_hash),
       title: $$.title || "SF",
       id: pageId,

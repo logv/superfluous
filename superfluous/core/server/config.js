@@ -16,6 +16,12 @@
 var _config = {};
 
 var env = process.env.ENV;
+var RELEASE = process.env.RELEASE;
+
+if (!RELEASE) {
+  console.log("WARNING: Running server without a $RELEASE - assets will be served in development mode!");
+
+}
 
 var base_config = require_root("config/config");
 
@@ -40,5 +46,6 @@ if (env) {
   }
 }
 
+_config.RELEASE = RELEASE;
 console.log("CONFIG:", _config);
 module.exports = Object.freeze(_config);
