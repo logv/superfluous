@@ -42,8 +42,8 @@ function index(ctx, api) {
   }
 
   var template_str = api.template.controller("kitten.html.erb", {
-    render_button1: async_button({ name: "Sync", behavior: "kitten/go_button"}),
-    render_button2: async_button({ name: "Reset", behavior: "kitten/reset_button"}),
+    render_button1: async_button({ name: "Sync", behavior: "kitten/go_button", className: "btn btn-primary" }),
+    render_button2: async_button({ name: "Reset", behavior: "kitten/reset_button", className: "btn btn-primary"}),
     render_sidebar: render_sidebar,
     kitten: kitten,
     username: username,
