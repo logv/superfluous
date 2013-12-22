@@ -34,12 +34,16 @@ function add_packager() {
       function(module, cb) {
         var ret = ReactLoader.load_code(module);
         var pkg = ReactLoader.load_package(module);
-        loaded[module] = { 
-          main: ret,
-          schema: pkg
-        };
+        ReactLoader.load_style(module, pkg.style, function(style) {
+          loaded[module] = { 
+            main: ret,
+            style: style,
+            styles: pkg.styles,
+            schema: pkg
+          };
 
-        cb();
+          cb();
+        });
       }, function(err, results) {
         res.set("Content-Type", "application/json");
 
@@ -51,17 +55,29 @@ function add_packager() {
 }
 
 var ReactLoader = {
-  load_code: function(component) {
-    var base_dir = "./components/" + component + "/";
+  load_code: function(component, cb) {
+    var base_dir = "./react/" + component + "/";
     var filename = base_dir + component + ".js";
     var data = readfile(filename);
     if (data) {
       var transformed = JSXTransformer.transform(data);
+      if (cb) {
+        cb(transformed.code);
+      }
+
       return transformed.code;
     }
   },
-  load_package: function(component) {
-    var base_dir = "./components/" + component + "/";
+  load_style: function(component, style_file, cb) {
+    packager.scoped_less(component, style_file, function(data) {
+      if (cb) {
+        cb(data[style_file]);
+      }
+    });
+
+  },
+  load_package: function(component, cb) {
+    var base_dir = "./react/" + component + "/";
     var filename = base_dir + "package.json";
     var data = readfile(filename);
     return data;
@@ -81,7 +97,7 @@ var ReactLoader = {
       toString: function() {
         return page.async(function(flush) {
           React.renderComponentToString(instance, function(html) {
-            bridge.call("core/client/react", "instantiate", component, options);
+            bridge.call("app/client/react", "instantiate", component, options);
             var div = $("<div />");
             var innerDiv = $("<div />");
             div.append(innerDiv);
@@ -97,7 +113,7 @@ var ReactLoader = {
   },
 
   build: function(component, options) {
-    var base_dir = "./components/" + component + "/";
+    var base_dir = "./react/" + component + "/";
     options = options || {};
 
     __id += 1;

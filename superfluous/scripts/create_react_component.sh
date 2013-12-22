@@ -2,10 +2,10 @@
 
 COMPONENT="${1}"
 
-mkdir components/${COMPONENT}
-cp components/react_template/* components/${COMPONENT}
+mkdir react/${COMPONENT}
+cp react/react_template/* react/${COMPONENT}
 
-cd components/${COMPONENT}
+cd react/${COMPONENT}
 rename s/template/${COMPONENT}/ *
 sed -i "s/TEMPLATE/${COMPONENT}/g" package.json
 sed -i "s/TEMPLATE/${COMPONENT}/g" *.js
