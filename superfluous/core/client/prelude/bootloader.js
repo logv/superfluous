@@ -23,14 +23,8 @@
   };
   var _module_defs = {};
   var _template_defs = {};
-  var _packages = {};
-  var _reacts = {};
   var _signatures = {};
-  var _versions = {
-    pkg: {},
-    js: {},
-    css: {}
-  };
+  var _versions = { };
 
   var SF = window.SF;
   var _blank_storage = {
@@ -86,18 +80,30 @@
     try {
       var signatures = JSON.parse(_component_storage.getItem("_signatures"));
       _.defaults(_signatures, signatures);
-    } catch(e) {}
+    } catch(e) {
+      debugger
+      console.log(e); 
+      console.trace();
+    }
 
     try {
       var versions = JSON.parse(_component_storage.getItem("_versions"));
       _.each(versions, function(def, type) {
         // Maybe?
+        if (!_versions[type]) {
+          _versions[type] = {};
+        }
+
         _.defaults(_versions[type], def);
         _.extend(_signatures, _.object(_.map(def, function(v, k) {
           return [v, k];
         })));
       });
-    } catch(ee) {}
+    } catch(ee) {
+      debugger
+      console.log(ee); 
+      console.trace();
+    }
 
   }
 
@@ -175,8 +181,6 @@
     console.log("Clearing Storage");
     localStorage.clear();
   }
-
-  window._packages = _packages;
 
   var MODULE_PREFIX="var module = {}; (function() {\n";
   var MODULE_SUFFIX="})(); module.exports";
@@ -306,127 +310,99 @@
     };
   }
 
-  function define_package(component, definition) {
-    var first_define = !_packages[component];
-
-    if (!definition.schema.no_redefine || first_define) {
-      _packages[component] = definition;
-
-      // marshalling some JSONified code into code
-      _packages[component].exports = raw_import(definition.main, component);
-      _packages[component].events = raw_import(definition.events, component + "_events");
-    }
-  }
-
-  function bootload_react(reacts, cb) {
-    require("core/client/react", function() {
-      if (_.isString(reacts)) {
-        reacts = [reacts];
+  function package_factory(type, module_dict, postload) {
+    return function(packages, cb) {
+      if (_.isString(packages)) {
+        packages = [packages];
       }
 
       var loaded_modules = {};
-      var necessary_reacts = _.reject(reacts, function(k) {
-        loaded_modules[k] = _reacts[k];
-        return _reacts[k];
+      var necessary_packages = _.reject(packages, function(k) {
+        loaded_modules[k] = module_dict[k];
+        return module_dict[k];
       });
 
-      if (!necessary_reacts.length) {
+      var really_necessary = [];
+      // Gotta see if we have this package version saved in _storage somewhere
+      _.each(necessary_packages, function(pkg) {
+        if (_versions[type][pkg] && _component_storage.getItem(_versions[type][pkg])) {
+          var definition = _component_storage.getItem(_versions[type][pkg]);
+
+          if (definition) {
+            bootloader.from_storage[type][pkg] = _versions[type][pkg];
+            postload(pkg, JSON.parse(definition));
+
+            loaded_modules[pkg] = module_dict[pkg];
+
+            return;
+          }
+        }
+
+        really_necessary.push(pkg);
+      });
+
+      if (!really_necessary.length) {
         if (cb) {
-          cb();
+          cb(loaded_modules);
         }
         return;
       }
 
-      var req = $.ajax("/pkg/react", {
+      var config = {
         data: {
-          m: JSON.stringify(necessary_reacts)
+          m: JSON.stringify(really_necessary)
         }
-      });
+      };
+
+      if (bootloader.__release) {
+          config.data.h = bootloader.__release;
+      }
+
+      var req = $.ajax("/pkg/" + type, config);
 
       req.done(function(data) {
         _.each(data, function(v, k) {
-          var first_define = !_reacts[k];
-          if (!v.schema.no_redefine || first_define) {
-            _reacts[k] = raw_import(v.main);
+
+          if (v.signature) {
+            _versions[type][k] = v.signature;
+            _signatures[v.signature] = k;
+            if (!_component_storage.getItem(v.signature)) {
+              _component_storage.setItem(v.signature, JSON.stringify(v));
+            }
           }
+
+          postload(k, v);
+          loaded_modules[k] = module_dict[k];
+
         });
 
         if (cb) {
-          cb();
+          cb(loaded_modules);
         }
       });
-    });
+    };
   }
 
-  function bootload_pkg(packages, cb) {
-    if (_.isString(packages)) {
-      packages = [packages];
+  function register_component_packager(name, def_dict, postload) {
+    if (!_versions[name]) {
+      _versions[name] = {};
     }
-
-    var loaded_modules = {};
-    var necessary_packages = _.reject(packages, function(k) {
-      loaded_modules[k] = _packages[k];
-      return _packages[k];
-    });
-
-    var really_necessary = [];
-    // Gotta see if we have this package version saved in _storage somewhere
-    _.each(packages, function(pkg) {
-      if (_versions.pkg[pkg] && _component_storage.getItem(_versions.pkg[pkg])) {
-        var definition = _component_storage.getItem(_versions.pkg[pkg]);
-
-        if (definition) {
-          bootloader.from_storage.pkg[pkg] = _versions.pkg[pkg];
-          define_package(pkg, JSON.parse(definition));
-
-          loaded_modules[pkg] = _packages[pkg];
-
-          return;
-        }
-      }
-
-      really_necessary.push(pkg);
-    });
-
-    if (!really_necessary.length) {
-      if (cb) {
-        cb(loaded_modules);
-      }
-      return;
+    if (!bootloader.from_storage[name]) {
+      bootloader.from_storage[name] = {};
     }
+    var factory = package_factory(name, def_dict, postload);
+    window.bootloader[name] = factory;
+  }
 
-    var config = {
-      data: {
-        m: JSON.stringify(really_necessary)
-      }
-    };
-
-    if (bootloader.__release) {
-        config.data.h = bootloader.__release;
+  function register_resource_packager(name, def_dict, postload) {
+    if (!_versions[name]) {
+      _versions[name] = {};
     }
-
-    var req = $.ajax("/pkg/component", config);
-
-    req.done(function(data) {
-      _.each(data, function(v, k) {
-
-        if (v.signature) {
-          _versions.pkg[k] = v.signature;
-          _signatures[v.signature] = k;
-          if (!_component_storage.getItem(v.signature)) {
-            _component_storage.setItem(v.signature, JSON.stringify(v));
-          }
-        }
-
-        define_package(k, v);
-        loaded_modules[k] = _packages[k];
-
-      });
-
-      if (cb) {
-        cb(loaded_modules);
-      }
-    });
+    if (!bootloader.from_storage[name]) {
+      bootloader.from_storage[name] = {};
+    }
+    var factory = bootload_factory(name, def_dict, postload);
+    window.bootloader[name] = factory;
   }
 
   var _controllers = {};
@@ -603,26 +579,9 @@
   var bootloader = {
     raw_import: raw_import,
     /**
-     * Bootload in a js file or array of css files
-     * @method css
-     */
-    css: bootload_factory("css", _css_defs, inject_css),
-    /**
      * @method inject_css
      */
     inject_css: inject_css,
-    /**
-     * Bootload in a js file or array of js files
-     * @method js
-     */
-    js: bootload_factory("js", _module_defs),
-    /**
-     * Bootload in a component or array of components
-     *
-     * @method pkg
-     */
-    pkg: bootload_pkg,
-    react: bootload_react,
     defs: _module_defs,
     css_defs: _css_defs,
     modules: _modules,
@@ -642,21 +601,30 @@
      */
     deliver: deliver_pagelet,
     versions: _versions,
-    reacts: _reacts,
     signatures: _signatures,
     sync: function() {
       sync_metadata();
       sync_storage();
     },
-    from_storage: {
-      js: {},
-      css: {},
-      pkg: {}
-    }
+    from_storage: { },
+    register_component_packager: register_component_packager,
+    register_resource_packager: register_resource_packager
   };
 
   window.bootloader = bootloader;
   window.require = bootloader.require;
 
+  /**
+   * Bootload in a css file or array of css files
+   * @method css
+   */
+  register_resource_packager('css', _css_defs, inject_css);
+  /**
+   * Bootload in a js file or array of js files
+   * @method js
+   */
+  register_resource_packager('js', _module_defs);
+
+  console.log(_versions);
 
 }());

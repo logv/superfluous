@@ -1,8 +1,17 @@
 "use strict";
 
-require("core/static/vendor/react/react");
+require("app/static/vendor/react/react");
 var _reacts = window.bootloader.reacts;
 
+var _reacts = {};
+function define_react(component, definition) {
+  var first_define = !_reacts[component];
+  if (!definition.schema.no_redefine || first_define) {
+    _reacts[component] = window.bootloader.raw_import(definition.main);
+  }
+}
+
+register_component_packager("react", _reacts, define_react);
 module.exports = {
   instantiate: function(component, options) {
     // gotta require that react component, somehow

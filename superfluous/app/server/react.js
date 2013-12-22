@@ -20,6 +20,36 @@ var __id = 0;
 
 global.React = React;
 
+function add_packager() {
+  var bootloader = require_core("controllers/bootloader/server");
+  var react = function() {
+    var req = context("req");
+    var res = context("res");
+
+    var loaded = {};
+
+    var modules = JSON.parse(req.query.m);
+    async.each(
+      modules,
+      function(module, cb) {
+        var ret = ReactLoader.load_code(module);
+        var pkg = ReactLoader.load_package(module);
+        loaded[module] = { 
+          main: ret,
+          schema: pkg
+        };
+
+        cb();
+      }, function(err, results) {
+        res.set("Content-Type", "application/json");
+
+        res.end(JSON.stringify(loaded));
+      });
+  };
+
+  bootloader.add_packaging_endpoint('react', react);
+}
+
 var ReactLoader = {
   load_code: function(component) {
     var base_dir = "./components/" + component + "/";
@@ -82,4 +112,7 @@ var ReactLoader = {
 
 global.$R = ReactLoader.build;
 module.exports = ReactLoader;
+module.exports.install = function() {
+  add_packager();
+};
 

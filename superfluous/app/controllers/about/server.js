@@ -11,7 +11,6 @@ module.exports = {
   index: function(ctx, api) {
     // use $C to create a component.
     var sidebar = $C("about_sidebar", { client_options: { div: ".contents" }});
-    var el = $R("my_first_el");
 
     // Some components don't have any UI associated with them.
     // The BG picture changer on the about page doesn't have any View,
@@ -25,7 +24,7 @@ module.exports = {
       server_code: api.readfile("app/controllers/demo/server.js"),
       about_server_code: api.readfile("app/controllers/about/server.js"),
       about_client_code: api.readfile("app/controllers/about/client.js"),
-      render_sidebar: el.toString
+      render_sidebar: sidebar.toString
     });
 
 

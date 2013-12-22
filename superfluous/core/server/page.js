@@ -18,7 +18,6 @@ var config = require("./config");
 var EventEmitter = require('events').EventEmitter;
 var quick_hash = require_core("server/hash");
 var readfile = require_core("server/readfile");
-var bootloader_controller = require_core("controllers/bootloader/server");
 var async = require("async");
 
 var cheerio = require("cheerio");
@@ -120,6 +119,7 @@ function resolve_futures() {
  * @method render
  */
 var render_page = function(page_options) {
+  var bootloader_controller = require_core("controllers/bootloader/server");
   var $$ = context.get();
 
   // any dependencies after this will have to be bootloaded in

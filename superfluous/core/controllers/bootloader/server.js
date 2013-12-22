@@ -1,14 +1,11 @@
 "use strict";
 
-var fs = require("fs");
 var _ = require_vendor("underscore");
 var template = require_core("server/template");
-var page = require_core("server/page");
 var context = require_core("server/context");
 var packager = require_core("server/packager");
 var Component = require_core("server/component");
 var socket = require_core("server/socket");
-var React = require_core("server/react");
 var readfile = require_core("server/readfile");
 var quick_hash = require_core("server/hash");
 
@@ -311,29 +308,9 @@ function validate_versions(versions, socket, cb) {
   });
 }
 
-var react = function() {
-  var req = context("req");
-  var res = context("res");
-
-  var loaded = {};
-
-  var modules = JSON.parse(req.query.m);
-  async.each(
-    modules,
-    function(module, cb) {
-      var ret = React.load_code(module);
-      var pkg = React.load_package(module);
-      loaded[module] = { 
-        main: ret,
-        schema: pkg
-      };
-
-      cb();
-    }, function(err, results) {
-      res.set("Content-Type", "application/json");
-
-      res.end(JSON.stringify(loaded));
-    });
+function add_packaging_endpoint(endpoint, handler) {
+  module.exports.routes["/" + endpoint] = "handle_" + endpoint;
+  module.exports["handle_" + endpoint] = handler;
 }
 
 module.exports = {
@@ -346,15 +323,14 @@ module.exports = {
   write_css_prelude: write_css_prelude,
   write_socket_library: write_socket_library,
   component: component,
-  react: react,
   get_status: get_status,
   validate_versions: validate_versions,
+  add_packaging_endpoint: add_packaging_endpoint,
 
   routes: {
     "/status" : "get_status",
     "/css" : "css",
     "/js" : "js",
-    "/react" : "react",
     "/component" : "component",
     "/prelude.js" : "write_js_prelude",
     "/prelude.css" : "write_css_prelude",

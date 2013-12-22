@@ -18,9 +18,32 @@
 
 require("components/component");
 
+var bootloader = window.bootloader;
+var _packages = {};
+function define_package(component, definition) {
+  var first_define = !_packages[component];
+
+  if (!definition.schema.no_redefine || first_define) {
+    _packages[component] = definition;
+
+    // marshalling some JSONified code into code
+    _packages[component].exports = bootloader.raw_import(definition.main, component);
+    _packages[component].events = bootloader.raw_import(definition.events, component + "_events");
+  }
+}
+
+bootloader.register_component_packager("component", _packages, define_package);
+
+/**
+ * Bootload in a component or array of components
+ *
+ * @method pkg
+ * @alias component
+ */
+bootloader.pkg = bootloader.component;
+
 var __id = 0;
-var bootloader = window.bootloader,
-    _packages = window._packages;
+    
 
 var _components = {};
 var _pending = {};
@@ -245,7 +268,7 @@ function instantiate(options, signature) {
 
   var hash = options.hash;
   if (hash) {
-    bootloader.versions.pkg[component] = hash;
+    bootloader.versions.component[component] = hash;
   }
 
   build(

@@ -83,6 +83,8 @@ function setup() {
     app.use(express.static('core/static', { maxAge: oneYear }));
   });
 
+  hooks.call("packager", app, function() { });
+
   hooks.call("routes", app, function(app) {
     var routes = require('./routes');
     routes.setup(app);
