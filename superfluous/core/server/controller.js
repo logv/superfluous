@@ -32,6 +32,11 @@ module.exports = {
       },
       set_title: function(title) {
         context("title", title);
+      },
+      add_to_head: function(line) {
+        if (!context("HEAD_SUPPLEMENTS")) { context("HEAD_SUPPLEMENTS", []); }
+
+        context("HEAD_SUPPLEMENTS").push(line);
       }
     });
     return mod;

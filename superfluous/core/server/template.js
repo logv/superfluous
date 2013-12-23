@@ -71,6 +71,7 @@ function setup_render_context(options) {
     add_socket: add_socket,
     render_template: render_template,
     render_partial: render_partial,
+    render_core: render_core_template,
     set_default: function(key, value) {
       if (typeof this[key] === "undefined") {
         this[key] = value;

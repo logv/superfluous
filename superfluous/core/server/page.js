@@ -86,6 +86,7 @@ function resolve_futures() {
       } else {
         module.exports.emit("async");
         module.exports.emit("finished");
+        context("stream").write("</div>");
         context("stream").end();
         ctx.exit();
       }
@@ -123,7 +124,6 @@ var render_page = function(page_options) {
   var $$ = context.get();
 
   // any dependencies after this will have to be bootloaded in
-  var sidebar_content = "";
   var controller = $$.controller;
 
   // strip controller slashes (just in case)
@@ -157,10 +157,13 @@ var render_page = function(page_options) {
     var pageId = _.uniqueId("pg_");
     var page = template.render_core("helpers/page.html.erb", {
       header: page_options.header,
-      sidebar: sidebar_content,
+      head_supplements: $$.HEAD_SUPPLEMENTS,
       controller: controller,
       use_storage: use_storage,
       use_fullscreen: use_fullscreen,
+      js_deps: [],
+      css_deps: [],
+      content: page_options.content,
       hash: hash,
       release: config.RELEASE,
       socket_header: use_socket && template.socket_header(socket_hash),
@@ -168,6 +171,7 @@ var render_page = function(page_options) {
       id: pageId,
       misc_header: misc_header,
       js_header: template.js_header(js_hash),
+      simple_pipe: config.simple_pipe,
       css_header: template.css_header(css_hash)
     });
 
@@ -182,9 +186,12 @@ var render_page = function(page_options) {
       // Update the name of the controller on the page, when we can.
       // This also sets the $page element on the controller, inevitably
       bridge.call("core/client/controller", "set", controller, pageId, hash);
+  
+      if (!config.simple_pipe) {
+        bridge.flush_data(page_options.content, "page_content");
+      }
 
-      bridge.flush_data(page_options.content, "page_content");
-
+      $$.stream.write("<div data-id='async_instructions'>");
       $$.stream.write(bridge.render());
       $$.stream.flush();
     } catch(e) {
