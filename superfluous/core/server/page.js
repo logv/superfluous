@@ -155,6 +155,12 @@ var render_page = function(page_options) {
     var use_storage = false; // TODO: turn this on for production environments
     var use_fullscreen = $$.use_fullscreen;
     var pageId = _.uniqueId("pg_");
+    var simple_pipe = config.simple_pipe;
+    if ($$.req.query.simple_pipe) {
+      console.log("USING SIMPLE PIPE");
+      simple_pipe = true;
+    }
+
     var page = template.render_core("helpers/page.html.erb", {
       header: page_options.header,
       head_supplements: $$.HEAD_SUPPLEMENTS,
@@ -171,7 +177,7 @@ var render_page = function(page_options) {
       id: pageId,
       misc_header: misc_header,
       js_header: template.js_header(js_hash),
-      simple_pipe: config.simple_pipe,
+      simple_pipe: simple_pipe,
       css_header: template.css_header(css_hash)
     });
 
@@ -187,7 +193,7 @@ var render_page = function(page_options) {
       // This also sets the $page element on the controller, inevitably
       bridge.call("core/client/controller", "set", controller, pageId, hash);
   
-      if (!config.simple_pipe) {
+      if (!simple_pipe) {
         bridge.flush_data(page_options.content, "page_content");
       }
 

@@ -1,8 +1,6 @@
 "use strict";
 
 var controller = require_core("server/controller");
-var page = require_core("server/page");
-var template = require_core("server/template");
 
 // Helpers for serialized form elements
 var value_of = controller.value_of,
@@ -14,14 +12,15 @@ module.exports = {
     "" : "index",
   },
 
-  index: function() {
+  index: function(ctx, api) {
     var model = new Backbone.Model();
-    var react_el = $R("todomvc", {});
-    template.add_stylesheet("todomvc_global");
-    var template_str = template.render("controllers/react_demo.html.erb", {
+    var react_el = global.$R("todomvc", {});
+    api.template.add_stylesheet("todomvc_global");
+    var template_str = api.template.render("controllers/react_demo.html.erb", {
       todo_el: react_el.toString() 
     });
-    page.render({ content: template_str});
+    api.bridge.controller("react_demo", "load", react_el);
+    api.page.render({ content: template_str});
   },
 
   socket: function() {}

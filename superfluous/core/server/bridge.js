@@ -24,12 +24,27 @@ context.setDefault("BRIDGE_CALLS", []);
 var __id = 0;
 var _ = require_vendor("underscore");
 
+var _marshalls = {
+  component: function component_marshaller(arg) {
+    if (arg && arg.isComponent) {
+      return { id: arg.id, isComponent: true };
+    }
+  }
+};
+
+function add_marshaller(name, func) {
+  _marshalls[name] = func;
+}
+
 function marshall_args() {
   var args = _.toArray(arguments);
   _.each(args, function(arg, index) {
-    if (arg && arg.isComponent) {
-      args[index] = { id: arg.id, isComponent: true };
-    }
+    _.each(_marshalls, function(marshaller) {
+      var marshalled = marshaller(args[index]);
+      if (marshalled) {
+        args[index] = marshalled;
+      }
+    });
   });
 
   return args;
@@ -169,5 +184,11 @@ module.exports = {
     });
 
     return ret;
-  }
+  },
+
+  /**
+   * Adds a function for marshalling components across boundaries
+   *
+   */
+  add_marshaller: add_marshaller
 };

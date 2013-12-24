@@ -1,4 +1,25 @@
 (function() {
+  var _marshalls = [];
+
+  // ooooh boy.
+  // a marshaller will return 'true' if it is holding onto a component and will
+  // use 'cb' to say it is done
+  function add_marshaller(name, marshaller) {
+    _marshalls.push(marshaller);
+  }
+
+  add_marshaller('component', function(arg, cb) {
+    if (arg && arg.isComponent) {
+      SF.do_when(window.$G, "core/client/component", function() {
+        window.$G(arg.id, function(cmp) {
+          cb(cmp);
+        });
+      });
+
+      return true;
+    }
+  });
+
   var _sockets = {};
   function install_socket(name, socket) {
     // Presumes that name starts with a slash
@@ -49,33 +70,51 @@
     name = name || bootloader.__controller_name;
 
     if (!name) {
-      debug("Trying to get a socket that doesn't exist");
+      window.debug("Trying to get a socket that doesn't exist");
     }
     return _sockets[name];
   }
 
   function marshall_args(args, cb) {
-    var count = 0;
-    _.each(args, function(arg, index) {
-      if (arg && arg.isComponent) {
-        count += 1;
-      }
-    });
-
-    var after = _.after(count, function() {
+    var pending = 0;
+    var resolved = 0;
+    var finish_args = function() {
       cb(args);
-    });
+    };
 
     _.each(args, function(arg, index) {
-      if (arg && arg.isComponent) {
-        SF.do_when(window.$G, "core/client/component", function() {
-          $G(arg.id, function(cmp) {
-            args[index] = cmp;
-            after();
-          });
-        });
+      var marshalled = false;
+      _.each(_marshalls, function(marshall) {
+        if (marshalled) {
+          return;
+        }
+
+
+        function count_cb(new_arg) {
+          args[index] = new_arg;
+
+          resolved += 1;
+
+          if (resolved === args.length) {
+            finish_args();
+          }
+        }
+
+        if (marshall(arg, count_cb)) {
+          pending += 1;
+          marshalled = true;
+        }
+      });
+
+      if (!marshalled) {
+        resolved += 1;
       }
+
     });
+
+    if (resolved === args.length) {
+      finish_args();
+    }
   }
 
 
@@ -94,8 +133,8 @@
   }
 
   function controller_call(controller, func, args, signature) {
-    marshall_args(args, function(new_args) {
-      SF.controller(controller, function(cntrl) {
+    SF.controller(controller, function(cntrl) {
+      marshall_args(args, function(new_args) {
         func.apply(cntrl, new_args);
       }, signature);
     });
@@ -105,6 +144,7 @@
   bootloader.call = call;
   bootloader.controller_call = controller_call;
   bootloader.get_socket = get_socket;
+  bootloader.add_marshaller = add_marshaller;
   window.SF.socket = get_socket;
   bootloader.install_socket = install_socket;
 

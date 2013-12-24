@@ -16,7 +16,7 @@ var _arbiter = _.clone(window.Backbone.Events);
 function call(controller, func, args, hash) {
   SF.controller(controller, function(ctrl) {
     if (ctrl[func]) {
-      ctrl[func].apply(ctrl, args);
+      window.bootloader.controller_call(controller, ctrl[func], args);
     } else {
       console.log(func, "isnt present in", controller, "WTF!");
     }

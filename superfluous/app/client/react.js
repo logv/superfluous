@@ -20,7 +20,38 @@ function define_react(component, definition) {
   }
 }
 
-register_component_packager("react", _reacts, define_react);
+var _components = {};
+var _pending = {};
+function register_component(id, instance) {
+  _components[id] = instance;
+  if (_pending[id]) {
+    _.each(_pending[id], function(cb) {
+      cb(instance);
+    });
+    delete _pending[id];
+  }
+}
+
+function get_component(id, cb) {
+  if (!_components[id]) {
+    _pending[id] = _pending[id] || [];
+    _pending[id].push(cb);
+  } else {
+    cb(_components[id]);
+  }
+}
+
+window.bootloader.register_component_packager("react", _reacts, define_react);
+window.bootloader.add_marshaller("react", function(arg, cb) {
+  if (arg && arg.isReact) {
+    get_component(arg.id, function(cmp) {
+      cb(cmp);
+    });
+    return true;
+  }
+
+});
+
 module.exports = {
   instantiate: function(component, options) {
     // gotta require that react component, somehow
@@ -29,6 +60,7 @@ module.exports = {
         window.bootloader.css(_definitions[component].schema.styles, function() {
           var el = window.document.getElementById(options.id);
           var instance = new _reacts[component](options);
+          register_component(options.id, instance);
 
           window.React.renderComponent(instance, el);
         });
@@ -43,6 +75,7 @@ module.exports = {
           var instance = new _reacts[component](options, { });
           window.React.renderComponent(instance, div[0]);
 
+          register_component(options.id, instance);
           callback({
             $el: div
           });

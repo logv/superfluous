@@ -52,6 +52,11 @@ function add_packager() {
   };
 
   bootloader.add_packaging_endpoint('react', react);
+  bridge.add_marshaller("react", function(arg) {
+    if (arg && arg.isReact) {
+      return { id: arg.id, isReact: true };
+    }
+  });
 }
 
 var ReactLoader = {
@@ -108,7 +113,9 @@ var ReactLoader = {
           });
         })();
       },
-      instance: instance
+      instance: instance,
+      isReact: true,
+      id: instance.id
     };
   },
 
@@ -121,6 +128,10 @@ var ReactLoader = {
     options.id = id;
 
     var cmp = ReactLoader.load(component, options);
+
+    console.log("RETURNING", cmp);
+    cmp.isReact = true;
+    cmp.id = id;
     return cmp;
   }
 };

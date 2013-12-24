@@ -54,6 +54,7 @@ function register_component(id, instance) {
     _.each(_pending[id], function(cb) {
       cb(instance);
     });
+
     delete _pending[id];
   }
 }
