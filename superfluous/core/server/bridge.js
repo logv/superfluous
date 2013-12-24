@@ -148,9 +148,11 @@ module.exports = {
     });
 
 
+    res.write("<div data-bridge-id='delivery'>");
     res.write(data_tmpl);
     res.write(tmpl);
     res.write(this.render());
+    res.write("</div>");
 
     if (cb) {
       cb();

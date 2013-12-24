@@ -197,7 +197,7 @@ var render_page = function(page_options) {
         bridge.flush_data(page_options.content, "page_content");
       }
 
-      $$.stream.write("<div data-id='async_instructions'>");
+      $$.stream.write("<div data-bridge-id='async'>");
       $$.stream.write(bridge.render());
       $$.stream.flush();
     } catch(e) {
