@@ -129,7 +129,6 @@ var ReactLoader = {
 
     var cmp = ReactLoader.load(component, options);
 
-    console.log("RETURNING", cmp);
     cmp.isReact = true;
     cmp.id = id;
     return cmp;

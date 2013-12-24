@@ -94,6 +94,11 @@ function setup() {
     socket.setup_io(app, http_server);
   });
 
+  hooks.call("marshalls", app, function() {
+    require_core("server/component").install_marshalls();
+    require_core("server/backbone").install_marshalls();
+  });
+
   var when_ready = function() {
     hooks.call("http_server", http_server, function() { 
       var http_port = config.http_port;

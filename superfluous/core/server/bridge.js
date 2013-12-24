@@ -25,11 +25,6 @@ var __id = 0;
 var _ = require_vendor("underscore");
 
 var _marshalls = {
-  component: function component_marshaller(arg) {
-    if (arg && arg.isComponent) {
-      return { id: arg.id, isComponent: true };
-    }
-  }
 };
 
 function add_marshaller(name, func) {

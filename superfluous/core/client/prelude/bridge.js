@@ -80,6 +80,7 @@
     var resolved = 0;
     var finish_args = function() {
       cb(args);
+      finish_args = function() { };
     };
 
     _.each(args, function(arg, index) {

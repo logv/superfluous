@@ -341,5 +341,14 @@ Component.build = function(component, options, cb) {
   return cmpInstance;
 };
 
+Component.install_marshalls = function() {
+  var bridge = require_core("server/bridge");
+  bridge.add_marshaller('component', function component_marshaller(arg) {
+    if (arg && arg.isComponent) {
+      return { id: arg.id, isComponent: true };
+    }
+  });
+};
+
 global.$C = Component.build;
 module.exports = Component;
