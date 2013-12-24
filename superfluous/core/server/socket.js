@@ -9,6 +9,8 @@ var config = require_core("server/config");
 var db = require_core("server/db");
 var Primus = require("primus.io");
 var hooks = require_core("server/hooks");
+var domain = require("domain");
+
 
 var _sockets = [];
 var _dirty = false;
@@ -18,6 +20,13 @@ var _primus = null;
 
 var _socket_id = 0;
 function wrap_socket(socket) {
+  var d = domain.create();
+  d.on('error', function(er) {
+    console.error('Caught error!', er);
+  });
+  d.add(socket);
+  d.enter();
+
   _socket_id += 1;
 
   var socket_id = _socket_id;
