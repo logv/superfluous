@@ -57,11 +57,13 @@ body .content .sidebar {
   }
 
   @media @device {
+    position: relative;
   }
+
   @media @computer {
     height: 100%;
     position: fixed;
-    min-width: 200px;
+    min-width: 240px;
   }
 }
 
