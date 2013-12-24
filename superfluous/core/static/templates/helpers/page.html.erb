@@ -38,7 +38,7 @@
 
   <body data-page-id="<%= id %>" id="<%= id %>" <% if (simple_pipe) { %> style="display: none;" <% } %> >
 
-  <div data-id="bootloader-info">
+  <div data-bridge-id="bootloader-info">
     <% if (release) { %>
       <script> bootloader.__release = '<%= release %>'; </script>
     <% } %>
@@ -69,7 +69,9 @@
   </div>
 
   <% if (socket_header) { %>
+    <div data-bridge-id="socket-header">
       <%= socket_header %>
+    </div>
   <% } %>
 
   <% _.each(js_deps, function(v, dep) { %>
