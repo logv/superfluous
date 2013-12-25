@@ -187,5 +187,11 @@ module.exports = {
    * Adds a function for marshalling components across boundaries
    *
    */
-  add_marshaller: add_marshaller
+  add_marshaller: add_marshaller,
+
+  /**
+   * Marshalls a serious of arguments
+   *
+   */
+  marshall_args: marshall_args
 };

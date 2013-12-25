@@ -12,8 +12,8 @@ module.exports = {
   // different processes, for stability reasons
   separate_services: false,
   session_secret: "keyboard cat",
-  http_port: 3000,
-  https_port: 3443,
+  http_port: process.env.PORT || process.env.HTTP_PORT || 3300,
+  https_port: process.env.HTTPS_PORT || 3443,
   max_http_sockets: 1000,
   max_https_sockets: 1000,
   require_https: true,

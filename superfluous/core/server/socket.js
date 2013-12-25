@@ -4,6 +4,7 @@ var fs = require("fs");
 
 var load_controller = require("./controller").load;
 var context = require_core("server/context");
+var bridge = require_core("server/bridge");
 var _handlers = {};
 var config = require_core("server/config");
 var db = require_core("server/db");
@@ -25,14 +26,11 @@ function wrap_socket(socket) {
     console.error('Caught error!', er);
   });
   d.add(socket);
-  d.enter();
 
   _socket_id += 1;
 
-  var socket_id = _socket_id;
-
   var ret = {};
-  ret.emit = function(evt, data) {
+  ret.emit = function() {
     socket.send.apply(socket, arguments);
   };
 
@@ -45,6 +43,27 @@ function wrap_socket(socket) {
   ret.on = function(evt, cb) {
     socket.on(evt, cb);
   };
+
+  ret.bridge = {
+    call: function() {
+      var args = _.toArray(arguments);
+      var module = args.shift();
+      var func = args.shift();
+      ret.emit('__call', module, func,
+        bridge.marshall_args.apply(bridge, args));
+    },
+    controller: function() {
+      var args = _.toArray(arguments);
+      var module = args.shift();
+      var func = args.shift();
+      ret.emit('__controller_call', module, func,
+        bridge.marshall_args.apply(bridge, args));
+    }
+  };
+
+  ret.log = function() {
+    ret.emit("__log", _.toArray(arguments));
+  }
 
   ret.socket = socket;
 
@@ -68,24 +87,24 @@ function setup_new_socket(controller_cache, name, controller, socket) {
   _sockets.push(socket);
 
   _.each(controller_cache, function(v, k) {
-    socket.emit('store', {
+    socket.emit('__store', {
       key: k,
       value: v,
       controller: name
     });
   });
 
-  socket.on('store', function(data) {
+  socket.on('__store', function(data) {
     var controller_cache = _controller_caches[data.controller];
     _dirty = true;
 
     controller_cache[data.key] = data.value;
 
     // TODO: validate this before sending it to other clients.
-    socket.broadcast.emit("store", data);
+    socket.broadcast.emit("__store", data);
   });
 
-  socket.on('validate_versions', function(versions, cb) {
+  socket.on('__validate_versions', function(versions, cb) {
     var bootloader = require_core("controllers/bootloader/server");
     bootloader.validate_versions(versions, socket, cb);
   });

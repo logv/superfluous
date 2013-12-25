@@ -15,6 +15,9 @@ module.exports = {
       .addClass("collapser")
       .removeClass("expander");
   },
+  test_socket: function(arg, darg) {
+    console.log("Using socket bridge", arg, darg);
+  },
   handle_collapse_toc: function() {
     this.$el.find(".toc").addClass("com");
     this.$el.find(".collapser")

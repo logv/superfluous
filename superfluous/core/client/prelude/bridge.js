@@ -25,11 +25,17 @@
     // Presumes that name starts with a slash
     _sockets[name] = socket;
 
-    socket.on("store", SF.data_sync);
+    socket.on("__store", SF.data_sync);
+    socket.on("__call", call);
+    socket.on("__controller_call", controller_call);
+    socket.on("__log", function() {
+      console.log('%c[Server] ' + _.toArray(arguments).join(" "), 
+        'background: #fff; color: #2b3');
+    });
 
     // when the page refreshes, let's first expire our localStorage cache, if
     // we can.
-    socket.on("refresh", function(data) {
+    socket.on("__refresh", function(data) {
       function refresh_page() {
         var promise = $.get(
           "/pkg/status", function() {
@@ -136,7 +142,18 @@
   function controller_call(controller, func, args, signature) {
     SF.controller(controller, function(cntrl) {
       marshall_args(args, function(new_args) {
-        func.apply(cntrl, new_args);
+        if (_.isFunction(func)) {
+          func.apply(cntrl, new_args);
+        }
+
+        if (_.isString(func)) {
+          if (!cntrl[func]) {
+            console.warn("Controller", "'" + controller + "'", "does not",
+              "have function", func);
+            return;
+          }
+          cntrl[func].apply(cntrl, new_args);
+        }
       }, signature);
     });
   }

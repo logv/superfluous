@@ -2,6 +2,7 @@
  * @module Superfluous
  * @submodule Client
  */
+"use strict";
 
 /**
  * The bootloader is responsible for managing the assets on the page. It
@@ -22,7 +23,6 @@
     url: {}
   };
   var _module_defs = {};
-  var _template_defs = {};
   var _signatures = {};
   var _versions = { };
 
@@ -50,7 +50,6 @@
   window.SF.once("bridge/socket", function(socket) {
     socket.on("update_version", function(type, entry, old_hash, new_hash) {
       console.log("Updated version", type, entry, old_hash, new_hash);
-      var component = _signatures[old_hash];
       delete _versions[type][old_hash];
       delete _versions[type][entry];
 
@@ -67,7 +66,7 @@
   });
 
   window.SF.on("validate/versions", function(socket) {
-    socket.emit("validate_versions", _versions, function(versions) {
+    socket.emit("__validate_versions", _versions, function() {
       SF.trigger("updated_versions");
     });
   });
@@ -81,7 +80,6 @@
       var signatures = JSON.parse(_component_storage.getItem("_signatures"));
       _.defaults(_signatures, signatures);
     } catch(e) {
-      debugger
       console.log(e); 
       console.trace();
     }
@@ -100,7 +98,6 @@
         })));
       });
     } catch(ee) {
-      debugger
       console.log(ee); 
       console.trace();
     }
@@ -133,7 +130,7 @@
             console.log("Current version of", name, "is", current_version);
             var unparsed = localStorage.getItem(current_version);
             if (unparsed) {
-              current_data = JSON.parse(unparsed);
+              var current_data = JSON.parse(unparsed);
               var current_ts = current_data.timestamp;
               if (ts > current_ts) {
                 _versions[type][name] = parsed.signature;
@@ -162,7 +159,7 @@
 
     // sync versions and signatures to our known ones
     _signatures = {};
-    _.each(_versions, function(defs, type) {
+    _.each(_versions, function(defs) {
       _.each(defs, function(v, k) {
         _signatures[v] = k;
       });

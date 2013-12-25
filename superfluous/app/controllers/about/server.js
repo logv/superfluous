@@ -32,5 +32,8 @@ module.exports = {
     api.bridge.controller("about", "handle_sidebar", sidebar);
     api.page.render({ content: template_str, socket: true});
   },
-  socket: function() { }
+  socket: function(s) { 
+    s.bridge.controller("about", "test_socket", "foo", "bar");
+    s.log("hello!");
+  }
 };
