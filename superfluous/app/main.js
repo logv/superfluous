@@ -1,7 +1,7 @@
 "use strict";
 
 var store = require_core("server/store");
-var express = require('express');
+var connect = require('connect');
 
 module.exports = {
   setup_packager: function() {
@@ -15,6 +15,6 @@ module.exports = {
     // setup static helpers
     var oneDay = 1000 * 60 * 60 * 24;
     var oneYear = oneDay * 365;
-    app.use(express.static('react/', { maxAge: oneYear }));
+    app.use(connect.static('react/', { maxAge: oneYear }));
   }
 };

@@ -3,7 +3,12 @@
 var _total = 0;
 module.exports = {
   routes: {
-    "" : "index"
+    "" : "index",
+    "/:id" : "test"
+  },
+
+  test: function() {
+
   },
 
   index: function(ctx, api) {

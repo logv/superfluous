@@ -1,9 +1,10 @@
 "use strict";
 
 // vendor
-var express = require('express');
+var connect = require('connect');
 var http = require('http');
-var app = express();
+var app = connect();
+var router = app;
 // setup helpers
 var globals = require("./globals");
 globals.install();
@@ -22,21 +23,22 @@ var http_server,
 require("longjohn");
 var socket = require_core("server/socket");
 function setup() {
-  // Better stack traces
-
-  if (config.behind_proxy) {
-    app.enable('trust proxy');
-  }
-
-  http_server = http.createServer(app);
+  // this is here for the reversable router which uses .locals
+  app.locals = {};
 
   // Opportunity for Authorization and other stuff
   var main = require_app("main");
   hooks.set_main(main);
 
+  hooks.call("query", app, function(app) {
+    app.use(connect.query());
+  });
+
+  http_server = http.createServer(app);
+
   // Setup an HTTPS server
   var auth = require_core("server/auth");
-  https_server = auth.setup_ssl_server(app);
+  https_server = auth.setup_ssl_server(router);
 
   http.globalAgent.maxSockets = config.max_http_sockets;
 
@@ -47,12 +49,12 @@ function setup() {
     // setup error handling
     //var errorHandlers = require_core("server/error_handlers");
     //app.use(errorHandlers.default);
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use(connect.errorHandler({ dumpExceptions: true, showStack: true }));
   });
 
   // Setting up some cookie parsing goodness
   hooks.call("cookies", app, function() {
-    app.use(express.cookieParser());
+    app.use(connect.cookieParser());
   });
 
   // This is where the persistance store is created
@@ -67,12 +69,18 @@ function setup() {
     session.install(app);
   });
 
-  hooks.call("app", app, function() {
-  
+  hooks.call("redirect", app, function(app) {
+    var redirect = require('response-redirect');
+    app.use(function(req, res, next) {
+      res.redirect = redirect;
+      next();
+    });
   });
 
+  hooks.call("app", app, function() { });
+
   hooks.call("compression", app, function(app) {
-    app.use(express.compress());
+    app.use(connect.compress());
   });
 
   hooks.call("cache", app, function(app) {
@@ -92,11 +100,6 @@ function setup() {
 
   hooks.call("packager", app, function() { });
 
-  hooks.call("routes", app, function(app) {
-    var routes = require('./routes');
-    routes.setup(app);
-  });
-
   hooks.call("realtime", app, http_server, function(app, http_server) {
     socket.setup_io(app, http_server);
   });
@@ -104,6 +107,11 @@ function setup() {
   hooks.call("marshalls", app, function() {
     require_core("server/component").install_marshalls();
     require_core("server/backbone").install_marshalls();
+  });
+
+  hooks.call("routes", app, function() {
+    var routes = require('./routes');
+    routes.install(app);
   });
 
   var when_ready = function() {

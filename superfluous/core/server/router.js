@@ -40,6 +40,7 @@ module.exports = {
       routes.push({
         route: "/pkg" + subpath,
         method: "get",
+        name: "pkg." + handler,
         handler: run_route(handler)
       });
     });
@@ -55,6 +56,7 @@ module.exports = {
         return function() {
           context("controller", controller);
           context("controller_path", path);
+
           inst[handler].apply(inst, arguments);
         };
       }
@@ -70,6 +72,7 @@ module.exports = {
         routes.push({
           route: subberpath,
           method: "get",
+          name: controller + "." + handler,
           handler: run_route(handler)
         });
       });
@@ -84,6 +87,7 @@ module.exports = {
         routes.push({
           route: subberpath,
           method: "post",
+          name: controller + "." + handler,
           handler: run_route(handler)
         });
       });

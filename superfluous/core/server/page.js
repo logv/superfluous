@@ -14,7 +14,6 @@
 var template = require("./template");
 var context = require("./context");
 var bridge = require("./bridge");
-var config = require("./config");
 var EventEmitter = require('events').EventEmitter;
 var quick_hash = require_core("server/hash");
 var readfile = require_core("server/readfile");
@@ -150,6 +149,8 @@ var render_page = function(page_options) {
     });
   }], 
   function () { // after everything finishes
+    var config = require("./config");
+
     var misc_header = "";
     var use_socket = page_options.socket || context("added_socket");
     var use_storage = false; // TODO: turn this on for production environments

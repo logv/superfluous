@@ -1,6 +1,6 @@
 "use strict";
 
-var express = require('express');
+var connect = require('connect');
 var config = require('./config');
 var store = require_core("server/store");
 
@@ -13,12 +13,12 @@ module.exports = {
   install: function(app) {
     var persistence_store = store.get();
     if (persistence_store) {
-      _session = express.session({
+      _session = connect.session({
         secret: SESSION_SECRET,
         store: persistence_store
       });
     } else {
-      _session = express.cookieSession({
+      _session = connect.cookieSession({
         secret: SESSION_SECRET
       });
     }

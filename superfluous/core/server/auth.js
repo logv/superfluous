@@ -18,7 +18,7 @@ var session = require_core("server/session");
 var config = require_core("server/config");
 var readfile = require("./readfile");
 var session = require_core("server/session");
-var SessionStore = require("express").session.Store;
+var SessionStore = require("connect").session.Store;
 
 var store = require_core("server/store");
 var https = require('https');
@@ -32,7 +32,7 @@ module.exports = {
    *
    * @private
    * @method install
-   * @param {Object} express_app
+   * @param {Object} connect_app
    * @param {Object} socket_server (primus, socket.io, etc)
    */
   install: function(app, io) {
@@ -40,7 +40,7 @@ module.exports = {
     this.io = io;
 
     io.authorize(function(handshake_data, cb) {
-      var parseCookie = require("express").cookieParser(session.secret());
+      var parseCookie = require("connect").cookieParser(session.secret());
 
       parseCookie(handshake_data, null, function() {
         var sid = handshake_data.signedCookies['connect.sid'];

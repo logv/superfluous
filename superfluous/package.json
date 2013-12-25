@@ -1,10 +1,13 @@
 {
   "name": "superfluous",
   "description": "a node.js server/client understanding",
-  "version": "0.0.17",
+  "version": "0.0.19",
   "private": false,
   "dependencies": {
-    "express": "3.x",
+    "connect": "2.x",
+    "connect-redirect": "x",
+    "reversable-router": "x",
+    "st": "x",
     "socket.io": "x",
     "primus.io": "x",
     "cheerio": "0.10.x",
@@ -12,15 +15,12 @@
     "mongodb": "x",
     "connect-mongo": "x",
     "longjohn": "x",
-    "Faker": "x",
     "async": "x",
     "less": "x",
     "json-stable-stringify": "x",
-    "highlight.js": "x",
     "commander": "x",
     "fs-extra": "x",
-    "continuation-local-storage": "x",
-    "st": "x"
+    "continuation-local-storage": "x"
   },
   "bin": {
     "superfluous": "bin/superfluous"
