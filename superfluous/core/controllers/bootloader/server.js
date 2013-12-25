@@ -194,8 +194,8 @@ var write_socket_library = function() {
 
   res.set("Content-Type", "text/javascript");
   var maxAge = 60 * 1000 * 60 * 24 * 365;
-  if (!res.getHeader('Cache-Control')) {
-    res.setHeader('Cache-Control', 'public, max-age=' + (maxAge / 1000));
+  if (!res.getHeader('Cache-control')) {
+    res.setHeader('Cache-control', 'public, max-age=' + (maxAge / 1000));
   }
 
 
@@ -212,8 +212,8 @@ var write_js_prelude = function() {
 
   res.set("Content-Type", "text/javascript");
   var maxAge = 60 * 1000 * 60 * 24 * 365;
-  if (!res.getHeader('Cache-Control')) {
-    res.setHeader('Cache-Control', 'public, max-age=' + (maxAge / 1000));
+  if (!res.getHeader('Cache-control')) {
+    res.setHeader('Cache-control', 'public, max-age=' + (maxAge / 1000));
   }
 
 
@@ -237,8 +237,8 @@ var write_css_prelude = function() {
 
   res.set("Content-Type", "text/css");
   var maxAge = 60 * 1000 * 60 * 24 * 365;
-  if (!res.getHeader('Cache-Control')) {
-    res.setHeader('Cache-Control', 'public, max-age=' + (maxAge / 1000));
+  if (!res.getHeader('Cache-control')) {
+    res.setHeader('Cache-control', 'public, max-age=' + (maxAge / 1000));
   }
 
   get_css_prelude(function after_read_prelude(err) {

@@ -79,8 +79,15 @@ function setup() {
     // setup static helpers
     var oneDay = 1000 * 60 * 60 * 24;
     var oneYear = oneDay * 365;
-    app.use(express.static('app/static', { maxAge: oneYear }));
-    app.use(express.static('core/static', { maxAge: oneYear }));
+    var st = require('st');
+    var options = {
+      index: false, // return 404's for directories
+      dot: false, // default: return 403 for any url with a dot-file part
+      passthrough: true, // calls next/returns instead of returning a 404 error
+    };
+
+    app.use(st( _.extend({ path: 'app/static',  maxAge: oneYear, url: '/' }, options)));
+    app.use(st(_.extend({ path: 'core/static',  maxAge: oneYear, url: '/' }, options)));
   });
 
   hooks.call("packager", app, function() { });

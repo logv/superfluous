@@ -1,30 +1,33 @@
 {
   "name": "superfluous",
-    "description": "a node.js server/client understanding",
-    "version": "0.0.16",
-    "private": false,
-    "dependencies": {
-      "express": "3.x",
-      "socket.io": "x",
-      "primus.io": "x",
-      "cheerio" : "0.10.x",
-      "module-grapher": "x",
-      "mongodb" : "x",
-      "connect-mongo" : "x",
-      "longjohn" : "x",
-      "Faker" : "x",
-      "async" : "x",
-      "less" : "x",
-      "json-stable-stringify" : "x",
-      "highlight.js" : "x",
-      "commander" : "x",
-      "fs-extra" : "x",
-      "continuation-local-storage" : "x"
-    },
-    "bin" : {
-      "superfluous" : "bin/superfluous"
-    },
-    "files" : [ "core", "bin" ],
-    "main" : "core/server/main"
+  "description": "a node.js server/client understanding",
+  "version": "0.0.16",
+  "private": false,
+  "dependencies": {
+    "express": "3.x",
+    "socket.io": "x",
+    "primus.io": "x",
+    "cheerio": "0.10.x",
+    "module-grapher": "x",
+    "mongodb": "x",
+    "connect-mongo": "x",
+    "longjohn": "x",
+    "Faker": "x",
+    "async": "x",
+    "less": "x",
+    "json-stable-stringify": "x",
+    "highlight.js": "x",
+    "commander": "x",
+    "fs-extra": "x",
+    "continuation-local-storage": "x",
+    "st": "x"
+  },
+  "bin": {
+    "superfluous": "bin/superfluous"
+  },
+  "files": [
+    "core",
+    "bin"
+  ],
+  "main": "core/server/main"
 }
-
