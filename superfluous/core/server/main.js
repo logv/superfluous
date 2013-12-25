@@ -83,6 +83,44 @@ function setup() {
     app.use(connect.compress());
   });
 
+  hooks.call("packager", app, function() { });
+
+  hooks.call("realtime", app, http_server, function(app, http_server) {
+    socket.setup_io(app, http_server);
+  });
+
+  hooks.call("marshalls", app, function() {
+    require_core("server/component").install_marshalls();
+    require_core("server/backbone").install_marshalls();
+  });
+
+  hooks.call("trust_proxy", app, function(app) {
+    app.use(function(req, res, next) {
+      req.url = req.uri.path;
+
+      function extract(value) {
+        if (value) {
+          return last(value.split(',')).trim().toLowerCase();
+        }
+      }
+      function last(arr) { return arr[arr.length - 1]; }
+
+      try {
+        req.connection.remoteAddress = extract(req['X-Forwarded-For']) || req.connection.remoteAddress;
+        req.proto = extract(req['X-Forwarded-Proto']) || 'http';
+        req.secure = req.proto === 'https';
+      } catch(e) {};
+
+      next();
+    });
+
+  });
+
+  hooks.call("routes", app, function() {
+    var routes = require('./routes');
+    routes.install(app);
+  });
+
   hooks.call("cache", app, function(app) {
     // setup static helpers
     var oneDay = 1000 * 60 * 60 * 24;
@@ -98,24 +136,9 @@ function setup() {
     app.use(st(_.extend({ path: 'core/static',  maxAge: oneYear, url: '/' }, options)));
   });
 
-  hooks.call("packager", app, function() { });
-
-  hooks.call("realtime", app, http_server, function(app, http_server) {
-    socket.setup_io(app, http_server);
-  });
-
-  hooks.call("marshalls", app, function() {
-    require_core("server/component").install_marshalls();
-    require_core("server/backbone").install_marshalls();
-  });
-
-  hooks.call("routes", app, function() {
-    var routes = require('./routes');
-    routes.install(app);
-  });
 
   var when_ready = function() {
-    hooks.call("http_server", http_server, function() { 
+    hooks.call("http_server", http_server, function() {
       var http_port = config.http_port;
       http_server.listen(http_port);
       http_server.on('error', try_restart(http_server, http_port));
@@ -123,7 +146,7 @@ function setup() {
       console.log("Listening for HTTP connections on port", http_port);
     });
 
-    hooks.call("https_server", https_server, function() { 
+    hooks.call("https_server", https_server, function() {
       var https_port = config.https_port;
       // Setting up SSL server
       if (https_server && https_port) {
@@ -171,6 +194,6 @@ module.exports = {
   run: function() {
     setup();
 
-    
+
   }
 };
