@@ -17,6 +17,7 @@ module.exports = {
     // so we just call 'marshall' to send it to the client.
     $C("bg_scroller", { }).marshall();
     this.set_title("Superfluous");
+    this.set_fullscreen(true);
 
     var template_str = api.template.render("controllers/about.html.erb", {
       template_code: api.readfile("app/static/templates/controllers/demo.html.erb"),
