@@ -32,7 +32,7 @@ function multi_pack(dir, extension, prepack) {
           }
         });
       } else {
-        loaded[k] = v
+        loaded[module] = data;
       }
     }
 
