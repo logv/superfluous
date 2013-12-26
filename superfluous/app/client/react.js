@@ -18,6 +18,8 @@ function define_react(component, definition) {
       window.bootloader.inject_css(definition.style);
     }
   }
+
+  return _reacts[component];
 }
 
 var _components = {};

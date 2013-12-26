@@ -218,11 +218,75 @@
   }
 
   function bootload_factory(type, module_dict, postload, storage) {
+    var factory_emitter = _.clone(Backbone.Events);
     storage = storage || _storage;
-    return function(modules, cb) {
-      if (bootloader.__use_storage && storage === _blank_storage) {
+
+    var to_load = {};
+    function add_pending(modules) {
+      _.each(modules, function(m) {
+        to_load[m] = true;
+      });
+    }
+
+    function issue_request() {
+      var config = {
+        data: {
+          m: JSON.stringify(_.keys(to_load))
+        }
+      };
+
+      if (bootloader.__release) {
+          config.data.h = bootloader.__release;
+      }
+
+      to_load = {};
+
+
+      var req = $.ajax("/pkg/" + type, config);
+      req.done(function(data) {
+        var versions = {};
+        if (module_dict) {
+          _.each(data, function(v, k) {
+
+            v.module = k;
+            if (v.signature) {
+              storage.setItem(v.signature, JSON.stringify(v));
+              versions[k] = v.signature;
+            }
+
+            if (postload) {
+              v = postload(k, v);
+            }
+
+            module_dict[k] = v;
+            factory_emitter.trigger(k, v);
+          });
+
+          if (!_versions[type]) {
+            _versions[type] = {};
+          }
+
+          _.extend(_versions[type], versions);
+          _.extend(_signatures, _.object(_.map(versions, function(k, v) { return [k, v]; })));
+
+        }
+      });
+
+      req.fail(function(data) {
+        console.error("Failed to load", data);
+      });
+
+      req.always(function() {
+
+      });
+
+    }
+
+
+    return function bootload(modules, cb) {
+      if (bootloader.__use_storage && _storage === _blank_storage) {
         console.log("Caching assets in LocalStorage");
-        storage = _component_storage;
+        _storage = _component_storage;
       }
 
       if (_.isString(modules)) {
@@ -255,58 +319,21 @@
         return;
       }
 
-      var config = {
-        data: {
-          m: JSON.stringify(necessary_modules)
-        }
-      };
-
-      if (bootloader.__release) {
-          config.data.h = bootloader.__release;
-      }
-
-
-      var req = $.ajax("/pkg/" + type, config);
-
-      req.done(function(data) {
-        var versions = {};
-        if (module_dict) {
-          _.each(data, function(v, k) {
-
-            v.module = k;
-            if (v.signature) {
-              storage.setItem(v.signature, JSON.stringify(v));
-              versions[k] = v.signature;
-            }
-
-            if (postload) {
-              v = postload(k, v);
-            }
-
-            loaded_modules[k] = v;
-          });
-
-          _.extend(module_dict, loaded_modules);
-          if (!_versions[type]) {
-            _versions[type] = {};
-          }
-
-          _.extend(_versions[type], versions);
-          _.extend(_signatures, _.object(_.map(versions, function(k, v) { return [k, v]; })));
-        }
-
-        if (cb) {
-          cb(data);
-        }
+      var after = _.after(necessary_modules.length, function() {
+        console.log("AFTER MODULES LOADED!", loaded_modules);
+        cb(loaded_modules);
       });
 
-      req.fail(function(data) {
-        console.error("Failed to load", data);
+      _.each(necessary_modules, function(m) {
+        factory_emitter.once(m, function() {
+          loaded_modules[m] = module_dict[m];
+          after();
+        });
       });
 
-      req.always(function() {
+      add_pending(necessary_modules);
+      issue_request();
 
-      });
     };
   }
 
@@ -433,10 +460,16 @@
       return css;
     }
 
-    console.log("INJECTING CSS", css);
+    var to_inject;
+    if (_.isString(css)) {
+      to_inject = css;
+    }
+    if (_.isObject(css)) {
+      to_inject = css.code;
+    }
 
     var stylesheetEl = $('<style type="text/css" media="screen"/>');
-    stylesheetEl.text(css.code);
+    stylesheetEl.text(to_inject);
     stylesheetEl.attr("data-name", name);
 
     $("head").append(stylesheetEl);
