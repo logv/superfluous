@@ -24,7 +24,6 @@ function define_package(component, definition) {
   var first_define = !_packages[component];
 
   if (!definition.schema.no_redefine || first_define) {
-    console.log("DEFINING PACKAGE", component, definition);
     _packages[component] = definition;
 
     // marshalling some JSONified code into code

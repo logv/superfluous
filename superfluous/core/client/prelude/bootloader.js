@@ -222,13 +222,21 @@
     storage = storage || _storage;
 
     var to_load = {};
+    var pending = {};
     function add_pending(modules) {
       _.each(modules, function(m) {
-        to_load[m] = true;
+        if (!pending[m]) {
+          to_load[m] = true;
+        }
+
+        pending[m] = true;
       });
     }
 
-    function issue_request() {
+    var issue_request = _.throttle(function() {
+      if (!_.keys(to_load).length) {
+        return;
+      }
       var config = {
         data: {
           m: JSON.stringify(_.keys(to_load))
@@ -259,8 +267,8 @@
             }
 
             module_dict[k] = v;
-            factory_emitter.trigger(k, v);
           });
+
 
           if (!_versions[type]) {
             _versions[type] = {};
@@ -268,6 +276,10 @@
 
           _.extend(_versions[type], versions);
           _.extend(_signatures, _.object(_.map(versions, function(k, v) { return [k, v]; })));
+
+          _.each(data, function(v, k) {
+            factory_emitter.trigger(k, module_dict[k]);
+          });
 
         }
       });
@@ -280,7 +292,7 @@
 
       });
 
-    }
+    }, 100);
 
 
     return function bootload(modules, cb) {
@@ -320,7 +332,6 @@
       }
 
       var after = _.after(necessary_modules.length, function() {
-        console.log("AFTER MODULES LOADED!", loaded_modules);
         cb(loaded_modules);
       });
 
@@ -332,7 +343,10 @@
       });
 
       add_pending(necessary_modules);
-      issue_request();
+
+      setTimeout(function() {
+        issue_request();
+      }, 50);
 
     };
   }
