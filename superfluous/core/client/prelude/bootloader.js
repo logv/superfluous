@@ -80,7 +80,7 @@
       var signatures = JSON.parse(_component_storage.getItem("_signatures"));
       _.defaults(_signatures, signatures);
     } catch(e) {
-      console.log(e); 
+      console.log(e);
       console.trace();
     }
 
@@ -98,7 +98,7 @@
         })));
       });
     } catch(ee) {
-      console.log(ee); 
+      console.log(ee);
       console.trace();
     }
 
@@ -233,7 +233,7 @@
       });
     }
 
-    var issue_request = _.throttle(function() {
+    var issue_request = function() {
       if (!_.keys(to_load).length) {
         return;
       }
@@ -292,8 +292,9 @@
 
       });
 
-    }, 100);
+    };
 
+    var throttled_issue_request = _.throttle(issue_request, 100, { leading: false });
 
     return function bootload(modules, cb) {
       if (bootloader.__use_storage && _storage === _blank_storage) {
@@ -309,8 +310,8 @@
       var necessary_modules = _.filter(modules, function(k) {
         if (!module_dict[k]) {
           var version = _versions[type][k];
-          if (version) { 
-            load_def_from_storage(storage, module_dict, k, version, type, postload); 
+          if (version) {
+            load_def_from_storage(storage, module_dict, k, version, type, postload);
           }
         }
 
@@ -344,9 +345,12 @@
 
       add_pending(necessary_modules);
 
-      setTimeout(function() {
+      if (bootloader.__mux_resources) {
+        _.defer(throttled_issue_request, 50);
+      } else {
         issue_request();
-      }, 50);
+      }
+
 
     };
   }
@@ -604,7 +608,5 @@
    * @method js
    */
   register_resource_packager('js', _module_defs);
-
-  console.log(_versions);
 
 }());

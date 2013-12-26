@@ -1,4 +1,5 @@
 <% set_default("use_storage", false) %>
+<% set_default("mux_resources", true) %>
 <% set_default("use_fullscreen", false) %>
 <% set_default("head_supplements", []) %>
 <% set_default("simple_pipe", false) %>
@@ -54,6 +55,8 @@
     <% if (use_storage) { %>
       <script> bootloader.__use_storage = true; </script>
     <% } %>
+
+    <script> bootloader.__mux_resources = <%= mux_resources %>; </script>
   </div>
 
   <% if (header) { %>
