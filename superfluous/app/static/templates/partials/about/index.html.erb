@@ -10,8 +10,8 @@ interactions</b> (aka <b>the app</b>) into a coherent structure. since it's a
 node.js server, the app is written in <b>one language</b>, leaving the
 developer time to think about building the user experience.</p>
 
-<p>If you are familiar with django, rails or other web frameworks, many of the
-concepts in <s>superfluous</s> will be familiar to you.</p>
+<p>If you are familiar with other web frameworks (javascript or not), many of
+the concepts in <s>superfluous</s> will be familiar to you.</p>
 
 <p class="alert"> as a framework, <s>superfluous</s> makes some decisions for the
 developer, but leaves many others open. this is intentional, since
@@ -37,33 +37,25 @@ ENV=localhost nodemon app.js
 <h2>Features</h2>
 
 <p>
-<b>Speed</b> - <s>superfluous</s> has the initial delivery speed of a server app,
+  <b>Speed</b> - <s>superfluous</s> has the initial delivery speed of a server app,
   and the rich interactions of a client heavy app. By delivering the main core
   of the page to the client ASAP, the client can display the app and
   download assets while the slower parts of the page are still generating.
-  </p>
-  <p>
-
-  <b>Flexibility</b> - <s>superfluous</s> handles many boilerplate tasks but
-  still leaves the developer freedom to architect their web app - whether it's
-  choosing how to render, which data layer to use or how to split the client and server
-  responsibilities.
   </p>
 
   <p>
   <b>Re-usability</b> - Components encapsulate re-usable portions of rendering,
   event handling and data synchronization code. Using components on a site adds
-  structure, well defined behaviors and division of responsibilities.
+  structure, well defined behaviors and division of responsibilities. Every component
+  is responsible for managing its sub DOM, so the responsibilities are clear cut.
   <br />
-  Components can be rendered on the server or client and treated as the same
-  instance. This eliminates much of the tedium of creating rich and re-usable
-  interactions.
 
   <div class="alert">Many large web codebases today are using Component based
-  page generation on the server to minimize development friction.</div>
-  </p>
+  page generation on the server to minimize development friction when multiple
+  developers are working together on one or more projects.</div> </p>
 
   <p>
+
   <b>Familiarity</b> - Components are simple backbone views with a known
   lifecycle: initialize, render, destroy.  How the component updates its DOM
   tree is up to the developer. It could be MVVM and a data binding engine or
@@ -71,6 +63,14 @@ ENV=localhost nodemon app.js
   auto-syncing to data models, don't do it. If you do... go for it :-D </p>
   <p>
 
+  <p>
+  <b>Dynamicism</b> - <s>superfluous</s> has no compilation step. You can
+  require() your modules on the client or server and load a page. The server
+  takes care of dependency graphs, minification and all that packaging stuff
+  for you.
+  </p>
+
+  <p>
   <b>Server - Client Cohesion</b> - sometimes, coupling is a good thing. Using
   two controllers allows the app to organize itself in a way that makes sense
   for the server and the client, allowing components to exist in many contexts.
@@ -82,12 +82,12 @@ ENV=localhost nodemon app.js
   <h3>Server</h3>
 
   <p>
-  In superfluous, the server is an <a href="http://expressjs.com">express app</a>
-  running on <a href="http://nodejs.org">node.js</a>. The server is responsible
-  for sending <b>apps</b> (a <b>page</b> can be considered a type of app) to the
-  client. Each server can host one or more web apps, each living at its own top
-  level URL.
-  </p>
+  In superfluous, the server is composed of
+  <a href="http://www.senchalabs.org/connect/">connect middleware</a> running on
+  <a href="http://nodejs.org">node.js</a>. The server is responsible for
+  sending <b>apps</b> (a <b>page</b> can be considered a type of app) to the
+  client.  Each server can host one or more web apps, each living at its own
+  top level URL.  </p>
 
   <p>
   In addition to delivering the app to the client, the server is generally
@@ -104,10 +104,10 @@ ENV=localhost nodemon app.js
   <h3>Apps &amp; Pages</h3>
 
   <p>
-  In <s>superfluous</s>, <b>apps</b> and <b>pages</b> are very similar, but with
-  one difference: a page has no client controller, while an app does. Apps and
-  pages live at top level URLs and are responsible for delivering a rendered page
-  to the client web browser.
+  <b>apps</b> and <b>pages</b> are very similar, but with one difference: a
+  page has no client controller, while an app does. Apps and pages live at top
+  level URLs and are responsible for delivering a rendered page to the client
+  web browser.
   </p>
 
   <h3>File Layout</h3>
@@ -143,10 +143,11 @@ superfluous</s>/
   to instantiate the app that the user will be interacting with.  </p>
 
   <p>
-  App Routes are configured in the <b>routes.json</b> file - it is a global index
-  of what apps the server is going to be serving and where. Inside the
+  App Routes are configured in the <b>routes.json</b> file - it is a global
+  index of what apps the server is going to be serving and where. Inside the
   routes.json, each server controller has an entry that tells the router which
-  controller to hand requests to.
+  controller to hand requests to. Inside each controller is a list of
+  <b>routes</b> that the controller will handle.
   </p>
 
   <div class="mtl mbl">
@@ -167,8 +168,8 @@ superfluous</s>/
 <h3>MVC</h3>
 
 <p>
-if you are familiar with django, rails or other frameworks, you'll recognize
-them as MVC. (Models, Views &amp; Controllers).
+if you are familiar with other frameworks, you'll recognize them as MVC.
+(Models, Views &amp; Controllers).
 </p>
 
 <p>
@@ -363,15 +364,6 @@ component. this is because Components need to be creatable on the client side
 </div>
 
 <div>
-<h3>The Bridge</h3>
-
-<p>
-During the initial app delivery, the bridge is used by the server to run code
-on the client. It lets the server run client code and takes care of downloading
-the required files before doing so.
-</p>
-</div>
-
 <h3>Sockets</h3>
 
 <p>
@@ -379,6 +371,16 @@ Sockets are used for two way communication after the app is running on the
 client. The server and client both have a 'socket' function that lets them
 setup communication between each other.
 </p>
+
+<h3>The Bridge</h3>
+
+<p>
+The bridge is used by the server to run code on the client. It lets the server
+run client code and takes care of downloading the required files before doing
+so. During app delivery, the bridge lives on <b>api.bridge</b>, while during
+socket communication, the bridge lives on <b>socket.bridge</b>
+</p>
+</div>
 
 <div class="developers">
 <h1>Boilerplate</h1>
@@ -420,7 +422,7 @@ functionality.
 
   <p>
   In <s>superfluous</s>, asynchronous delivery lets you inject a placeholder into a
-  template and whenever you run a callback with new data, the new data will be
+  template and when you are finished preparing some HTML, the new HTML will be
   injected into that spot of the page.
 
   This is particularly well suited to data fetching and the callback heavy
@@ -573,7 +575,20 @@ server. When a new GIF is uploaded, all clients are notified. Easy... :-D
 <a href="http://github.com/okayzed/danceparty.sf">Check out the code</a>
 </p>
 
+<h3>A React demo</h3>
 
+<p>
+This example uses <a href="https://github.com/facebook/react">React</a> to
+render the app on the server and re-connect it on the client. <a
+href="/react_demo">Play with it</a>.
+
+<br />
+
+With component marshalling, the server is delivering a React View and Backbone
+Collection to the client that get re-instantiated transparently for use by the client
+controller.
+
+</p>
 
 
 <h3>An app in the wild</h3>
@@ -615,13 +630,13 @@ module.exports = {
 </code></pre>
 </div>
 
-<h3>Using express middleware</h3>
+<h3>Using middleware</h3>
 
-Superfluous is built on express - if you'd like to use middleware, it's
+Superfluous is built on connect - if you'd like to use middleware, it's
 straightforward! In app/main.js, add any middleware to the app inside the
 setup_app function.
 
-<p class="alert">middleware that loads or packages assets will probably conflict
+<p class="alert">middleware that loads or packages assets could conflict
 with superfluous' packaging scheme. </p>
 
 
@@ -678,19 +693,22 @@ localstorage, it could be RAM, it could be memcache. That's up to you :-D
 
 <h3>ORM &amp; DB</h3>
 
-Similarly, no ORM or DB is preferred for holding your data. If you choose
-to use one at all. Check out node-orm2, though, when you do want to use one
-:-D
+Similarly, no ORM or DB is preferred for holding your data. If you choose to
+use one at all. Check out <a href="https://github.com/balderdashy/waterline ">waterline.js</a> 
+or <a href="https://github.com/dresende/node-orm2">node-orm2</a>, though, when you do
+want to use one :-D
 
 
 <h3>DOM Data Binding</h3>
 
-For data binding, Rivets goes well with Backbone and the template structure
-of Components. It keeps the DOM and models in sync in your app, easily.
+For data binding, <a href="https://github.com/mikeric/rivets">Rivets</a> goes
+well with Backbone and the template structure of Components. It keeps the DOM
+and models in sync in your app, easily. If you are more into Functional
+programming, check out <a href="https://github.com/facebook/react">React</a>
 
 <h3>Authentication</h3>
 
-Authentication Authentishmation. Check out passport.
+Authentication Authentishmation. Check out <a href="http://passportjs.org/">passport</a>
 
 <h3>Scaling</h3>
 
