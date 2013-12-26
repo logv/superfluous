@@ -14,6 +14,7 @@ var less = require("less");
 var stringify = require("json-stable-stringify");
 
 function multi_pack(dir, extension, prepack) {
+  var cache = {};
   return function() {
     var req = context("req");
     var res = context("res");
@@ -21,46 +22,38 @@ function multi_pack(dir, extension, prepack) {
     var loaded = {};
     var modules = JSON.parse(req.query.m);
 
+    function unpack(data, loaded) {
+      if (_.isObject(data)) {
+        _.each(data, function(v, k) {
+          if (dir) {
+            loaded[k.replace(dir + "/", '')] = v;
+          } else {
+            loaded[k] = v;
+          }
+        });
+      } else {
+        loaded[k] = v
+      }
+    }
+
     async.each(modules, function(module, done) {
       var filename = dir + "/" + module;
+
+      if (cache[module]) {
+        unpack(cache[module], loaded);
+        done();
+        return;
+      }
 
       // Does an unwind and prepack, technically
       if (prepack) {
         prepack([filename], function(data) {
-          if (_.isObject(data)) {
-            _.each(data, function(v, k) {
-              if (dir) {
-                loaded[k.replace(dir + "/", '')] = v;
-              } else {
-                loaded[k] = v;
-              }
-            });
-          } else if (_.isString(data)) {
-            loaded[module] = data;
-          }
-
+          unpack(data, loaded);
+          cache[module] = data;
           done();
         });
 
-      } else {
-        readfile.both(filename + "." + extension, function(err, data) {
-          if (err) {
-            data = template.render_core("helpers/missing_resource.html.erb", {
-              name: module,
-              file: filename,
-              extension: extension
-            });
-
-          } else {
-            data = data.toString();
-          }
-
-          loaded[module] = data;
-          done();
-        });
-
-      }
-
+      } 
     }, function resolution(err) {
       res.set("Content-Type", "application/json");
       res.write(JSON.stringify(loaded));
