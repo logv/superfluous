@@ -51,27 +51,34 @@ _.each(API, function(v, k) {
 });
 
 var zlib = require("zlib");
-function request_handler_factory(route, handler) {
+function request_handler_factory(app, route, handler) {
   return function handle_req(req, res) {
     var stream = zlib.createGzip();
     stream._flush = zlib.Z_SYNC_FLUSH;
     stream.pipe(res);
 
-    context.create({ req: req, res: res, stream: stream }, function(ctx) {
+    context.create(
+      {
+        req: req,
+        res: res,
+        stream: stream,
+        app: app,
+        router: app.router },
+      function(ctx) {
 
-      page.emit("start", {
-        route: route
-      });
+        page.emit("start", {
+          route: route
+        });
 
-      debug("Starting request", ctx.id, ctx.req.url);
-      res.set("Transfer-Encoding", "chunked");
+        debug("Starting request", ctx.id, ctx.req.url.pathname);
+        res.set("Transfer-Encoding", "chunked");
 
-      handler(ctx, API);
+        handler(ctx, API);
 
-      page.emit("main_duration");
-      debug("Ending main request", ctx.id, ctx.req.url);
-      // Nulling out context after request is over
-      ctx.exit();
+        page.emit("main_duration");
+        debug("Ending main request", ctx.id, ctx.req.uri.pathname);
+        // Nulling out context after request is over
+        ctx.exit();
     });
   };
 }
@@ -97,12 +104,12 @@ var setup = function(app) {
     }
 
 
-    router.add(type, route, request_handler_factory(route, handler), {
+    router.add(type, route, request_handler_factory(app, route, handler), {
       name: name
     });
   });
 
-  
+
   console.log("Routes:\n", router.routesByNameAndMethod);
   app.use(function(req, res, next) {
     // pretend we are expressive
