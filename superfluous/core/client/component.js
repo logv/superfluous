@@ -24,12 +24,15 @@ function define_package(component, definition) {
   var first_define = !_packages[component];
 
   if (!definition.schema.no_redefine || first_define) {
+    console.log("DEFINING PACKAGE", component, definition);
     _packages[component] = definition;
 
     // marshalling some JSONified code into code
     _packages[component].exports = bootloader.raw_import(definition.main, component);
     _packages[component].events = bootloader.raw_import(definition.events, component + "_events");
   }
+
+  return _packages[component];
 }
 
 bootloader.register_component_packager("component", _packages, define_package);
@@ -93,7 +96,7 @@ function build(component, options, cb) {
     var css = _packages[component].style.code;
 
     if (css) {
-      bootloader.inject_css("component/" + component, css);
+      bootloader.inject_css("component/" + component, { code: css });
     }
 
     function render_component(cmpInstance) {

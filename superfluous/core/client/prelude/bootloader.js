@@ -193,8 +193,8 @@
     return eval(toval);
   }
 
-  function load_def_from_storage(module_dict, module, version, type, postload) {
-    var defs = _storage.getItem(version);
+  function load_def_from_storage(storage, module_dict, module, version, type, postload) {
+    var defs = storage.getItem(version);
 
     if (defs) {
       try {
@@ -208,20 +208,21 @@
         if (!module_dict[module]) {
           bootloader.from_storage[type][module] = version;
           if (postload) {
-            defs.code = postload(module, defs.code);
+            defs = postload(module, defs);
           }
 
-          module_dict[module] = defs.code;
+          module_dict[module] = defs;
         }
       }
     }
   }
 
-  function bootload_factory(type, module_dict, postload) {
+  function bootload_factory(type, module_dict, postload, storage) {
+    storage = storage || _storage;
     return function(modules, cb) {
-      if (bootloader.__use_storage && _storage === _blank_storage) {
+      if (bootloader.__use_storage && storage === _blank_storage) {
         console.log("Caching assets in LocalStorage");
-        _storage = _component_storage;
+        storage = _component_storage;
       }
 
       if (_.isString(modules)) {
@@ -232,7 +233,9 @@
       var necessary_modules = _.filter(modules, function(k) {
         if (!module_dict[k]) {
           var version = _versions[type][k];
-          if (version) { load_def_from_storage(module_dict, k, version, type, postload); }
+          if (version) { 
+            load_def_from_storage(storage, module_dict, k, version, type, postload); 
+          }
         }
 
         if (module_dict[k]) {
@@ -272,15 +275,15 @@
 
             v.module = k;
             if (v.signature) {
-              _storage.setItem(v.signature, JSON.stringify(v));
+              storage.setItem(v.signature, JSON.stringify(v));
               versions[k] = v.signature;
             }
 
             if (postload) {
-              v.code = postload(k, v.code);
+              v = postload(k, v);
             }
 
-            loaded_modules[k] = v.code;
+            loaded_modules[k] = v;
           });
 
           _.extend(module_dict, loaded_modules);
@@ -308,76 +311,7 @@
   }
 
   function package_factory(type, module_dict, postload) {
-    return function(packages, cb) {
-      if (_.isString(packages)) {
-        packages = [packages];
-      }
-
-      var loaded_modules = {};
-      var necessary_packages = _.reject(packages, function(k) {
-        loaded_modules[k] = module_dict[k];
-        return module_dict[k];
-      });
-
-      var really_necessary = [];
-      // Gotta see if we have this package version saved in _storage somewhere
-      _.each(necessary_packages, function(pkg) {
-        if (_versions[type][pkg] && _component_storage.getItem(_versions[type][pkg])) {
-          var definition = _component_storage.getItem(_versions[type][pkg]);
-
-          if (definition) {
-            bootloader.from_storage[type][pkg] = _versions[type][pkg];
-            postload(pkg, JSON.parse(definition));
-
-            loaded_modules[pkg] = module_dict[pkg];
-
-            return;
-          }
-        }
-
-        really_necessary.push(pkg);
-      });
-
-      if (!really_necessary.length) {
-        if (cb) {
-          cb(loaded_modules);
-        }
-        return;
-      }
-
-      var config = {
-        data: {
-          m: JSON.stringify(really_necessary)
-        }
-      };
-
-      if (bootloader.__release) {
-          config.data.h = bootloader.__release;
-      }
-
-      var req = $.ajax("/pkg/" + type, config);
-
-      req.done(function(data) {
-        _.each(data, function(v, k) {
-
-          if (v.signature) {
-            _versions[type][k] = v.signature;
-            _signatures[v.signature] = k;
-            if (!_component_storage.getItem(v.signature)) {
-              _component_storage.setItem(v.signature, JSON.stringify(v));
-            }
-          }
-
-          postload(k, v);
-          loaded_modules[k] = module_dict[k];
-
-        });
-
-        if (cb) {
-          cb(loaded_modules);
-        }
-      });
-    };
+    return bootload_factory(type, module_dict, postload, _component_storage);
   }
 
   function register_component_packager(name, def_dict, postload) {
@@ -468,12 +402,12 @@
     var version = signature || _versions.js[module];
     if (!_module_defs[module]) {
       if (version) {
-        load_def_from_storage(_module_defs, module, version, "js");
+        load_def_from_storage(_storage, _module_defs, module, version, "js");
       }
     }
 
     if (_module_defs[module]) {
-      _modules[module] = raw_import(_module_defs[module], module);
+      _modules[module] = raw_import(_module_defs[module].code, module);
       if (cb) {
         cb(_modules[module]);
       }
@@ -481,7 +415,7 @@
       bootloader.js([module], function() {
         // race to evaluate! but only once
         if (!_modules[module]) {
-          var data = raw_import(_module_defs[module], module);
+          var data = raw_import(_module_defs[module].code, module);
           _modules[module] = data;
         }
 
@@ -499,8 +433,10 @@
       return css;
     }
 
+    console.log("INJECTING CSS", css);
+
     var stylesheetEl = $('<style type="text/css" media="screen"/>');
-    stylesheetEl.text(css);
+    stylesheetEl.text(css.code);
     stylesheetEl.attr("data-name", name);
 
     $("head").append(stylesheetEl);
@@ -550,7 +486,7 @@
         $(el).attr('id', id);
       }
 
-      inject_css("_display_" + options.id, "#" + id + "{ display: block !important; }");
+      inject_css("_display_" + options.id, { code: "#" + id + "{ display: block !important; }"});
     }
 
 
