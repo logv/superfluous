@@ -48,7 +48,7 @@ function marshall_args() {
 module.exports = {
   /**
    * Invokes a function in a client JS module.
-   * 
+   *
    * @method call
    * @param {String} module_name the module name to load. This should be a full
    * path from the app root (app/client/some_module, f.e.)
@@ -118,10 +118,16 @@ module.exports = {
     // we strip extensions off CSS_DEPENDENCIES, because the bootloader knows
     // they are .css already
     var css_deps = _.map(context("CSS_DEPS"),
-        function(val, dependency) { return dependency.replace(/\.css$/, ''); });
+        function(val, dependency) {
+          if (dependency.indexOf("http") !== 0) {
+            return dependency.replace(/\.css$/, '');
+          } else {
+            return dependency;
+          }
+        });
 
     var options = {
-      js: context("JS_DEPS"),
+      js: _.keys(context("JS_DEPS")),
       css: css_deps,
       tmpl: [],
       cmp: [],

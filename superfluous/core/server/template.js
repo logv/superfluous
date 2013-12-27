@@ -127,10 +127,6 @@ var socket_header = function(prelude_hash) {
 
 var js_header = function(prelude_hash) {
   var ret = "";
-  _.forEach(context("JS_DEPS"), function(v, k) {
-      ret += render_js_link(k) + "\n";
-  });
-
   ret += render_core_template("helpers/js_link.html.erb", {
     path: "/pkg/prelude.js",
     hash: prelude_hash

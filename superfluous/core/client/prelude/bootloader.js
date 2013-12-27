@@ -543,9 +543,15 @@
 
 
 
-    if (options.css && options.css.length) {
+    var external_js = _.filter(options.js, function(c) { return c.indexOf("http") === 0; });
+    var js  = _.filter(options.js, function(c) { return c.indexOf("http") !== 0; });
+    var external_css = _.filter(options.css, function(c) { return c.indexOf("http") === 0; });
+    var css  = _.filter(options.css, function(c) { return c.indexOf("http") !== 0; });
+
+    // INSERT CSS
+    if (css && css.length) {
       insert_pagelet();
-      bootloader.css(options.css, function() {
+      bootloader.css(css, function() {
         // Delay the pagelet display ~10ms until the next browser work cycle,
         // so CSS can hopefully be parsed by then.
         display_pagelet();
@@ -554,6 +560,25 @@
       insert_pagelet();
       display_pagelet();
     }
+
+    // EXTERNAL CSS
+    _.each(external_css, function(css) {
+      // import external over here
+      $("head").append($('<link rel="stylesheet" type="text/css" />').attr('href', css));
+    });
+
+
+    // INSERT JS
+    if (js && js.length) {
+      bootloader.js(js, function() { });
+    }
+
+    // EXTERNAL JS
+    _.each(external_js, function(js) {
+      $("head").append($("<script/>").attr('src', js));
+    });
+
+
 
   }
 
