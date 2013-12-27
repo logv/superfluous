@@ -5,54 +5,6 @@
 
 /** @jsx React.DOM */
 
-var Todo = Backbone.Model.extend({
-  // Default attributes for the todo
-  // and ensure that each todo created has `title` and `completed` keys.
-  defaults: {
-    title: '',
-    completed: false
-  },
-
-  // Toggle the `completed` state of this todo item.
-  toggle: function() {
-    this.save({
-      completed: !this.get('completed')
-    });
-  }
-});
-
-var TodoList = Backbone.Collection.extend({
-
-  // Reference to this collection's model.
-  model: Todo,
-
-
-  // Filter down the list of all todo items that are finished.
-  completed: function() {
-    return this.filter(function( todo ) {
-      return todo.get('completed');
-    });
-  },
-
-  remaining: function() {
-    return this.without.apply(this, this.completed());
-  },
-
-  // We keep the Todos in sequential order, despite being saved by unordered
-  // GUID in the database. This generates the next order number for new items.
-  nextOrder: function () {
-    if (!this.length) {
-      return 1;
-    }
-    return this.last().get('order') + 1;
-  },
-
-  // Todos are sorted by their original insertion order.
-  comparator: function (todo) {
-    return todo.get('order');
-  }
-});
-
 var Utils = {
   pluralize: function( count, word ) {
     return count === 1 ? word : word + 's';
@@ -75,6 +27,11 @@ var Utils = {
 // Begin React stuff
 
 var TodoItem = React.createClass({
+  getDefaultProps: function() {
+    return {
+      editing: false
+    };
+  },
   handleSubmit: function(event) {
     var val = this.refs.editField.getDOMNode().value.trim();
     if (val) {
@@ -176,18 +133,13 @@ var BackboneMixin = {
 var TodoApp = React.createClass({
   mixins: [BackboneMixin],
   getInitialState: function() {
-    var todoList = new TodoList({ url: function() {
-      console.log("TODO LIST URL", arguments);
-    }});
-    return {editing: null, todos: todoList};
+    return {};
   },
   getDefaultProps: function() {
     return {};
   },
 
   componentDidMount: function() {
-    // Additional functionality for todomvc: fetch() the collection on init
-    this.state.todos.fetch();
     this.refs.newField.getDOMNode().focus();
   },
 
@@ -195,23 +147,23 @@ var TodoApp = React.createClass({
     // If saving were expensive we'd listen for mutation events on Backbone and
     // do this manually. however, since saving isn't expensive this is an
     // elegant way to keep it reactively up-to-date.
-    this.state.todos.forEach(function(todo) {
+    this.props.todos.forEach(function(todo) {
       todo.save();
     });
   },
 
   getBackboneModels: function() {
-    return [this.state.todos];
+    return [this.props.todos];
   },
 
   handleSubmit: function(event) {
     event.preventDefault();
     var val = this.refs.newField.getDOMNode().value.trim();
     if (val) {
-      this.state.todos.create({
+      this.props.todos.create({
         title: val,
         completed: false,
-        order: this.state.todos.nextOrder()
+        order: this.props.todos.nextOrder()
       });
       this.refs.newField.getDOMNode().value = '';
     }
@@ -219,7 +171,7 @@ var TodoApp = React.createClass({
 
   toggleAll: function(event) {
     var checked = event.nativeEvent.target.checked;
-    this.state.todos.forEach(function(todo) {
+    this.props.todos.forEach(function(todo) {
       todo.set('completed', checked);
     });
   },
@@ -234,7 +186,7 @@ var TodoApp = React.createClass({
   },
 
   clearCompleted: function() {
-    this.state.todos.completed().forEach(function(todo) {
+    this.props.todos.completed().forEach(function(todo) {
       todo.destroy();
     });
   },
@@ -243,7 +195,7 @@ var TodoApp = React.createClass({
     var footer = null;
     var main = null;
     var self = this;
-    var todoItems = this.state.todos.map(function(todo) {
+    var todoItems = this.props.todos.map(function(todo) {
       return (
         <TodoItem
           key={todo.cid}
@@ -257,7 +209,7 @@ var TodoApp = React.createClass({
       );
     }, this);
 
-    var activeTodoCount = this.state.todos.remaining().length;
+    var activeTodoCount = this.props.todos.remaining().length;
     var completedCount = todoItems.length - activeTodoCount;
     if (activeTodoCount || completedCount) {
       footer =
