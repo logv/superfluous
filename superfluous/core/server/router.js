@@ -14,6 +14,7 @@ var _ = require_vendor("underscore");
 var context = require("./context");
 var load_controller = require("./controller").load;
 var load_core_controller = require("./controller").core;
+var path_ = require("path");
 
 module.exports = {
   get_path: function(controller_name) {
@@ -38,7 +39,7 @@ module.exports = {
 
     _.each(inst.routes, function(handler, subpath) {
       routes.push({
-        route: "/pkg" + subpath,
+        route: path_.normalize("/pkg/" + subpath),
         method: "get",
         name: "pkg." + handler,
         handler: run_route(handler)
@@ -62,15 +63,10 @@ module.exports = {
       }
 
       _.each(inst.routes, function(handler, subpath) {
-        var subberpath;
-        if (path === '/' && subpath !== '') {
-          subberpath = subpath;
-        } else {
-          subberpath = path + subpath;
-        }
+        var subberpath = path + subpath;
 
         routes.push({
-          route: subberpath,
+          route: path_.normalize(subberpath),
           method: "get",
           name: controller + "." + handler,
           handler: run_route(handler)
@@ -78,14 +74,9 @@ module.exports = {
       });
 
       _.each(inst.post_routes, function(handler, subpath) {
-        var subberpath;
-        if (path === '/' && subpath !== '') {
-          subberpath = subpath;
-        } else {
-          subberpath = path + subpath;
-        }
+        var subberpath = path + subpath;
         routes.push({
-          route: subberpath,
+          route: path_.normalize(subberpath),
           method: "post",
           name: controller + "." + handler,
           handler: run_route(handler)
