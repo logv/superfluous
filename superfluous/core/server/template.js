@@ -92,8 +92,10 @@ var render_core_template = function(template, options) {
   return render_template(template, options, true);
 };
 
+var _compiled_templates = {};
 var render_template = function(template, options, core) {
   var template_data = load_template(template, core);
+  var template_key = template + ":" + (core ? "core" : " app");
 
   if (!options) {
     options = {};
@@ -106,8 +108,26 @@ var render_template = function(template, options, core) {
   var user = context("req").user;
   options.username = (user && user.username) || "";
   options.loggedin = !!user;
+  var templateSettings = {};
+  if (!_compiled_templates[template_key]) {
+    try {
+      _compiled_templates[template_key] = _.template(template_data);
+    } catch(e) {
+      console.log("Error compiling template", template, e);
+    }
 
-  var template_str = _.template(template_data, options);
+  }
+
+  var template_exec = _compiled_templates[template_key]; 
+
+  var template_str = "";
+  try {
+    template_str = template_exec(options, templateSettings);
+  } catch (ee) {
+    var error_msg = "Error executing template " + template + ": '" + ee + "'";
+    console.log(error_msg);
+    return error_msg;
+  }
 
   return template_str;
 };
