@@ -30,11 +30,17 @@ function readstyle(mod) {
   return data;
 }
 
+var _style_cache = {};
 function package_less(includes, cb) {
   var included = _.map(includes, function(s) { return s.trim(); });
-
   var ret = {};
   async.each(included, function(mod, done) {
+    if (_style_cache[mod]) {
+      ret[mod] = _style_cache[mod];
+      done();
+      return;
+    }
+
     var data = readstyle(mod);
     if (data) {
       hooks.invoke("before_render_less", mod, less_header + data.toString(), function(mod, data) {
@@ -52,6 +58,7 @@ function package_less(includes, cb) {
               type: "css",
               timestamp: parseInt(+Date.now() / 1000, 10)
             };
+            _style_cache[mod] = ret[mod];
 
             done();
           });
@@ -62,7 +69,7 @@ function package_less(includes, cb) {
       done();
     }
 
-  }, function(err) {
+  }, function() {
     cb(ret);
   });
 }
@@ -86,21 +93,22 @@ function package_and_scope_less(component, module, cb) {
   });
 }
 
+var _js_cache = {};
 function package_js(includes, cb) {
   var included = _.map(includes, function(s) { return s.trim(); });
-  var excluded = [];
 
-
-  var definition = {
-    baseUrl: "./",
-    include: included,
-    out: "tmp-build",
-    optimize: "uglify",
-    excludeShallow: excluded
-  };
-
+  var includes_key = includes.join(",");
+  if (_js_cache[includes_key]) {
+    cb(_js_cache[includes_key]);
+    return;
+  }
 
   var ret = {};
+  var after = _.after(includes.length, function() { 
+    _js_cache[includes_key] = ret;
+    cb(ret); 
+  });
+
   _.each(included, function(inc) {
     module_grapher.graph(inc, {
         paths: [ './', './static', path.join(__dirname, '../../') ]
@@ -110,7 +118,7 @@ function package_js(includes, cb) {
         }
 
         // each works on arrays, not objects
-        var modules = _.map(resolved.modules, function(v, k) { return v; });
+        var modules = _.map(resolved.modules, function(v) { return v; });
         async.each(
           modules,
           function(mod, done) {
@@ -129,7 +137,7 @@ function package_js(includes, cb) {
             done();
           },
           function(err) {
-            cb(ret);
+            after(ret);
           });
       });
   });

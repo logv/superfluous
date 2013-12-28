@@ -283,6 +283,18 @@ function validate_versions(versions, socket, cb) {
     });
   });
 
+  packager.js(_.keys(versions.js), function(ret) {
+    _.each(versions.js, function(old_hash, js) {
+      if (ret[js]) {
+        if (ret[js].signature !== old_hash) {
+          socket.emit("update_version", 'js', js, old_hash, ret[js].signature);
+        }
+      } else {
+        socket.emit("update_version", 'js', js, old_hash, null);
+      }
+    });
+  });
+
   _.each(versions.js, function(old_hash, js) {
     var hash = quick_hash(readfile.both(js + ".js"));
     if (hash !== old_hash) {
