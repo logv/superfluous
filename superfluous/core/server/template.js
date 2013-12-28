@@ -71,8 +71,8 @@ function setup_render_context(options) {
     _.extend(ret, options, {
       add_stylesheet: add_stylesheet,
       add_javascript: add_js,
-      url_for: context("router"),
       ctx: context.get(),
+      url_for: _.bind(context("router").build, context("router")),
       add_socket: add_socket,
       render_template: render_template,
       render_partial: render_partial,
