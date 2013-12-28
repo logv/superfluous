@@ -278,7 +278,7 @@ function validate_versions(versions, socket, cb) {
     _.each(versions.css, function(old_hash, css) {
       var mod = stylename(css);
       if (ret[mod] && ret[mod].signature !== old_hash) {
-        socket.emit("update_version", 'css', css, old_hash, ret[mod].signature);
+        socket.emit("__update_version", 'css', css, old_hash, ret[mod].signature);
       }
     });
   });
@@ -287,10 +287,10 @@ function validate_versions(versions, socket, cb) {
     _.each(versions.js, function(old_hash, js) {
       if (ret[js]) {
         if (ret[js].signature !== old_hash) {
-          socket.emit("update_version", 'js', js, old_hash, ret[js].signature);
+          socket.emit("__update_version", 'js', js, old_hash, ret[js].signature);
         }
       } else {
-        socket.emit("update_version", 'js', js, old_hash, null);
+        socket.emit("__update_version", 'js', js, old_hash, null);
       }
     });
   });
@@ -298,7 +298,7 @@ function validate_versions(versions, socket, cb) {
   _.each(versions.js, function(old_hash, js) {
     var hash = quick_hash(readfile.both(js + ".js"));
     if (hash !== old_hash) {
-      socket.emit("update_version", 'js', js, old_hash, hash);
+      socket.emit("__update_version", 'js', js, old_hash, hash);
     }
   });
 
@@ -310,12 +310,12 @@ function validate_versions(versions, socket, cb) {
   _.each(versions.pkg, function(old_hash, pkg) {
     Component.build_package(pkg, function(ret) {
       if (!ret) {
-        socket.emit("update_version", 'pkg', pkg, old_hash, null);
+        socket.emit("__update_version", 'pkg', pkg, old_hash, null);
         return;
       }
 
       if (old_hash !== ret.signature) {
-        socket.emit("update_version", 'pkg', pkg, old_hash, ret.signature);
+        socket.emit("__update_version", 'pkg', pkg, old_hash, ret.signature);
       }
 
       after();

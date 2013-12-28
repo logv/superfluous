@@ -49,7 +49,7 @@
   }
 
   window.SF.once("bridge/socket", function(socket) {
-    socket.on("update_version", function(type, entry, old_hash, new_hash) {
+    socket.on("__update_version", function(type, entry, old_hash, new_hash) {
       console.log("Updated version", type, entry, old_hash, new_hash);
       delete _versions[type][old_hash];
       delete _versions[type][entry];

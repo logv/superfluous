@@ -41,7 +41,7 @@
           "/pkg/status", function() {
 
             SF.trigger("validate/versions", SF.socket());
-            SF.on("updated_versions", function() {
+            SF.on("__updated_versions", function() {
               bootloader.sync();
               window.location.reload();
             });
