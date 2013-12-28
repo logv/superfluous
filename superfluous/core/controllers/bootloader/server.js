@@ -53,7 +53,7 @@ function multi_pack(dir, extension, prepack) {
           done();
         });
 
-      } 
+      }
     }, function resolution(err) {
       res.set("Content-Type", "application/json");
       res.write(JSON.stringify(loaded));
@@ -72,7 +72,7 @@ function get_socket_hash(after_read_socket_hash) {
   if (!_socket_lib) {
     _socket_lib = socket.get_socket_library();
   }
-  after_read_socket_hash(quick_hash(_socket_lib)); 
+  after_read_socket_hash(quick_hash(_socket_lib));
 }
 
 function get_socket_library(after_read_socket) {
@@ -267,12 +267,22 @@ var component = function() {
 
 function validate_versions(versions, socket, cb) {
   cb = cb || function() { };
-  _.each(versions.css, function(old_hash, css) {
-    var hash = quick_hash(readfile("app/static/styles/" + css + ".css"));
-    if (hash !== old_hash) {
-      socket.emit("update_version", 'css', css, old_hash, hash);
-    }
+  function stylename(css) {
+    return "app/static/styles/" + css;
+  }
+  var named_styles = _.map(versions.css, function(old_hash, css) {
+    return stylename(css);
   });
+
+  packager.less(named_styles, function(ret) {
+    _.each(versions.css, function(old_hash, css) {
+      var mod = stylename(css);
+      if (ret[mod] && ret[mod].signature !== old_hash) {
+        socket.emit("update_version", 'css', css, old_hash, ret[mod].signature);
+      }
+    });
+  });
+
   _.each(versions.js, function(old_hash, js) {
     var hash = quick_hash(readfile.both(js + ".js"));
     if (hash !== old_hash) {

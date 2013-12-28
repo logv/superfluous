@@ -25,6 +25,7 @@
   var _module_defs = {};
   var _signatures = {};
   var _versions = { };
+  var _garbage = {};
 
   var SF = window.SF;
   var _blank_storage = {
@@ -52,6 +53,7 @@
       console.log("Updated version", type, entry, old_hash, new_hash);
       delete _versions[type][old_hash];
       delete _versions[type][entry];
+      _garbage[old_hash] = true;
 
       try {
         localStorage.removeItem(old_hash);
@@ -60,6 +62,8 @@
       if (new_hash) {
         _versions[type][entry] = new_hash;
       }
+
+      sync_storage();
     });
 
     SF.trigger("validate/versions", socket);
@@ -92,7 +96,12 @@
           _versions[type] = {};
         }
 
-        _.defaults(_versions[type], def);
+        _.each(def, function(v, k) {
+          if (!_garbage[v]) {
+            _versions[type][k] = v;
+          }
+        });
+
         _.extend(_signatures, _.object(_.map(def, function(v, k) {
           return [v, k];
         })));
@@ -104,11 +113,12 @@
 
   }
 
-  function sync_storage() {
+  function sync_to_storage() {
+    console.log("Syncing to local storage");
 
     // remove old keys
-    var key;
-    for (key in localStorage) {
+    for (var key in localStorage) {
+      
       if (key === "_versions" || key === "_signatures") {
         continue;
       }
@@ -118,7 +128,7 @@
           var item = localStorage.getItem(key);
           if (!item) {
             localStorage.removeItem(key);
-            return;
+            continue;
           }
 
           var parsed = JSON.parse(item);
@@ -138,7 +148,7 @@
                 localStorage.removeItem(current_version);
                 console.log("Upgrading in memory version of", name, "due to old timestamp", parsed.signature);
 
-                return;
+                continue;
               }
             }
 
@@ -167,10 +177,11 @@
 
     _component_storage.setItem("_signatures", JSON.stringify(_signatures));
 
-  }
+  };
+
+  var sync_storage = _.throttle(sync_to_storage, 3000);
 
   // We need to sync our _versions with server versions
-  setInterval(sync_storage, 3000);
   sync_metadata();
   sync_storage();
 
@@ -281,6 +292,7 @@
             factory_emitter.trigger(k, module_dict[k]);
           });
 
+          _.defer(sync_storage);
         }
       });
 
