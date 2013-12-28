@@ -58,32 +58,32 @@ function request_handler_factory(app, route, handler, name) {
     stream._flush = zlib.Z_SYNC_FLUSH;
     stream.pipe(res);
 
-    hooks.call("request", req, res, function() { });
-    context.create(
-      {
-        req: req,
-        res: res,
-        route_name: name,
-        stream: stream,
-        app: app,
-        router: app.router },
-      function(ctx) {
+    hooks.invoke("setup_request", req, res, function() { 
+      context.create(
+        {
+          req: req,
+          res: res,
+          route_name: name,
+          stream: stream,
+          app: app,
+          router: app.router },
+        function(ctx) {
+          hooks.invoke("setup_context", ctx, function() { 
+            page.emit("start", {
+              route: route
+            });
 
-        hooks.call("context", ctx, function() { });
+            debug("Starting request", ctx.id, ctx.req.url.pathname);
+            res.set("Transfer-Encoding", "chunked");
 
-        page.emit("start", {
-          route: route
-        });
+            handler(ctx, API);
 
-        debug("Starting request", ctx.id, ctx.req.url.pathname);
-        res.set("Transfer-Encoding", "chunked");
-
-        handler(ctx, API);
-
-        page.emit("main_duration");
-        debug("Ending main request", ctx.id, ctx.req.uri.pathname);
-        // Nulling out context after request is over
-        ctx.exit();
+            page.emit("main_duration");
+            debug("Ending main request", ctx.id, ctx.req.uri.pathname);
+            // Nulling out context after request is over
+            ctx.exit();
+          });
+      });
     });
   };
 }

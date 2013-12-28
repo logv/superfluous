@@ -17,6 +17,7 @@ var less = require("less");
 var path = require("path");
 var quick_hash = require_core("server/hash");
 var readfile = require_core("server/readfile");
+var hooks = require_core("server/hooks");
 
 var less_header = readfile("app/static/styles/definitions.less") +
   readfile("core/static/styles/definitions.less");
@@ -37,19 +38,25 @@ function package_less(includes, cb) {
     var data = readstyle(mod);
     if (data) {
       var hash = quick_hash(data.toString());
-      less.render(less_header + data.toString(), function(err, css) {
-        if (err) {
-          console.log("Error rendering less module:", mod, err);
-        }
+      hooks.invoke("before_render_less", less_header + data.toString(), function(data) {
+        less.render(data, function(err, css) {
+          if (err) {
+            console.log("Error rendering less module:", mod, err);
+          }
 
-        ret[mod] = {
-          code: css,
-          signature: hash,
-          name: mod,
-          type: "css",
-          timestamp: parseInt(+Date.now() / 1000, 10)
-        };
-        done();
+          hooks.invoke("after_render_less", css, function(css) { 
+            ret[mod] = {
+              code: css,
+              signature: hash,
+              name: mod,
+              type: "css",
+              timestamp: parseInt(+Date.now() / 1000, 10)
+            };
+
+            done();
+          });
+
+        });
       });
     } else {
       done();

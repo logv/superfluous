@@ -67,7 +67,7 @@ var render_controller_template = function(template, options) {
 
 function setup_render_context(options) {
   var ret = {};
-  hooks.call("template_context", ret, function() {
+  hooks.invoke("setup_template_context", ret, function() {
     _.extend(ret, options, {
       add_stylesheet: add_stylesheet,
       add_javascript: add_js,

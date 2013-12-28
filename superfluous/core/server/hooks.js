@@ -42,8 +42,31 @@ function call_hook() {
 
 }
 
+function invoke_hook() {
+  var args = _.toArray(arguments);
+  var hook_name = args.shift();
+  var cb = args.pop();
+
+  var ret;
+  if (_main[hook_name]) {
+    ret = _main[hook_name].apply(_main, args);
+  }
+
+  if (ret) {
+    args = ret;
+  }
+
+  if (cb) {
+    ret = cb.apply(cb, args);
+  }
+
+  return ret;
+
+}
+
 module.exports = {
   call: call_hook,
+  invoke: invoke_hook,
   set_main: function(m) {
     _main = m;
   }
