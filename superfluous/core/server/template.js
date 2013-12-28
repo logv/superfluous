@@ -15,6 +15,7 @@ var _ = require_vendor("underscore");
 var context = require("./context");
 var readfile = require("./readfile");
 var router = require("./router");
+var hooks = require("./hooks");
 
 context.setDefault("CSS_DEPS", {});
 context.setDefault("JS_DEPS", {});
@@ -61,23 +62,30 @@ function render_js_link(script) {
 
 var render_controller_template = function(template, options) {
   return render_template("controllers/" + template, options);
-}
+};
+
 
 function setup_render_context(options) {
-  return _.extend(options, {
-    add_stylesheet: add_stylesheet,
-    add_javascript: add_js,
-    url_for: build_url,
-    add_socket: add_socket,
-    render_template: render_template,
-    render_partial: render_partial,
-    render_core: render_core_template,
-    set_default: function(key, value) {
-      if (typeof this[key] === "undefined") {
-        this[key] = value;
+  var ret = {};
+  hooks.call("template_context", ret, function() {
+    _.extend(ret, options, {
+      add_stylesheet: add_stylesheet,
+      add_javascript: add_js,
+      url_for: context("router"),
+      ctx: context.get(),
+      add_socket: add_socket,
+      render_template: render_template,
+      render_partial: render_partial,
+      render_core: render_core_template,
+      set_default: function(key, value) {
+        if (typeof this[key] === "undefined") {
+          this[key] = value;
+        }
       }
-    }
+   });
   });
+
+  return ret;
 }
 
 var render_core_template = function(template, options) {

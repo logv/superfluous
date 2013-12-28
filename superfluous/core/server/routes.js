@@ -14,6 +14,8 @@ var context = require("./context");
 var page = require("./page");
 var router = require("./router");
 var socket = require("./socket");
+var hooks = require("./hooks");
+
 var fs = require("fs");
 var readfile = require("./readfile");
 
@@ -51,20 +53,24 @@ _.each(API, function(v, k) {
 });
 
 var zlib = require("zlib");
-function request_handler_factory(app, route, handler) {
+function request_handler_factory(app, route, handler, name) {
   return function handle_req(req, res) {
     var stream = zlib.createGzip();
     stream._flush = zlib.Z_SYNC_FLUSH;
     stream.pipe(res);
 
+    hooks.call("request", req, res, function() { });
     context.create(
       {
         req: req,
         res: res,
+        route_name: name,
         stream: stream,
         app: app,
         router: app.router },
       function(ctx) {
+
+        hooks.call("context", ctx, function() { });
 
         page.emit("start", {
           route: route
@@ -104,7 +110,7 @@ var setup = function(app) {
     }
 
 
-    router.add(type, route, request_handler_factory(app, route, handler), {
+    router.add(type, route, request_handler_factory(app, route, handler, name), {
       name: name
     });
   });
