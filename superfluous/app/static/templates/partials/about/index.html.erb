@@ -44,10 +44,11 @@ ENV=localhost nodemon app.js
   </p>
 
   <p>
-  <b>Re-usability</b> - Components encapsulate re-usable portions of rendering,
-  event handling and data synchronization code. Using components on a site adds
-  structure, well defined behaviors and division of responsibilities. Every component
-  is responsible for managing its sub DOM, so the responsibilities are clear cut.
+  <b>Re-usability</b> - Components are <b>Backbone.Views</b> that encapsulate
+  re-usable portions of rendering, event handling and data synchronization
+  code. Using components on a site adds structure, well defined behaviors and
+  division of responsibilities. Every component is responsible for managing its
+  sub DOM, so the responsibilities are clear cut.
   <br />
 
   <div class="alert">Many large web codebases today are using Component based
@@ -83,11 +84,11 @@ ENV=localhost nodemon app.js
 
   <p>
   In superfluous, the server is composed of
-  <a href="http://www.senchalabs.org/connect/">connect middleware</a> running on
-  <a href="http://nodejs.org">node.js</a>. The server is responsible for
+  <a href="http://www.senchalabs.org/connect/">connect middleware</a> running
+  on <a href="http://nodejs.org">node.js</a>. The server is responsible for
   sending <b>apps</b> (a <b>page</b> can be considered a type of app) to the
-  client.  Each server can host one or more web apps, each living at its own
-  top level URL.  </p>
+  client.  Each server can host one or more web apps, each living at a URL. For each
+  app, its server controller handles all requests to that URL and its sub URLs.
 
   <p>
   In addition to delivering the app to the client, the server is generally
@@ -105,9 +106,8 @@ ENV=localhost nodemon app.js
 
   <p>
   <b>apps</b> and <b>pages</b> are very similar, but with one difference: a
-  page has no client controller, while an app does. Apps and pages live at top
-  level URLs and are responsible for delivering a rendered page to the client
-  web browser.
+  page has no client controller, while an app does. Apps and pages live at URLs
+  and are responsible for delivering a rendered page to the client web browser.
   </p>
 
   <h3>File Layout</h3>
@@ -138,9 +138,10 @@ superfluous</s>/
   <div class="controllers">
   <h3>Routes and the Router</h3>
   <p>
-  Every app has an entry point on the server, accessed via its top level URL
-  (or <b>route</b>). The route tells the router where to find the controllers
-  to instantiate the app that the user will be interacting with.  </p>
+  Every app has an entry point on the server (through its <b>server
+  controller</b>), accessed via its top level URL (or <b>route</b>). The route
+  tells the router where to find the controllers to instantiate the app that
+  the user will be interacting with.  </p>
 
   <p>
   App Routes are configured in the <b>routes.json</b> file - it is a global
@@ -164,6 +165,10 @@ superfluous</s>/
 }</code></pre>
 </div>
 </div>
+
+<p>Each <b>server controller</b> has a <b>routes</b> and <b>post_routes</b>
+method that tell the app where to find the handler for that given sub-route.
+</p>
 
 <h3>MVC</h3>
 
