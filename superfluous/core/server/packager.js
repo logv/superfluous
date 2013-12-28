@@ -37,14 +37,14 @@ function package_less(includes, cb) {
   async.each(included, function(mod, done) {
     var data = readstyle(mod);
     if (data) {
-      var hash = quick_hash(data.toString());
-      hooks.invoke("before_render_less", less_header + data.toString(), function(data) {
+      hooks.invoke("before_render_less", mod, less_header + data.toString(), function(mod, data) {
         less.render(data, function(err, css) {
           if (err) {
             console.log("Error rendering less module:", mod, err);
           }
 
-          hooks.invoke("after_render_less", css, function(css) { 
+          hooks.invoke("after_render_less", mod, css, function(mod, css) { 
+            var hash = quick_hash(css.toString());
             ret[mod] = {
               code: css,
               signature: hash,
@@ -115,13 +115,17 @@ function package_js(includes, cb) {
           modules,
           function(mod, done) {
             var data = readfile.both(mod + ".js");
-            ret[mod.id] = {
-              code: data,
-              signature: quick_hash(data),
-              type: "js",
-              name: mod.id,
-              timestamp: parseInt(+Date.now() / 1000, 10)
-            };
+            hooks.invoke("before_render_js", mod.id, data, function(name, data) {
+              hooks.invoke("after_render_js", mod.id, data, function(name, data) {
+                ret[name] = {
+                  code: data,
+                  signature: quick_hash(data),
+                  type: "js",
+                  name: name,
+                  timestamp: parseInt(+Date.now() / 1000, 10)
+                };
+              });
+            });
             done();
           },
           function(err) {
