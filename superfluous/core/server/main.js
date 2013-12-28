@@ -163,7 +163,7 @@ function setup() {
   };
 
   when_ready = _.once(when_ready);
-  hooks.invoke("ready", when_ready, function(when_ready) {
+  hooks.call("ready", when_ready, function(when_ready) {
     when_ready();
   });
 }
