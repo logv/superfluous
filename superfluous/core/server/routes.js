@@ -16,7 +16,6 @@ var router = require("./router");
 var socket = require("./socket");
 var hooks = require("./hooks");
 
-var fs = require("fs");
 var readfile = require("./readfile");
 
 var _ = require_vendor("underscore");

@@ -1,7 +1,5 @@
 "use strict";
 
-var fs = require("fs");
-
 var load_controller = require("./controller").load;
 var context = require_core("server/context");
 var bridge = require_core("server/bridge");

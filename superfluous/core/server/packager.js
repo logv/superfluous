@@ -10,7 +10,6 @@
 
 "use strict";
 
-var fs = require("fs");
 var module_grapher = require("module-grapher");
 var async = require("async");
 var _ = require_vendor("underscore");

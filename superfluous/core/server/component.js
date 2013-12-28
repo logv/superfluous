@@ -20,6 +20,7 @@ var Backbone = require_vendor("backbone");
 var async = require("async");
 
 var fs = require("fs");
+var path = require("path");
 var context = require_core("server/context");
 var bridge = require_core("server/bridge");
 var cheerio = require('cheerio');
@@ -38,10 +39,10 @@ var Component = require_root("components/component");
 var _versions = {};
 
 Component.load = function(component) {
-  var base_dir = "./components/" + component + "/";
+  var base_dir = path.join(".", "components", component);
   var package_data;
   try {
-    package_data = readfile(base_dir + "package.json");
+    package_data = readfile(path.join(base_dir, "package.json"));
   } catch (e) {
     console.log("Couldn't find package.json for ", component, ". Are you sure the component is named that?");
     throw new Error("Missing Component " + component);
@@ -52,8 +53,8 @@ Component.load = function(component) {
   // this will contain dependencies, stylesheets, etc
 
   var cmp = {};
-  var main = require_root(base_dir + pkg.main + ".js");
-  var tmpl = readfile(base_dir + pkg.template);
+  var main = require_root(path.join(base_dir, pkg.main + ".js"));
+  var tmpl = readfile(path.join(base_dir, pkg.template));
 
   cmp.schema = pkg;
   cmp.main = main;
@@ -76,14 +77,15 @@ var _packages = {};
  *
  */
 Component.build_package = function(component, cb) {
-  var package_ = {};
-  var base_dir = "./components/" + component + "/";
+  var base_dir = path.join(".", "components", component);
 
-  var package_data = readfile(base_dir + "package.json");
+  var package_data = readfile(path.join(base_dir, "package.json"));
   if (!package_data) {
+    console.log("Couldn't find package.json", base_dir);
     cb();
     return;
   }
+
   var pkg = JSON.parse(package_data);
   // Look for package.json file in component dir
   // this will contain dependencies, stylesheets, etc
@@ -100,7 +102,7 @@ Component.build_package = function(component, cb) {
   cmp.helpers = {};
   _packages[component] = cmp;
 
-  function process_template(obj, file, key, cb) {
+  function process_template(obj, file, key) {
     return function(cb) {
       var data = readfile(file);
       if (!data) {
@@ -112,7 +114,7 @@ Component.build_package = function(component, cb) {
     };
   }
 
-  function process_file(obj, file, key, cb) {
+  function process_file(obj, file, key) {
     return function(cb) {
       var data = readfile(file);
       if (!data) {
@@ -137,10 +139,10 @@ Component.build_package = function(component, cb) {
   // Do asynchronous readfiles, my friend.
   var js_dir = "app/static/";
   var jobs = [
-    process_file(cmp, base_dir + pkg.main + ".js", "main"),
-    process_file(cmp, base_dir + "events.js", "events"),
-    process_template(cmp, base_dir + pkg.template, "template"),
-    process_style(cmp, base_dir + pkg.style.replace(".css", ""), "style")
+    process_file(cmp, path.join(base_dir, pkg.main + ".js"), "main"),
+    process_file(cmp, path.join(base_dir, "events.js"), "events"),
+    process_template(cmp, path.join(base_dir, pkg.template), "template"),
+    process_style(cmp, path.join(base_dir, pkg.style.replace(".css", "")), "style")
   ];
 
   var named = _.isObject(pkg.helpers);
@@ -149,7 +151,7 @@ Component.build_package = function(component, cb) {
   }
 
   _.each(pkg.helpers, function(helper, name) {
-    jobs.push(process_file(cmp.helpers, js_dir + helper + ".js", (named && name) || helper));
+    jobs.push(process_file(cmp.helpers, path.join(js_dir, helper + ".js"), (named && name) || helper));
   });
 
 
@@ -201,11 +203,11 @@ Component.build_package = function(component, cb) {
  */
 var __id = 0;
 Component.build = function(component, options, cb) {
-  var base_dir = "./components/" + component + "/";
+  var base_dir = path.join(".", "components", component);
   var cmp = Component.load(component);
   var id = "s" + __id;
   __id += 1;
-  var main = require_root(base_dir + cmp.schema.main + ".js");
+  var main = require_root(path.join(base_dir, cmp.schema.main + ".js"));
   var cmpClass = Component.extend(main);
   var cmpInstance = new cmpClass(_.extend({ id: id }, options));
 
