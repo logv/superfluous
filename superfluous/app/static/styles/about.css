@@ -27,6 +27,8 @@ body {
   pre.prettyprint {
     opacity: 0.8;
     border-radius: 0px;
+    width: 100%;
+    padding: 1em;
   }
 
 }
