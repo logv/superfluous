@@ -96,7 +96,6 @@ var setup = function(app) {
 
   app.router = router;
 
-  console.log("ROUTER IS", router, router.__proto__);
   _.each(routes, function(route_data) {
     var type = route_data.method || 'get';
     var handler = route_data.handler;

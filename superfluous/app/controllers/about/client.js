@@ -9,7 +9,7 @@ module.exports = {
     console.log("Loaded sidebar on client", sidebar);
   },
   handle_expand_toc: function() {
-    this.$el.find(".toc").removeClass("com");
+    this.$el.find(".toc").removeClass("hom");
     this.$el.find(".expander")
       .html("Collapse")
       .addClass("collapser")
@@ -19,7 +19,7 @@ module.exports = {
     console.log("Using socket bridge", arg, darg);
   },
   handle_collapse_toc: function() {
-    this.$el.find(".toc").addClass("com");
+    this.$el.find(".toc").addClass("hom");
     this.$el.find(".collapser")
       .html("Expand")
       .addClass("expander")

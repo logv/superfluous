@@ -38,18 +38,45 @@ module.exports.core = function(file) {
 };
 
 module.exports.app = module.exports;
-
 module.exports.both = function(file) {
   // First, try to read from app. Then read from core
+  // Need to go through the list of places to read files, actually...
   var ret;
   try {
     ret = module.exports.app(file);
   } catch(e) { }
+
   if (!ret) {
     try {
       ret = module.exports.core(file);
-    } catch(e) { };
+    } catch(e) { }
   }
 
   return ret;
-}
+};
+
+var _paths = {
+  "./" : true,
+  "app/static" : true,
+  "core/static" : true
+};
+
+module.exports.all = function(file) {
+  var ret;
+  _.each(_paths, function(v, include_path) {
+    if (ret) {
+      return;
+    }
+
+    var search_path = path.join(include_path, file);
+    ret = module.exports(search_path);
+  });
+
+  return ret;
+
+};
+
+module.exports.register_path = function(subpath) {
+  console.log("REGISTERING SUBPATH", subpath);
+  _paths[subpath] = true;
+};

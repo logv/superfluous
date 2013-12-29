@@ -14,6 +14,8 @@ var _ = require_vendor("underscore");
 var context = require("./context");
 var load_controller = require("./controller").load;
 var load_core_controller = require("./controller").core;
+var readfile = require_core("server/readfile");
+
 var path_ = require("path");
 
 module.exports = {
@@ -28,6 +30,7 @@ module.exports = {
     var self = this;
     self.paths = {};
     self.controllers = {};
+    self.controller_apps = {};
 
     var inst = load_core_controller("bootloader");
     function run_route(handler) {
@@ -50,6 +53,13 @@ module.exports = {
 
     _.each(controllers, function(controller, path) {
       var inst = load_controller(controller);
+
+      if (inst.is_package) {
+        self.controller_apps[controller] = true;
+        console.log("'" + controller + "' controller is packaged, adding it to static asset path");
+        readfile.register_path(path_.join("app", "controllers", controller, "static"));
+      }
+
       self.paths[controller] = path;
       self.controllers[path] = controller;
 
@@ -85,6 +95,9 @@ module.exports = {
     });
 
     return routes;
+  },
+  get_packaged_controllers: function() {
+    return _.keys(this.controller_apps);
   }
 
 };

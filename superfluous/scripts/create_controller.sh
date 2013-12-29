@@ -2,7 +2,10 @@
 
 COMPONENT=$1
 
-mkdir -p app/controllers/${COMPONENT}/templates/partials
+mkdir -p app/controllers/${COMPONENT}/static/templates/partials/${COMPONENT}
+mkdir -p app/controllers/${COMPONENT}/static/templates/${COMPONENT}
+mkdir -p app/controllers/${COMPONENT}/static/styles/
+mkdir -p app/controllers/${COMPONENT}/static/images/
 
 cat > app/controllers/${COMPONENT}/client.js << CLIENT
 "use strict";
@@ -32,7 +35,7 @@ module.exports = {
   },
 
   index: function(ctx, api) {
-    var template_str = api.template.render("controllers/${COMPONENT}.html.erb");
+    var template_str = api.template.render("${COMPONENT}/${COMPONENT}.html.erb", {});
     api.page.render({ content: template_str});
   },
 
@@ -41,38 +44,29 @@ module.exports = {
 SERVER
 
 mkdir -p app/static/templates/controllers/
-cat > app/static/templates/controllers/${COMPONENT}.html.erb << TEMPLATE
+cat > app/controllers/${COMPONENT}/templates/${COMPONENT}/${COMPONENT}.html.erb << TEMPLATE
 
 
 <div class="container">
   <h1 class="col-md-8">Welcome to <b>${COMPONENT}</b>'s controller template</h1>
 
   <div class="col-md-8">
-    (This main layout is located in <b>app/static/templates/controllers/${COMPONENT}.html.erb</b>)
+    (This main layout is located in <b>app/controllers/${COMPONENT}/templates/${COMPONENT}.html.erb</b>)
   </div>
 
 
   <div class="col-md-8">
-    <%= render_partial("${COMPONENT}/shared.html.erb") %>
-    <%= render_controller_partial("private.html.erb") %>
+    <%= render_partial("${COMPONENT}/private.html.erb") %>
   </div>
 </div>
 
 TEMPLATE
 
-mkdir -p app/static/templates/partials/${COMPONENT}/ -p
-cat > app/static/templates/partials/${COMPONENT}/shared.html.erb << PARTIAL
+cat > app/controllers/${COMPONENT}/templates/partials/${COMPONENT}/private.html.erb << PARTIAL
 
-<h2>This is a shared partial</h2>
+<h2>This is a partial</h2>
+
 It's your friend :-) It's located in
-<b>app/static/templates/partials//${COMPONENT}/shared.html.erb</b>
-
-PARTIAL
-
-cat > app/controllers/${COMPONENT}/templates/partials/private.html.erb << PARTIAL
-
-<h2>This is a private partial</h2>
-It's also your friend :-) It's located in
 <b>app/controllers/${COMPONENT}/templates/partials/private.html.erb</b>
 
 PARTIAL

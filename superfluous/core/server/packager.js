@@ -23,9 +23,9 @@ var less_header = readfile("app/static/styles/definitions.less") +
   readfile("core/static/styles/definitions.less");
 
 function readstyle(mod) {
-  var data = readfile(mod + ".css");
+  var data = readfile.all(mod + ".css");
   if (!data) {    
-    data = readfile(mod + ".less");
+    data = readfile.all(mod + ".less");
   }
   return data;
 }

@@ -134,6 +134,15 @@ function setup() {
 
     app.use(st( _.extend({ path: 'app/static',  maxAge: oneYear, url: '/' }, options)));
     app.use(st(_.extend({ path: 'core/static',  maxAge: oneYear, url: '/' }, options)));
+
+    // For all the self-contained controllers, setup their static asset endpoints, too
+    var controllers = require_core("server/router").get_packaged_controllers();
+    _.each(controllers, function(controller) {
+      var controller_path = 'app/controllers/' + controller + '/static';
+      app.use(st(_.extend({
+        path: controller_path,
+        maxAge: oneYear, url: '/' }, options)));
+    });
   });
 
 

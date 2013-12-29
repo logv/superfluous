@@ -116,7 +116,7 @@ Component.build_package = function(component, cb) {
 
   function process_file(obj, file, key) {
     return function(cb) {
-      var data = readfile(file);
+      var data = readfile.all(file);
       if (!data) {
         obj[key] = "console.log('Couldnt find helper " + key + " for " + component + " component');";
       } else {
@@ -137,7 +137,6 @@ Component.build_package = function(component, cb) {
   }
 
   // Do asynchronous readfiles, my friend.
-  var js_dir = "app/static/";
   var jobs = [
     process_file(cmp, path.join(base_dir, pkg.main + ".js"), "main"),
     process_file(cmp, path.join(base_dir, "events.js"), "events"),
@@ -151,7 +150,7 @@ Component.build_package = function(component, cb) {
   }
 
   _.each(pkg.helpers, function(helper, name) {
-    jobs.push(process_file(cmp.helpers, path.join(js_dir, helper + ".js"), (named && name) || helper));
+    jobs.push(process_file(cmp.helpers, path.join(helper + ".js"), (named && name) || helper));
   });
 
 

@@ -25,7 +25,7 @@ function index(ctx, api) {
     });
 
   var render_sidebar = function() {
-    return api.template.controller_partial("kitten", "sidebar.html.erb", {
+    return api.template.partial("kitten/sidebar.html.erb", {
       sidebar_notice: api.page.async(function(flush) {
         _.delay(function() {
           flush("<div class='alert'>here it is. this is where sidebar details could show up.</div>");
@@ -41,7 +41,7 @@ function index(ctx, api) {
     username = user.username;
   }
 
-  var template_str = api.template.controller("kitten.html.erb", {
+  var template_str = api.template.render("kitten.html.erb", {
     render_button1: async_button({ name: "Sync", behavior: "kitten/go_button", className: "btn btn-primary" }),
     render_button2: async_button({ name: "Reset", behavior: "kitten/reset_button", className: "btn btn-primary"}),
     render_sidebar: render_sidebar,
@@ -59,6 +59,7 @@ __id++;
 var __nid = 0;
 
 module.exports = {
+  is_package: true,
   index: index, // should be wrapped in auth.require_user
   routes: {
     "": "index"

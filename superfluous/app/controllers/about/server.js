@@ -19,7 +19,7 @@ module.exports = {
     this.set_title("Superfluous");
     this.set_fullscreen(true);
 
-    var template_str = api.template.controller("about.html.erb", {
+    var template_str = api.template.render("about.html.erb", {
       template_code: api.readfile("app/static/templates/controllers/demo.html.erb"),
       client_code: api.readfile("app/controllers/demo/client.js"),
       server_code: api.readfile("app/controllers/demo/server.js"),
@@ -35,5 +35,6 @@ module.exports = {
   socket: function(s) { 
     s.bridge.controller("about", "test_socket", "foo", "bar");
     s.log("hello!");
-  }
+  },
+  is_package: true
 };

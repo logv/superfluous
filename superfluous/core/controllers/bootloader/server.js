@@ -63,7 +63,7 @@ function multi_pack(dir, extension, prepack) {
 }
 
 var js = multi_pack("", "js", packager.js);
-var css = multi_pack("app/static/styles", "css", packager.less);
+var css = multi_pack("styles", "css", packager.less);
 var _js_prelude;
 var _css_prelude;
 var _socket_lib;
@@ -268,7 +268,7 @@ var component = function() {
 function validate_versions(versions, socket, cb) {
   cb = cb || function() { };
   function stylename(css) {
-    return "app/static/styles/" + css;
+    return "styles/" + css;
   }
   var named_styles = _.map(versions.css, function(old_hash, css) {
     return stylename(css);
