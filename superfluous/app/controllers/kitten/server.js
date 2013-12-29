@@ -25,7 +25,7 @@ function index(ctx, api) {
     });
 
   var render_sidebar = function() {
-    return api.template.partial("kitten/sidebar.html.erb", {
+    return api.template.controller_partial("kitten", "sidebar.html.erb", {
       sidebar_notice: api.page.async(function(flush) {
         _.delay(function() {
           flush("<div class='alert'>here it is. this is where sidebar details could show up.</div>");

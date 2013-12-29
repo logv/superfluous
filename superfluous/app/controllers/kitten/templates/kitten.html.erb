@@ -10,10 +10,10 @@
 
   <div class="row-fluid mtl">
     <%= render_sidebar() %>
-    <%= render_partial("kitten/kitten_content.html.erb", {
+    <%= render_controller_partial("kitten_content.html.erb", {
       kitten: kitten
     }) %>
-    <%= render_partial("kitten/kitten_list.html.erb", {
+    <%= render_controller_partial("kitten_list.html.erb", {
         render_logout_button: render_logout_button,
         username: username
       }) %>
