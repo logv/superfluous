@@ -17,6 +17,7 @@ module.exports = function(file) {
     try {
       filedata = fs.readFileSync(file).toString();
     } catch(e) {
+      cached_files[file] = "";
       return "";
     }
 
