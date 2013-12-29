@@ -116,7 +116,7 @@ ENV=localhost nodemon app.js
   certain locations. The majority of the files you'll be working with as an
   app developer are in app/, components/ &amp; config/
 
-  <pre class="mtl prettyprint lang-bash"><code><s>
+  <pre class="mtl prettyprint lang-bash hide_comments"><code><s>
 superfluous</s>/
   app/                  # application specific code and assets
     client/             # client specific code and helpers
@@ -168,6 +168,58 @@ superfluous</s>/
 
 <p>Each <b>server controller</b> has a <b>routes</b> and <b>post_routes</b>
 method that tell the app where to find the handler for that given sub-route.
+</p>
+
+<button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#routing_example">
+see example controller routes
+</button>
+
+<div id="routing_example" class="collapse no-transition">
+<pre class="prettyprint"><code>
+
+// in app/controllers/my_controller/server.js
+module.exports = {
+  routes: {
+    "/" : "get_index",
+    "/demo" : "get_demo",
+    "/smiley/:id" : "get_smiley",
+  },
+  post_routes: {
+    "update" : post_update
+  },
+  get_index: function(ctx, api) {},
+  get_demo: function(ctx, api) {},
+  get_smiley: function(ctx, api) {},
+  post_index: function(ctx, api) {};
+};
+
+}</code></pre>
+</div>
+
+<br />
+
+Let's say this controller is the hooked up to the root URL ('/') in our
+routes.json. The following URL routes would be generated and handled by this
+server controller.
+
+<ul>
+<li><b>/</b></li>
+<li><b>/demo</b></li>
+<li><b>/update</b></li>
+<li><b>/smiley/*/</b></li>
+</ul>
+
+<h4>Reverse Routing</h4>
+
+To access each route, the <b>controller</b> and <b>method</b> can be used. For
+example, <code>url_for("my_controller.get_demo")</code> would return
+<b>/demo</b>.  The reverse router can also resolve parameters, so
+<code>url_for("my_controller.get_smiley", { id: "12"})</code> will generate
+<b>/smiley/12</b>.
+
+<p>
+The router's build function is available as <b>ctx.router.build</b> in the
+server controller and <b>url_for</b> inside templates.
 </p>
 
 <h3>MVC</h3>
@@ -247,7 +299,6 @@ see example server controller code
   server handles an app request, it will render data and components into a
   template and send that to the client. By default, templates are based on
   underscore's ERB template syntax.
-
   </p>
 
   <div class="mtl mbl">
@@ -264,6 +315,27 @@ see example server controller code
   <p class="alert">
   Use <b>scripts/create_partial.sh controller partial_name</b> to generate a
   new partial template
+  </p>
+
+  <h4>Template Helpers</h4>
+
+  <p>Inside the template rendering context, several helpers functions are
+  included for common operations.</p>
+
+  <ul>
+    <li><b>set_default</b> - sets a default value of a variable in that template </li>
+    <li><b>add_stylesheet</b> - makes sure this stylesheet is loaded before the template is inserted</li>
+    <li><b>add_javascript</b> - adds JS tag to the page to load or run</li>
+    <li><b>render_partial</b> - renders a partial</li>
+    <li><b>url_for</b> - generates a URL, using reverse routing</li>
+    <li><b>ctx</b> - the request local context</li>
+  </ul>
+
+  <p class="alert">
+  It's possible to supplement the template rendering context and add your own
+  locals to the scope for use across rendering contexts. To do so, add a
+  <b>setup_template_context</b> function to your <b>app/main.js</b> and modify
+  the dictionary passed in with additional members.
   </p>
 
   <h4>A componentless demo</h4>

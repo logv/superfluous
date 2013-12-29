@@ -31,6 +31,18 @@ body {
     padding: 1em;
   }
 
+  .hide_comments .com {
+    @media (max-width: 767px) {
+      display: none !important
+    }
+  }
+
+  .hom {
+    @media (max-width: 767px) {
+      display: none !important
+    }
+  }
+
 }
 
 s {

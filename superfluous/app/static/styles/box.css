@@ -87,8 +87,3 @@
     width: 95% !important
   }
 }
-.com {
-  @media (max-width: 767px) {
-    display: none !important
-  }
-}
