@@ -11,22 +11,37 @@ var fs = require("fs");
 var path = require("path");
 
 var cached_files = {};
-module.exports = function(file) {
+module.exports = function(file, options) {
   if (!cached_files[file]) {
-    var filedata;
-    try {
-      filedata = fs.readFileSync(file).toString();
-    } catch(e) {
-      cached_files[file] = "";
-      return "";
+    var ret = "";
+    var paths = [ "" ];
+
+    if (options && options.paths) {
+      paths = paths.concat(options.paths);
     }
 
-    var watcher = fs.watch(file, function(event, filename) {
-      delete cached_files[file];
-      watcher.close();
+    console.log("READING FILE", file);
+
+    _.each(paths, function(subpath) {
+      if (ret) { return; }
+
+      try {
+        var file_name = path.join(subpath, file);
+        ret = fs.readFileSync(file_name).toString();
+        console.log("READ FILE", file_name);
+        var watcher = fs.watch(file, function() {
+          delete cached_files[file];
+          watcher.close();
+        });
+
+      } catch(e) { 
+      }
+
     });
 
-    cached_files[file] = filedata;
+    cached_files[file] = ret;
+    return ret;
+
   }
 
   return cached_files[file];

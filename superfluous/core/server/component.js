@@ -6,7 +6,7 @@
  * Componet will be an instance of a Backbone.View and have several convenience
  * methods attached, including toString and marshall.
  *
- * (See components/componet.js for the conveniences)
+ * (See components/component.js for the conveniences)
  *
  * @class component (server)
  * @module Superfluous
@@ -37,12 +37,22 @@ Backbone.$ = cheerio;
 var Component = require_root("components/component");
 
 var _versions = {};
+var _component_paths = {};
+
+Component.register_path = function(subpath) {
+  _component_paths[subpath] = true;
+};
 
 Component.load = function(component) {
   var base_dir = path.join(".", "components", component);
+  var read_options = {
+    paths: _.keys(_component_paths)
+  };
   var package_data;
+
+  // Need to locate which dir this thingie lives in, right?
   try {
-    package_data = readfile(path.join(base_dir, "package.json"));
+    package_data = readfile(path.join(base_dir, "package.json"), read_options);
   } catch (e) {
     console.log("Couldn't find package.json for ", component, ". Are you sure the component is named that?");
     throw new Error("Missing Component " + component);
@@ -53,8 +63,8 @@ Component.load = function(component) {
   // this will contain dependencies, stylesheets, etc
 
   var cmp = {};
-  var main = require_root(path.join(base_dir, pkg.main + ".js"));
-  var tmpl = readfile(path.join(base_dir, pkg.template));
+  var main = require_root(path.join(base_dir, pkg.main + ".js"), read_options);
+  var tmpl = readfile(path.join(base_dir, pkg.template), read_options);
 
   cmp.schema = pkg;
   cmp.main = main;
@@ -78,10 +88,14 @@ var _packages = {};
  */
 Component.build_package = function(component, cb) {
   var base_dir = path.join(".", "components", component);
+  var read_options = {
+    paths: _.keys(_component_paths)
+  };
 
-  var package_data = readfile(path.join(base_dir, "package.json"));
+  var file_name = path.join(base_dir, "package.json");
+  var package_data = readfile(file_name, read_options);
   if (!package_data) {
-    console.log("Couldn't find package.json", base_dir);
+    console.log("Couldn't find package.json at", file_name, read_options);
     cb();
     return;
   }
@@ -104,7 +118,7 @@ Component.build_package = function(component, cb) {
 
   function process_template(obj, file, key) {
     return function(cb) {
-      var data = readfile(file);
+      var data = readfile.all(file);
       if (!data) {
         obj[key] = null;
       } else {

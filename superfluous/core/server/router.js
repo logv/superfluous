@@ -15,6 +15,7 @@ var context = require("./context");
 var load_controller = require("./controller").load;
 var load_core_controller = require("./controller").core;
 var readfile = require_core("server/readfile");
+var component = require_core("server/component");
 
 var path_ = require("path");
 
@@ -67,6 +68,7 @@ module.exports = {
         self.controller_apps[controller] = true;
         console.log("'" + controller + "' controller is packaged, adding it to static asset path");
         readfile.register_path(path_.join("app", "controllers", controller, "static"));
+        component.register_path(path_.join("app", "controllers", controller));
       }
 
       self.paths[controller] = path;
