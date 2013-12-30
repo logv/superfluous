@@ -48,6 +48,6 @@ module.exports = {
     var row = tgt.parent("tr");
     var text = row.find(".log").html();
 
-    $C("modal", { body: text, title: "Full Log"});
+    $C("slog::modal", { body: text, title: "Full Log"});
   }
 };
