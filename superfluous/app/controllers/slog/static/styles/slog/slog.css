@@ -1,0 +1,16 @@
+.slog {
+  table.table {
+    table-layout: fixed;
+    td {
+      overflow: hidden;
+      height: 30px;
+      text-overflow: ellipsis;
+      white-space: no-wrap;
+    }
+
+    td.log {
+      display: inline-block;
+    }
+
+  }
+}

@@ -2,10 +2,10 @@
 
 COMPONENT=$1
 
-mkdir -p app/controllers/${COMPONENT}/static/templates/partials/${COMPONENT}
-mkdir -p app/controllers/${COMPONENT}/static/templates/${COMPONENT}
-mkdir -p app/controllers/${COMPONENT}/static/styles/
-mkdir -p app/controllers/${COMPONENT}/static/images/
+mkdir -p app/controllers/${COMPONENT}/static/templates/partials/${COMPONENT}/
+mkdir -p app/controllers/${COMPONENT}/static/templates/${COMPONENT}/
+mkdir -p app/controllers/${COMPONENT}/static/styles/${COMPONENT}/
+mkdir -p app/controllers/${COMPONENT}/static/images/${COMPONENT}/
 
 cat > app/controllers/${COMPONENT}/client.js << CLIENT
 "use strict";

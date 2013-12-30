@@ -24,6 +24,7 @@ module.exports = {
   },
 
   collect: function(controllers) {
+    var config = require_core("server/config");
     // Takes an enumerable of controller names, loads the controllers and then
     // harvests their routes
     var routes = [];
@@ -32,24 +33,32 @@ module.exports = {
     self.controllers = {};
     self.controller_apps = {};
 
-    var inst = load_core_controller("bootloader");
-    function run_route(handler) {
-      return function() {
-        context("controller", "bootloader");
-        inst[handler].apply(inst, arguments);
-      };
+    function add_core_controller(controller, name) {
+      var inst = load_core_controller(controller);
+      if (inst.is_package) {
+        self.controller_apps[controller] = true;
+        console.log("'" + controller + "' controller is packaged, adding it to static asset path");
+        readfile.register_path(path_.join("core", "controllers", controller, "static"));
+      }
+
+      function run_route(handler) {
+        return function() {
+          context("controller", "bootloader");
+          inst[handler].apply(inst, arguments);
+        };
+      }
+
+      _.each(inst.routes, function(handler, subpath) {
+        routes.push({
+          route: path_.normalize("/" + name + "/" + subpath),
+          method: "get",
+          name: name + "." + handler,
+          handler: run_route(handler)
+        });
+      });
     }
 
-    _.each(inst.routes, function(handler, subpath) {
-      routes.push({
-        route: path_.normalize("/pkg/" + subpath),
-        method: "get",
-        name: "pkg." + handler,
-        handler: run_route(handler)
-      });
-    });
-
-
+    add_core_controller("bootloader", "pkg");
 
     _.each(controllers, function(controller, path) {
       var inst = load_controller(controller);

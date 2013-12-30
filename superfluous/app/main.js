@@ -8,8 +8,9 @@ module.exports = {
     // sets up the packager endpoint for react
     require_app("server/react").install();
   },
-  setup: function() {
+  setup_app: function() {
     console.log("Main setup stuff, something, something");
+    require_app("controllers/slog/server").install();
   },
   setup_cache: function(app) {
     // setup static helpers

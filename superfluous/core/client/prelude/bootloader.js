@@ -423,8 +423,12 @@
       var ViewController = Backbone.View.extend(mod);
       var instance = new ViewController();
 
-      _.extend(instance, Backbone.Events);
+      // copy over some do_when goodness
+      // TODO: place these extensions somewhere isolated on SF for semnatic
+      // purposes
+      instance.do_when = SF.do_when;
 
+      _.extend(instance, Backbone.Events);
       _.extend(controller, instance);
       controller.emit = function() {
         var socket = SF.socket();

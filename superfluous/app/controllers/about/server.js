@@ -28,7 +28,6 @@ module.exports = {
       render_sidebar: sidebar.toString
     });
 
-
     api.bridge.controller("about", "handle_sidebar", sidebar);
     api.page.render({ content: template_str, socket: true});
   },
