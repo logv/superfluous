@@ -15,6 +15,9 @@ module.exports = {
       require_app("controllers/slog/server").install();
     }
   },
+  setup_request: function(req, res) {
+    console.log("Handling Request to", req.path, req.query);
+  },
   setup_cache: function(app) {
     // setup static helpers
     var oneDay = 1000 * 60 * 60 * 24;
