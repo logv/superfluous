@@ -3,9 +3,10 @@
     table-layout: fixed;
     td {
       overflow: hidden;
-      height: 30px;
+      height: 40px;
       text-overflow: ellipsis;
       white-space: no-wrap;
+      cursor: pointer;
     }
 
     td.log {

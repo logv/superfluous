@@ -1,6 +1,7 @@
 "use strict";
 
 var store = require_core("server/store");
+var config = require_core("server/config");
 var connect = require('connect');
 
 module.exports = {
@@ -10,7 +11,9 @@ module.exports = {
   },
   setup_app: function() {
     console.log("Main setup stuff, something, something");
-    require_app("controllers/slog/server").install();
+    if (config.slog) {
+      require_app("controllers/slog/server").install();
+    }
   },
   setup_cache: function(app) {
     // setup static helpers
