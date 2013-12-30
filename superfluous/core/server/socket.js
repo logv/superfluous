@@ -126,8 +126,8 @@ module.exports = {
     // add rooms to Primus
     _primus = primus;
 
-    var routes = require('./routes');
-    routes.socket(primus);
+    var router = require('./router');
+    router.socket(primus);
 
     var shutdown = require_core('server/shutdown');
     shutdown.install(primus);

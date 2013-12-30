@@ -118,7 +118,7 @@ Component.build_package = function(component, cb) {
 
   function process_template(obj, file, key) {
     return function(cb) {
-      var data = readfile.all(file);
+      var data = readfile(file, read_options);
       if (!data) {
         obj[key] = null;
       } else {
@@ -130,7 +130,7 @@ Component.build_package = function(component, cb) {
 
   function process_file(obj, file, key) {
     return function(cb) {
-      var data = readfile.all(file);
+      var data = readfile(file, read_options);
       if (!data) {
         obj[key] = "console.log('Couldnt find helper " + key + " for " + component + " component');";
       } else {

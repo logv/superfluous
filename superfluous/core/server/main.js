@@ -117,8 +117,8 @@ function setup() {
   });
 
   hooks.call("routes", app, function() {
-    var routes = require('./routes');
-    routes.install(app);
+    var router = require('./router');
+    router.install(app);
   });
 
   hooks.call("cache", app, function(app) {
@@ -136,7 +136,7 @@ function setup() {
     app.use(st(_.extend({ path: 'core/static',  maxAge: oneYear, url: '/' }, options)));
 
     // For all the self-contained controllers, setup their static asset endpoints, too
-    var controllers = require_core("server/router").get_packaged_controllers();
+    var controllers = require_core("server/route_collector").get_packaged_controllers();
     _.each(controllers, function(controller) {
       var controller_path = 'app/controllers/' + controller + '/static';
       app.use(st(_.extend({

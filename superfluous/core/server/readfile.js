@@ -20,15 +20,12 @@ module.exports = function(file, options) {
       paths = paths.concat(options.paths);
     }
 
-    console.log("READING FILE", file);
-
     _.each(paths, function(subpath) {
       if (ret) { return; }
 
       try {
         var file_name = path.join(subpath, file);
         ret = fs.readFileSync(file_name).toString();
-        console.log("READ FILE", file_name);
         var watcher = fs.watch(file, function() {
           delete cached_files[file];
           watcher.close();
