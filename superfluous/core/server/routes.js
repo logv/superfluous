@@ -58,6 +58,15 @@ function request_handler_factory(app, route, handler, name) {
     stream._flush = zlib.Z_SYNC_FLUSH;
     stream.pipe(res);
 
+    hooks.invoke("setup_request_ip", req, function() {
+      var ip = req.headers['x-forwarded-for'] || 
+        req.connection.remoteAddress || 
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+
+      req.ip = ip;
+    });
+
     hooks.invoke("setup_request", req, res, function() { 
       context.create(
         {

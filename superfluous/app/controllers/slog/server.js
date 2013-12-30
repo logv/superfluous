@@ -14,8 +14,7 @@ var MAX_LINES = 1000;
 function write_log_to_store() {
   var used_store = store.get();
   var last_msgs = _.last(_msgs, MAX_LINES);
-
-  used_store.set("slog_lines", _msgs, function(err) { });
+  used_store.set("slog_lines", last_msgs);
 }
 var sync_log = _.throttle(write_log_to_store, 1000);
 
@@ -29,9 +28,11 @@ module.exports = {
   index: function(ctx, api) {
     var template_str = api.template.render("slog/slog.html.erb", {});
     this.set_title("slog");
+    var req = ctx.req;
+      console.log("slog session loaded from", req.ip, "(", req.sessionID, ")");
     api.template.add_stylesheet("slog/slog");
     api.page.render({ content: template_str, socket: true});
-  },
+         },
 
   install: function() {
     store.get().get("slog_lines", function(err, msgs) {
@@ -71,6 +72,8 @@ module.exports = {
     global.console.warn = new_log("warning");
     global.console.error = new_log("danger");
     global.console.info = new_log("info");
+
+    console.info("Installed SLOG handlers");
   },
 
   socket: function(s) {
