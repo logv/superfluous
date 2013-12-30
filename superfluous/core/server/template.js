@@ -270,6 +270,8 @@ module.exports = {
    */
   add_stylesheet: add_stylesheet,
   add_js: add_js,
+  // redundancy ahoy
+  add_javascript: add_js,
   js_header: js_header,
   css_header: css_header,
   socket_header: socket_header,

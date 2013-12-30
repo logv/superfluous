@@ -11,7 +11,6 @@
 
 "use strict";
 
-var template = require("./template");
 var context = require("./context");
 var bridge = require("./bridge");
 var EventEmitter = require('events').EventEmitter;
@@ -150,9 +149,16 @@ var render_page = function(page_options) {
   }], 
   function () { // after everything finishes
     var config = require("./config");
-
+    var template = require("./template");
     var misc_header = "";
     var use_socket = page_options.socket || context("added_socket");
+    var use_component = page_options.component || false;
+
+    if (use_component) {
+      console.log(template);
+      template.add_javascript("core/client/component");
+    }
+
     var use_storage = false; // TODO: turn this on for production environments
     var use_fullscreen = $$.use_fullscreen;
     var pageId = _.uniqueId("pg_");
