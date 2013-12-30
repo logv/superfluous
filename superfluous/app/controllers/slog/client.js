@@ -10,6 +10,7 @@ module.exports = {
   init: function() {
     this.slogEl = this.$page.find(".slog table");
     this.trigger('slog');
+    this.do_when = _.bind(SF.do_when, this);
   },
   add_messages: function(msgs) {
     var self = this;
