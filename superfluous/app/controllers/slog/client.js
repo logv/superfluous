@@ -15,10 +15,10 @@ module.exports = {
     var self = this;
     self.do_when(self.slogEl, 'slog', function() {
       _.each(msgs, function(msg) {
-        var row = $("<tr class='alert'/>");
+        var row = $("<tr />");
 
         row.append($("<td class='col-md-2'/>").html((new Date(msg.ts)).toLocaleString()));
-        row.append($("<td class='col-md-12'/>")
+        row.append($("<td class='col-md-8'/>")
           .addClass("log")
           .text(msg.msg));
 
