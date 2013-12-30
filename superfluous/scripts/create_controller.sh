@@ -30,12 +30,14 @@ var value_of = controller.value_of,
     
 
 module.exports = {
+  // If the controller has assets in its subdirs, set is_package to true
+  is_package: false,
   routes: {
     "" : "index",
   },
 
   index: function(ctx, api) {
-    var template_str = api.template.render("${COMPONENT}/${COMPONENT}.html.erb", {});
+    var template_str = api.template.render("controllers/${COMPONENT}/${COMPONENT}.html.erb", {});
     api.page.render({ content: template_str});
   },
 
@@ -43,30 +45,31 @@ module.exports = {
 };
 SERVER
 
-mkdir -p app/static/templates/controllers/
-cat > app/controllers/${COMPONENT}/templates/${COMPONENT}/${COMPONENT}.html.erb << TEMPLATE
+mkdir -p app/static/templates/controllers/${COMPONENT}
+cat > app/static/templates/controllers/${COMPONENT}/${COMPONENT}.html.erb << TEMPLATE
 
 
 <div class="container">
   <h1 class="col-md-8">Welcome to <b>${COMPONENT}</b>'s controller template</h1>
 
   <div class="col-md-8">
-    (This main layout is located in <b>app/controllers/${COMPONENT}/templates/${COMPONENT}.html.erb</b>)
+    (This main layout is located in <b>app/static//templates/controllers/${COMPONENT}/${COMPONENT}.html.erb</b>)
   </div>
 
 
   <div class="col-md-8">
-    <%= render_partial("${COMPONENT}/private.html.erb") %>
+    <%= render_partial("${COMPONENT}/shared.html.erb") %>
   </div>
 </div>
 
 TEMPLATE
 
-cat > app/controllers/${COMPONENT}/templates/partials/${COMPONENT}/private.html.erb << PARTIAL
+mkdir -p app/static/templates/partials/${COMPONENT}
+cat > app/static/templates/partials/${COMPONENT}/shared.html.erb << PARTIAL
 
 <h2>This is a partial</h2>
 
 It's your friend :-) It's located in
-<b>app/controllers/${COMPONENT}/templates/partials/private.html.erb</b>
+<b>app/static/templates/partials/${COMPONENT}/shared.html.erb</b>
 
 PARTIAL

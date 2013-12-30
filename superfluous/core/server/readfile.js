@@ -78,6 +78,5 @@ module.exports.all = function(file) {
 };
 
 module.exports.register_path = function(subpath) {
-  console.log("REGISTERING SUBPATH", subpath);
   _paths[subpath] = true;
 };
