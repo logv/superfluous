@@ -457,6 +457,13 @@ run client code and takes care of downloading the required files before doing
 so. During app delivery, the bridge lives on <b>api.bridge</b>, while during
 socket communication, the bridge lives on <b>socket.bridge</b>
 </p>
+
+<p>
+  The bridge has two main functions, <b>call</b> and <b>controller</b>, invoked in the following way:
+  <code>bridge.call("path/to/client/module", "method_name", arg1, arg2, ...,)</code>
+  <br /> and <br />
+  <code>bridge.controller("foo", "method_name", arg1, arg2, ...,)</code>. 
+</p>
 </div>
 
 <div class="developers">
@@ -655,9 +662,9 @@ server. When a new GIF is uploaded, all clients are notified. Easy... :-D
 <h3>A React demo</h3>
 
 <p>
-This example uses <a href="https://github.com/facebook/react">React</a> to
+This todo list example uses <a href="https://github.com/facebook/react">React</a> to
 render the app on the server and re-connect it on the client. <a
-href="/react_demo">Play with it</a>.
+href="/react_demo">see the React todo list</a>.
 
 <br />
 
@@ -771,7 +778,7 @@ localstorage, it could be RAM, it could be memcache. That's up to you :-D
 <h3>ORM &amp; DB</h3>
 
 Similarly, no ORM or DB is preferred for holding your data. If you choose to
-use one at all. Check out <a href="https://github.com/balderdashy/waterline ">waterline.js</a> 
+use one at all. Check out <a href="https://github.com/balderdashy/waterline ">waterline.js</a>
 or <a href="https://github.com/dresende/node-orm2">node-orm2</a>, though, when you do
 want to use one :-D
 
@@ -790,6 +797,12 @@ Authentication Authentishmation. Check out <a href="http://passportjs.org/">pass
 <h3>Scaling</h3>
 
 maybe consider this server for smale to medium size sites, for now :-D
+
+<div class="alert">
+  A random guess of magnitudes says the server should scale reasonably to 5k -
+  15k messages per second on the sockets, and 50 - 100 requests per second on
+  the app delivery, allowing for sites that serve up to 10k visitors per hour.
+</div>
 
 </div>
 
