@@ -17,15 +17,16 @@ module.exports = {
       _.each(msgs, function(msg) {
         var row = $("<tr class='alert'/>");
 
+        row.append($("<td class='col-md-2'/>").html((new Date(msg.ts)).toLocaleString()));
+        row.append($("<td class='col-md-12'/>")
+          .addClass("log")
+          .text(msg.msg));
+
         row.append($("<td class='col-md-1'/>")
           .html(msg.type || "&nbsp;")
           .addClass("label")
           .addClass("label-" + msg.type));
 
-        row.append($("<td class='col-md-3'/>").html((new Date(msg.ts)).toLocaleString()));
-        row.append($("<td class='col-md-12'/>")
-          .addClass("log")
-          .text(msg.msg));
         self.slogEl.prepend(row);
       });
     });
