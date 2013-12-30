@@ -37,7 +37,9 @@ Backbone.$ = cheerio;
 var Component = require_root("components/component");
 
 var _versions = {};
-var _component_paths = {};
+var _component_paths = {
+  "app/static" : true // serve component helpers out of app/static, just in case
+};
 
 Component.register_path = function(subpath) {
   _component_paths[subpath] = true;
