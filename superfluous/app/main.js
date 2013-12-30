@@ -15,7 +15,12 @@ module.exports = {
       require_app("controllers/slog/server").install();
     }
   },
-  setup_request: function(req, res) {
+  setup_request: function(req) {
+    // Filter out logging packager requests
+    if (!req.path.indexOf("/pkg")) {
+      return;
+    }
+
     console.log("Handling Request to", req.path, req.query);
   },
   setup_cache: function(app) {

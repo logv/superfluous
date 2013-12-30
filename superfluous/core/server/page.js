@@ -155,7 +155,6 @@ var render_page = function(page_options) {
     var use_component = page_options.component || false;
 
     if (use_component) {
-      console.log(template);
       template.add_javascript("core/client/component");
     }
 
@@ -164,7 +163,7 @@ var render_page = function(page_options) {
     var pageId = _.uniqueId("pg_");
     var simple_pipe = config.simple_pipe;
     if ($$.req.query.simple_pipe) {
-      console.log("USING SIMPLE PIPE");
+      console.info("Using simple pipe delivery");
       simple_pipe = true;
     }
 
