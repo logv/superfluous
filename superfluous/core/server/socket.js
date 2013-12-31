@@ -161,9 +161,12 @@ module.exports = {
       controller.get_shared_value = function(key) {
         return _controller_caches[name][key];
       };
+
+      // TODO: remove this call and make it deprecated
       controller.get_socket = function() {
         return controller_socket;
       };
+      controller.get_channel = controller.get_socket;
 
       if (controller.realtime) {
         controller.realtime(controller_socket);
