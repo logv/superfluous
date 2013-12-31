@@ -26,6 +26,11 @@ module.exports = {
   },
 
   index: function(ctx, api) {
+    if (ctx.req.ip !== "127.0.0.1") {
+      ctx.res.redirect("/");
+      return;
+    }
+
     var template_str = api.template.render("slog/slog.html.erb", {});
     this.set_title("slog");
     var req = ctx.req;
