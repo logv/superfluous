@@ -122,8 +122,12 @@ var setup = function(app) {
     });
   });
 
+  var named_routes = _.map(router.routesByNameAndMethod, function(v, k) {
+    var type = v.get || v.post;
+    return [k, type.path];
+  });
 
-  console.log("Routes:\n", router.routesByNameAndMethod);
+  console.log("Routes:\n", named_routes);
   app.use(function(req, res, next) {
     // pretend we are expressive
     req.path = req.uri.pathname;
@@ -135,5 +139,6 @@ var setup = function(app) {
 
 module.exports = {
   install: setup,
-  socket: install_socket
+  socket: install_socket,
+  API: API
 };

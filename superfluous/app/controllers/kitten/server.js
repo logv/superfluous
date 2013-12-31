@@ -5,11 +5,12 @@
 function index(ctx, api) {
   var async_button = function(options) {
       var button = $C("button", options);
+      var interval = (ctx.__testing && 200) || (Math.random() * 1000) + 1000;
       return api.page.async(function(flush) {
         _.delay(function() {
-          flush(button.toString());
-        }, (Math.random() * 1000) + 1000);
-    });
+            flush(button.toString());
+          }, interval); 
+        }) ;
   };
 
   api.template.add_stylesheet("scrollers.css");
@@ -25,11 +26,12 @@ function index(ctx, api) {
     });
 
   var render_sidebar = function() {
+    var interval = (ctx.__testing && 200) || 3000;
     return api.template.partial("kitten/sidebar.html.erb", {
       sidebar_notice: api.page.async(function(flush) {
         _.delay(function() {
           flush("<div class='alert'>here it is. this is where sidebar details could show up.</div>");
-        }, 3000);
+        }, interval);
       })
     });
   };

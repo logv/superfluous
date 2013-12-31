@@ -2,6 +2,7 @@
 
 COMPONENT=$1
 
+mkdir -p app/controllers/${COMPONENT}/test/
 mkdir -p app/controllers/${COMPONENT}/static/templates/partials/${COMPONENT}/
 mkdir -p app/controllers/${COMPONENT}/static/templates/${COMPONENT}/
 mkdir -p app/controllers/${COMPONENT}/static/styles/${COMPONENT}/
@@ -73,3 +74,21 @@ It's your friend :-) It's located in
 <b>app/static/templates/partials/${COMPONENT}/shared.html.erb</b>
 
 PARTIAL
+
+cat > app/controllers/${COMPONENT}/test/server.js << SERVER_TEST_TEMPLATE
+"use strict";
+
+var test_helper = require("superfluous").test_helper;
+test_helper.init();
+var assert = require("assert");
+
+describe("${COMPONENT} server controller", function() {
+  it("should render its index page", function(done) {
+    test_helper.test_route("${COMPONENT}", "index", [], function(rendered_page) {
+      assert.notEqual(rendered_page.indexOf("html"), -1);
+      assert.notEqual(rendered_page.indexOf("superfluous"), -1);
+      done();
+    });
+  });
+});
+SERVER_TEST_TEMPLATE

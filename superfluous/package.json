@@ -21,7 +21,8 @@
     "json-stable-stringify": "x",
     "commander": "x",
     "fs-extra": "x",
-    "continuation-local-storage": "x"
+    "continuation-local-storage": "x",
+    "mocha" : "x"
   },
   "bin": {
     "superfluous": "bin/superfluous"
@@ -30,5 +31,9 @@
     "core",
     "bin"
   ],
-  "main": "core/server/main"
+  "main": "core/server/main",
+  "scripts" : {
+    "test" : "bash scripts/run_tests.sh",
+    "start" : "node app.js"
+  }
 }

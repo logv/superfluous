@@ -8,3 +8,4 @@ cp components/template/* components/${COMPONENT}
 cd components/${COMPONENT}
 rename s/template/${COMPONENT}/ *
 sed -i "s/TEMPLATE/${COMPONENT}/g" package.json
+sed -i "s/TEMPLATE/${COMPONENT}/g" *.js

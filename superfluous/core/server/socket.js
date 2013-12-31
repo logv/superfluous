@@ -3,9 +3,6 @@
 var load_controller = require("./controller").load;
 var context = require_core("server/context");
 var bridge = require_core("server/bridge");
-var _handlers = {};
-var config = require_core("server/config");
-var db = require_core("server/db");
 var Primus = require("primus.io");
 var hooks = require_core("server/hooks");
 var domain = require("domain");
@@ -205,5 +202,8 @@ module.exports = {
   },
   get_socket_library: function() {
     return _primus.library();
+  },
+  set_primus: function(primus) {
+    _primus = primus;
   }
 };

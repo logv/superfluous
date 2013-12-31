@@ -86,6 +86,16 @@ function resolve_futures() {
         module.exports.emit("finished");
         context("stream").write("</div>");
         context("stream").end();
+
+        // DO NOT RELY ON THIS, IT IS A TEST HOOK!
+        if (context("__testing")) {
+          var test_hook = context("__on_page_end");
+          if (test_hook) {
+            test_hook();
+          }
+        }
+
+
         ctx.exit();
       }
     } catch(e) {
@@ -188,27 +198,26 @@ var render_page = function(page_options) {
     });
 
     var pageStr = page.toString();
-
     // TODO: work on how the order of things are initialized happens
+    $$.res.setHeader('Content-Type', 'text/html');
+    $$.res.setHeader('Content-Encoding', 'gzip');
+    $$.stream.write(pageStr);
+    // Update the name of the controller on the page, when we can.
+    // This also sets the $page element on the controller, inevitably
+    bridge.call("core/client/controller", "set", controller, pageId, hash);
+
+    if (!simple_pipe) {
+      bridge.flush_data(page_options.content, "page_content");
+    }
+
+    $$.stream.write("<div data-bridge-id='async'>");
+    $$.stream.write(bridge.render());
     try {
-      $$.res.setHeader('Content-Type', 'text/html');
-      $$.res.setHeader('Content-Encoding', 'gzip');
-      $$.stream.write(pageStr);
 
-      // Update the name of the controller on the page, when we can.
-      // This also sets the $page element on the controller, inevitably
-      bridge.call("core/client/controller", "set", controller, pageId, hash);
-  
-      if (!simple_pipe) {
-        bridge.flush_data(page_options.content, "page_content");
-      }
-
-      $$.stream.write("<div data-bridge-id='async'>");
-      $$.stream.write(bridge.render());
       $$.stream.flush();
     } catch(e) {
-      console.trace();
       console.error(e);
+      console.trace();
       return;
     }
 

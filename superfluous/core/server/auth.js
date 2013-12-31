@@ -18,7 +18,6 @@ var session = require_core("server/session");
 var config = require_core("server/config");
 var readfile = require("./readfile");
 var session = require_core("server/session");
-var SessionStore = require("connect").session.Store;
 
 var store = require_core("server/store");
 var https = require('https');

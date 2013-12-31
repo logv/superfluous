@@ -7,8 +7,8 @@ mkdir -p ${DEST}
 # Figure out the details of the package to upload...
 cp superfluous/package.json ${DEST}
 cp superfluous/core ${DEST} -R
-cp superfluous/core ${DEST} -R
 cp superfluous/node_modules ${DEST} -R
+cp superfluous/components/template/ ${DEST}/components/ -R
 cp bin/ ${DEST} -R
 
 cd ${DEST}

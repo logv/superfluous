@@ -32,6 +32,7 @@ function readstyle(mod) {
 
 var _style_cache = {};
 function package_less(includes, cb) {
+
   var included = _.map(includes, function(s) { return s.trim(); });
   var ret = {};
   async.each(included, function(mod, done) {

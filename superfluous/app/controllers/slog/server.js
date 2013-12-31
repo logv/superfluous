@@ -37,7 +37,7 @@ module.exports = {
       console.log("slog session loaded from", req.ip, "(", req.sessionID, ")");
     api.template.add_stylesheet("slog/slog");
     api.page.render({ content: template_str, socket: true});
-         },
+  },
 
   install: function() {
     store.get().get("slog_lines", function(err, msgs) {

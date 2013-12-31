@@ -20,11 +20,8 @@ var hooks = require("./hooks");
 context.setDefault("CSS_DEPS", {});
 context.setDefault("JS_DEPS", {});
 
-var load_core_template = function(template, options) {
-  return load_template(template, _.default(options, { core: true }));
-};
-
 var load_template = function(template, options) {
+  options = options || {};
   var root_path;
   if (options.core) {
     root_path = "core/static/templates/";
@@ -35,71 +32,6 @@ var load_template = function(template, options) {
   }
 };
 
-var load_controller_template = function(controller, template, aux_paths) {
-  var root_path, other_path, read;
-
-  if (_.isString(aux_paths)) {
-    aux_paths = [ aux_paths ];
-  }
-
-  aux_paths = aux_paths || [ "templates" ];
-  // First try the controller's local directory
-  var ret;
-  _.each(aux_paths, function(aux_path) {
-    if (ret) {
-      return;
-    }
-
-    try {
-      var to_read = path.join(aux_path, template);
-      read = readfile.all(to_read);
-      if (read) {
-        ret = read;
-      }
-    } catch (e) {
-    }
-  });
-
-  if (ret) {
-    return ret;
-  }
-
-  // Try reading inside the controllers dir for templates
-  try {
-    root_path = "templates/";
-    other_path = path.join(root_path, template);
-    read = readfile.all(other_path);
-    if (read) {
-      return read;
-    }
-  } catch(e) {
-  }
-
-  _.each(aux_paths, function(aux_path) {
-    if (ret) {
-      return;
-    }
-
-    // Maybe it's really up one level (a partial or helper?)
-    try {
-      root_path = "templates/";
-      other_path = path.join(root_path, aux_path, template);
-      read = readfile.all(other_path);
-      if (read) {
-        ret = read;
-      }
-    } catch(e) {
-    }
-
-  });
-
-  if (!ret) {
-    console.log("Couldn't find template data for", template);
-  }
-
-  return ret;
-};
-
 function add_stylesheet(name) {
   context("CSS_DEPS")[name] = true;
 }
@@ -108,6 +40,7 @@ function add_js(name) {
   context("JS_DEPS")[name] = true;
 }
 
+// TODO: delete this? or use it?
 function render_css_link(stylesheet) {
   var root_path = "styles/"
   return render_core_template("helpers/css_link.html.erb", {
@@ -167,10 +100,6 @@ var _render_template = function(template, template_data, options, core) {
 
   options = setup_render_context(options);
 
-  // TODO: this should be more extensible than just adding a user
-  var user = context("req").user;
-  options.username = (user && user.username) || "";
-  options.loggedin = !!user;
   var templateSettings = {};
   if (!_compiled_templates[template_key]) {
     try {
@@ -248,7 +177,6 @@ var add_socket = function(socket) {
 
 module.exports = {
   load: load_template,
-  load_core: load_core_template,
   /**
    * Renders a template into a string
    *

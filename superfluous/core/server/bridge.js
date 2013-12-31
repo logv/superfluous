@@ -196,6 +196,14 @@ module.exports = {
   add_marshaller: add_marshaller,
 
   /**
+   * Gets a marshaller by name, for testing purposes
+   *
+   */
+  get_marshaller: function(name) {
+    return _marshalls[name];
+  },
+
+  /**
    * Marshalls a serious of arguments
    *
    */

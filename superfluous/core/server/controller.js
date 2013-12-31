@@ -55,9 +55,6 @@ module.exports = {
       return;
     }
 
-
-    console.log("CONFIG", config);
-
     if (!config.ssl || !config.require_https) {
       console.log("We dont really need HTTPS");
       return;

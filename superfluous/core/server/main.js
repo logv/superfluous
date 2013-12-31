@@ -1,28 +1,35 @@
 "use strict";
 
-// vendor
-var connect = require('connect');
-var http = require('http');
-var app = connect();
-var router = app;
-// setup helpers
 var globals = require("./globals");
 globals.install();
 
-var config = require_core("server/config");
-var hooks = require_core("server/hooks");
+// vendor
+var connect = require('connect');
+var http = require('http');
 
-var package_json = require_core("../package.json");
-var app_name = package_json.name;
+// setup the main server app
+var app, router;
 
 // setup() fills these in
 var http_server,
     https_server;
 
+var app_name;
 
 require("longjohn");
-var socket = require_core("server/socket");
 function setup() {
+  // setup helpers
+  var config = require_core("server/config");
+  var hooks = require_core("server/hooks");
+
+  var socket = require_core("server/socket");
+  var package_json = require_core("../package.json");
+  app_name = package_json.name;
+
+  app = connect();
+  router = app;
+
+
   // this is here for the reversable router which uses .locals
   app.locals = {};
 
@@ -61,6 +68,10 @@ function setup() {
   hooks.call("store", app, function(app) {
     var store = require("./store");
     store.install(app);
+  });
+
+  hooks.call("db", app, function() {
+    require_core("server/db").install();
   });
 
   // This is where the session is created
@@ -197,6 +208,8 @@ function try_restart(server, port) {
     }
   };
 }
+
+// Expose the test helper?
 module.exports = {
   name: app_name,
   app: app,
@@ -204,5 +217,6 @@ module.exports = {
     setup();
 
 
-  }
+  },
+  test_helper: require_core("server/test_helper")
 };
