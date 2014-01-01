@@ -46,9 +46,9 @@ ENV=localhost nodemon app.js
   <p>
   <b>Re-usability</b> - Components are <b>Backbone.Views</b> that encapsulate
   re-usable portions of rendering, event handling and data synchronization
-  code. Using components on a site adds structure, well defined behaviors and
-  division of responsibilities. Every component is responsible for managing its
-  sub DOM, so the responsibilities are clear cut.
+  code. Using components on a site adds structure and well defined behaviors.
+  Every component is responsible for managing its sub DOM, so their
+  responsibilities are clear cut.
   <br />
 
   <div class="alert">Many large web codebases today are using Component based
@@ -56,13 +56,12 @@ ENV=localhost nodemon app.js
   developers are working together on one or more projects.</div> </p>
 
   <p>
-
   <b>Familiarity</b> - Components are simple backbone views with a known
   lifecycle: initialize, render, destroy.  How the component updates its DOM
   tree is up to the developer. It could be MVVM and a data binding engine or
   jQuery selectors - it's up to you. if  you don't like the idea of templates
-  auto-syncing to data models, don't do it. If you do... go for it :-D </p>
-  <p>
+  auto-syncing to data models, don't do it. If you do... go for it :-D 
+  </p>
 
   <p>
   <b>Dynamicism</b> - <s>superfluous</s> has no compilation step. You can
@@ -83,12 +82,12 @@ ENV=localhost nodemon app.js
   <h3>Server</h3>
 
   <p>
-  In superfluous, the server is composed of
-  <a href="http://www.senchalabs.org/connect/">connect middleware</a> running
-  on <a href="http://nodejs.org">node.js</a>. The server is responsible for
+  In superfluous, the server is composed of <a
+  href="http://www.senchalabs.org/connect/">connect middleware</a> running on
+  <a href="http://nodejs.org">node.js</a>. The server is responsible for
   sending <b>apps</b> (a <b>page</b> can be considered a type of app) to the
-  client.  Each server can host one or more web apps, each living at a URL. For each
-  app, its server controller handles all requests to that URL and its sub URLs.
+  client.  The server hosts multiple web apps, each handling a URL path and
+  it's sub paths.
 
   <p>
   In addition to delivering the app to the client, the server is generally
@@ -147,8 +146,9 @@ superfluous</s>/
   App Routes are configured in the <b>routes.json</b> file - it is a global
   index of what apps the server is going to be serving and where. Inside the
   routes.json, each server controller has an entry that tells the router which
-  controller to hand requests to. Inside each controller is a list of
-  <b>routes</b> that the controller will handle.
+  controller to hand requests to when looking at the path of the incoming
+  request's URL. Inside each controller is a list of <b>routes</b> that the
+  controller will handle.
   </p>
 
   <div class="mtl mbl">
@@ -206,7 +206,7 @@ server controller.
 <li><b>/</b></li>
 <li><b>/demo</b></li>
 <li><b>/update</b></li>
-<li><b>/smiley/*/</b></li>
+<li><b>/add/*/</b></li>
 </ul>
 
 <h4>Reverse Routing</h4>
@@ -214,11 +214,11 @@ server controller.
 To access each route, the <b>controller</b> and <b>method</b> can be used. For
 example, <code>url_for("my_controller.get_demo")</code> would return
 <b>/demo</b>.  The reverse router can also resolve parameters, so
-<code>url_for("my_controller.get_smiley", { id: "12"})</code> will generate
-<b>/smiley/12</b>.
+<code>url_for("my_controller.get_add", { id: "12"})</code> will generate
+<b>/add/12</b>.
 
 <p>
-The router's build function is available as <b>ctx.router.build</b> in the
+The router's build function is available as <b>api.router.build</b> in the
 server controller and <b>url_for</b> inside templates.
 </p>
 
@@ -462,7 +462,7 @@ socket communication, the bridge lives on <b>socket.bridge</b>
   The bridge has two main functions, <b>call</b> and <b>controller</b>, invoked in the following way:
   <code>bridge.call("path/to/client/module", "method_name", arg1, arg2, ...,)</code>
   <br /> and <br />
-  <code>bridge.controller("foo", "method_name", arg1, arg2, ...,)</code>. 
+  <code>bridge.controller("foo", "method_name", arg1, arg2, ...,)</code>.
 </p>
 </div>
 
@@ -627,7 +627,12 @@ a request object.
 
 <p>
 This allows your app to communicate between friendly modules without threading
-a request object through every callback. <a href="https://groups.google.com/forum/#!topic/nodejs-dev/gBpJeQr0fWM">See this google groups thread for more info</a>
+a request object through every callback. The <b>ctx</b> object is available in
+any modules through the <b>server/context</b> module, so you can store request
+specific variables and retrieve them from anywhere on the server.
+
+<br />
+In templates, the <b>ctx</b> is just exposed as <b>ctx</b> :-)
 </p>
 </div>
 
