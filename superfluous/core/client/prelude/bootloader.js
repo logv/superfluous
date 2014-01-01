@@ -36,7 +36,7 @@
   var _component_storage = _blank_storage;
 
   if (window.localStorage) {
-    console.log("Caching components in LocalStorage");
+    SF.log("Caching components in LocalStorage");
     _component_storage = window.localStorage;
   }
 
@@ -50,7 +50,7 @@
 
   window.SF.once("bridge/socket", function(socket) {
     socket.on("__update_version", function(type, entry, old_hash, new_hash) {
-      console.log("Updated version", type, entry, old_hash, new_hash);
+      SF.log("Updated version", type, entry, old_hash, new_hash);
       delete _versions[type][old_hash];
       delete _versions[type][entry];
       _garbage[old_hash] = true;
@@ -84,7 +84,7 @@
       var signatures = JSON.parse(_component_storage.getItem("_signatures"));
       _.defaults(_signatures, signatures);
     } catch(e) {
-      console.log(e);
+      SF.log(e);
       console.trace();
     }
 
@@ -107,14 +107,14 @@
         })));
       });
     } catch(ee) {
-      console.log(ee);
+      SF.log(ee);
       console.trace();
     }
 
   }
 
   function sync_to_storage() {
-    console.log("Syncing to local storage");
+    SF.log("Syncing to local storage");
 
     // remove old keys
     for (var key in localStorage) {
@@ -137,7 +137,7 @@
           var ts = parsed.timestamp;
           if (type && name) {
             var current_version = _versions[type][name];
-            console.log("Current version of", name, "is", current_version);
+            SF.log("Current version of", name, "is", current_version);
             var unparsed = localStorage.getItem(current_version);
             if (unparsed) {
               var current_data = JSON.parse(unparsed);
@@ -146,18 +146,18 @@
                 _versions[type][name] = parsed.signature;
                 _signatures[parsed.signature] = unparsed;
                 localStorage.removeItem(current_version);
-                console.log("Upgrading in memory version of", name, "due to old timestamp", parsed.signature);
+                SF.log("Upgrading in memory version of", name, "due to old timestamp", parsed.signature);
 
                 continue;
               }
             }
 
-            console.log("Expiring old localStorage entry", key, name);
+            SF.log("Expiring old localStorage entry", key, name);
           }
 
           localStorage.removeItem(key);
         } catch(e) {
-          console.log(e);
+          SF.log(e);
           localStorage.removeItem(key);
         }
       }
@@ -186,7 +186,7 @@
   sync_storage();
 
   if (window._query.clear_storage) {
-    console.log("Clearing Storage");
+    SF.log("Clearing Storage");
     localStorage.clear();
   }
 
@@ -310,7 +310,7 @@
 
     return function bootload(modules, cb) {
       if (bootloader.__use_storage && _storage === _blank_storage) {
-        console.log("Caching assets in LocalStorage");
+        SF.log("Caching assets in LocalStorage");
         _storage = _component_storage;
       }
 

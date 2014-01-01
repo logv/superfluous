@@ -164,12 +164,12 @@ function build(component, options, cb) {
             var ctrl = SF.controller(controller);
 
             if (!ctrl.delegates) {
-              console.log("Warning, trying to run delegate function on controller that doesn't supporter it");
+              SF.warn("Trying to run delegate function on controller that doesn't support it");
               return;
             }
   
             if (!ctrl.delegates[v]) {
-              console.log("Warning, delegate function", v, "for", k, "does not exist");
+              SF.warn("Warning, delegate function", v, "for", k, "does not exist");
             }
 
             args.unshift(this);
