@@ -110,12 +110,24 @@ function package_js(includes, cb) {
     cb(ret); 
   });
 
+
+  _.each(included, function(inc) {
+    // mapping for undefined modules
+    var name = inc.replace(/^\//, '') ;
+    ret[name] = {
+      code: "console.log('Trouble loading" + name + " on the server')",
+      type: "js",
+      name: name,
+      timestamp: 0
+    };
+  });
+
   _.each(included, function(inc) {
     module_grapher.graph(inc, {
         paths: [ './', './static', path.join(__dirname, '../../') ]
       }, function(__, resolved) {
         if (!resolved || !resolved.modules) {
-          return cb("console.log('Error loading module " + inc + "');");
+          return cb(ret);
         }
 
         // each works on arrays, not objects
