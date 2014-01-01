@@ -6,7 +6,7 @@ how the server & client communicate in the modern app environment.  there are
 two major pieces of communication during the app life cycle. The initial
 delivery, and subsequent interactions. superfluous connects the two :-D
 
-[![Build Status](https://travis-ci.org/okayzed/superfluous.png?branch=testing)](https://travis-ci.org/okayzed/superfluous)
+[![Build Status](https://travis-ci.org/okayzed/superfluous.png)](https://travis-ci.org/okayzed/superfluous)
 [![NPM version](https://badge.fury.io/js/superfluous.png)](http://badge.fury.io/js/superfluous)
 
 ## Quick Start
