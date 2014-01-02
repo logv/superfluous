@@ -37,7 +37,7 @@ function setup() {
   var main = require_app("main");
   hooks.set_main(main);
 
-  hooks.call("query", app, function(app) {
+  hooks.setup("query", app, function(app) {
     app.use(connect.query());
   });
 
@@ -52,7 +52,7 @@ function setup() {
   // Add timestamps
   require("./console").install();
 
-  hooks.call("error_handling", app, function(app) {
+  hooks.setup("error_handling", app, function(app) {
     // setup error handling
     //var errorHandlers = require_core("server/error_handlers");
     //app.use(errorHandlers.default);
@@ -60,25 +60,25 @@ function setup() {
   });
 
   // Setting up some cookie parsing goodness
-  hooks.call("cookies", app, function() {
+  hooks.setup("cookies", app, function() {
     app.use(connect.cookieParser());
   });
 
   // This is where the persistance store is created
-  hooks.call("store", app, function(app) {
+  hooks.setup("store", app, function(app) {
     var store = require("./store");
     store.install(app);
   });
 
-  hooks.call("db", app, function() { });
+  hooks.setup("db", app, function() { });
 
   // This is where the session is created
-  hooks.call("session", app, function(app) {
+  hooks.setup("session", app, function(app) {
     var session = require("./session");
     session.install(app);
   });
 
-  hooks.call("redirect", app, function(app) {
+  hooks.setup("redirect", app, function(app) {
     var redirect = require('response-redirect');
     app.use(function(req, res, next) {
       res.redirect = redirect;
@@ -86,24 +86,24 @@ function setup() {
     });
   });
 
-  hooks.call("app", app, function() { });
+  hooks.setup("app", app, function() { });
 
-  hooks.call("compression", app, function(app) {
+  hooks.setup("compression", app, function(app) {
     app.use(connect.compress());
   });
 
-  hooks.call("packager", app, function() { });
+  hooks.setup("packager", app, function() { });
 
-  hooks.call("realtime", app, http_server, function(app, http_server) {
+  hooks.setup("realtime", app, http_server, function(app, http_server) {
     socket.setup_io(app, http_server);
   });
 
-  hooks.call("marshalls", app, function() {
+  hooks.setup("marshalls", app, function() {
     require_core("server/component").install_marshalls();
     require_core("server/backbone").install_marshalls();
   });
 
-  hooks.call("trust_proxy", app, function(app) {
+  hooks.setup("trust_proxy", app, function(app) {
     app.use(function(req, res, next) {
       req.url = req.uri.path;
 
@@ -125,12 +125,12 @@ function setup() {
 
   });
 
-  hooks.call("routes", app, function() {
+  hooks.setup("routes", app, function() {
     var router = require('./router');
     router.install(app);
   });
 
-  hooks.call("cache", app, function(app) {
+  hooks.setup("cache", app, function(app) {
     // setup static helpers
     var oneDay = 1000 * 60 * 60 * 24;
     var oneYear = oneDay * 365;
@@ -156,7 +156,7 @@ function setup() {
 
 
   var when_ready = function() {
-    hooks.call("http_server", http_server, function() {
+    hooks.setup("http_server", http_server, function() {
       var http_port = config.http_port;
       http_server.listen(http_port);
       http_server.on('error', try_restart(http_server, http_port));
@@ -164,12 +164,12 @@ function setup() {
       console.log("Listening for HTTP connections on port", http_port);
     });
 
-    hooks.call("https_server", https_server, function() {
+    hooks.setup("https_server", https_server, function() {
       var https_port = config.https_port;
       // Setting up SSL server
       if (https_server && https_port) {
         console.log("Listening for HTTPS connections on port", https_port);
-        hooks.call("realtime", app, https_server, function(app, https_server) {
+        hooks.setup("realtime", app, https_server, function(app, https_server) {
           socket.setup_io(app, https_server);
         });
 
@@ -181,7 +181,7 @@ function setup() {
   };
 
   when_ready = _.once(when_ready);
-  hooks.call("ready", when_ready, function(when_ready) {
+  hooks.setup("ready", when_ready, function(when_ready) {
     when_ready();
   });
 }

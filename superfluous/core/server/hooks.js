@@ -13,33 +13,36 @@
 "use strict";
 
 var _main;
-function call_hook() {
-  var args = _.toArray(arguments);
-  var hook = args.shift();
-  var cb = args.pop();
+
+function call_hook_builder(prefix) {
+  return function() {
+    var args = _.toArray(arguments);
+    var hook = args.shift();
+    var cb = args.pop();
 
 
-  function exec_hook(type, hook) {
-    var hook_name = type + "_" + hook;
+    function exec_hook(type, hook) {
+      var hook_name = type + "_" + hook;
 
-    // The callback can prevent default installation by returning true;
-    if (_main[hook_name]) {
-      var ret = _main[hook_name].apply(_main, args);
-      return ret;
+      // The callback can prevent default installation by returning true;
+      if (_main[hook_name]) {
+        var ret = _main[hook_name].apply(_main, args);
+        return ret;
+      }
     }
-  }
 
-  exec_hook("before", hook);
-  var ret = exec_hook("setup", hook);
+    exec_hook("before", hook);
+    var ret = exec_hook(prefix, hook);
 
-  // default initializer
-  if (!ret) {
-    cb.apply(null, args);
-  }
+    // default initializer
+    if (!ret) {
+      cb.apply(null, args);
+    }
 
-  // after hook
-  exec_hook("after", hook);
+    // after hook
+    exec_hook("after", hook);
 
+  };
 }
 
 function invoke_hook() {
@@ -65,7 +68,8 @@ function invoke_hook() {
 }
 
 module.exports = {
-  call: call_hook,
+  call: call_hook_builder("call"),
+  setup: call_hook_builder("setup"),
   invoke: invoke_hook,
   set_main: function(m) {
     _main = m;
