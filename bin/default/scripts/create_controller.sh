@@ -85,9 +85,25 @@ var assert = require("assert");
 describe("${COMPONENT} server controller", function() {
   it("should render its index page", function(done) {
     test_helper.test_route("${COMPONENT}", "index", [], function(rendered_page) {
-      assert.notEqual(rendered_page.indexOf("html"), -1);
-      assert.notEqual(rendered_page.indexOf("superfluous"), -1);
+      assert.notEqual("test", "written");
       done();
+    });
+  });
+
+  it("should send out the initial socket payloads", function(done) {
+    test_helper.test_socket("${COMPONENT}", function(socket, setup_socket) {
+      // the message we are expecting for the client
+      socket.on("something", function() {
+        assert.notEqual("test", "written");
+        done();
+      });
+
+      setup_socket(function() {
+        assert.notEqual("test", "written");
+
+        // a message we are simulating from the client
+        socket.emit("other thing");
+      });
     });
   });
 });
