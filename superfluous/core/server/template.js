@@ -87,18 +87,34 @@ var _compiled_templates = {};
 
 var render_template = function(template, options, core) {
   var template_data = load_template(template, { core: core });
-  return _render_template(template, template_data, options, core);
+  var ret;
+
+  function after_render(data) {
+    ret = data;
+  }
+
+
+
+  if (!options) {   
+    options = {};
+  }
+
+  options = setup_render_context(options);
+
+  if (!core) {
+    hooks.call("render_template", template, template_data, options, after_render,
+      function(template, template_data, options, done) {
+        done(_render_template(template, template_data, options, core));
+      });
+  } else {
+    ret = _render_template(template, template_data, options, core);
+  }
+
+  return ret;
 };
 
 var _render_template = function(template, template_data, options, core) {
   var template_key = template + ":" + (core ? "core" : " app");
-
-  if (!options) {
-    options = {};
-  }
-
-
-  options = setup_render_context(options);
 
   var templateSettings = {};
   if (!_compiled_templates[template_key]) {

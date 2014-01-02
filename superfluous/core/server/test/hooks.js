@@ -6,6 +6,7 @@ test_helper.init();
 var assert = require("assert");
 describe("core/server/hooks.js", function() {
   var hooks = require_core("server/hooks");
+  // TODO: test hook implementation in more details
   describe("#call", function() {
     test_helper.it("should have a test", function(done) {
       var main_called, setup_called, after_called;
@@ -13,7 +14,7 @@ describe("core/server/hooks.js", function() {
         before_foo: function() {
           setup_called = true;
         },
-        setup_foo: function() {
+        call_foo: function() {
           main_called = true;
         },
         after_foo: function() {
