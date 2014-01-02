@@ -11,7 +11,7 @@
 
 "use strict";
 
-var config = require('./config');
+var config = require_core('server/config');
 var host = "localhost";
 var server_options = {
   auto_reconnect: true

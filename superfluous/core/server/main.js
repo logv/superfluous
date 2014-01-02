@@ -70,9 +70,7 @@ function setup() {
     store.install(app);
   });
 
-  hooks.call("db", app, function() {
-    require_core("server/db").install();
-  });
+  hooks.call("db", app, function() { });
 
   // This is where the session is created
   hooks.call("session", app, function(app) {

@@ -5,7 +5,7 @@ test_helper.init();
 
 var assert = require("assert");
 describe("core/server/db.js", function() {
-  var db = require_core("server/db");
+  var db = require_app("server/db");
   describe("#install", function() {
     test_helper.it("should have a test", function(done) {
       db.install();
