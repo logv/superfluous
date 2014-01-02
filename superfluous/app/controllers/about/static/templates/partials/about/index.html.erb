@@ -19,7 +19,7 @@ developer, but leaves many others open. this is intentional, since
 
 <h2>Getting started</h2>
 
-<pre class="prettyprint lang-bash"><code># install superfluous
+<pre class="prettyprint"><code class="shell bash"># install superfluous
 npm install -g superfluous
 
 # create a new app
@@ -115,7 +115,7 @@ ENV=localhost nodemon app.js
   certain locations. The majority of the files you'll be working with as an
   app developer are in app/, components/ &amp; config/
 
-  <pre class="mtl prettyprint lang-bash hide_comments"><code><s>
+  <pre class="mtl prettyprint lang-bash hide_comments"><code class="bash shell"><s>
 superfluous</s>/
   app/                  # application specific code and assets
     client/             # client specific code and helpers
@@ -252,7 +252,7 @@ see example server controller code
 </button>
 
 <div id="server_controller_example" class="collapse no-transition">
-<pre class="prettyprint"> <code><%= server_controller_code %></code> </pre>
+<pre class="prettyprint"> <code class="javascript"><%= server_controller_code %></code> </pre>
 </div>
 </div>
 
@@ -268,7 +268,7 @@ see example server controller code
   </button>
 
   <div id="client_controller_example" class="collapse no-transition">
-  <pre class="prettyprint"> <code><%= client_controller_code %></code> </pre>
+  <pre class="prettyprint"> <code class="javascript"><%= client_controller_code %></code> </pre>
   </div>
   </div>
 
@@ -308,7 +308,7 @@ see example server controller code
   </button>
 
   <div id="template_example" class="collapse no-transition">
-  <pre class="prettyprint"> <code><%- template_code %></code> </pre>
+  <pre class="prettyprint"> <code class="html"><%- template_code %></code> </pre>
   </div>
   </div>
 
@@ -383,7 +383,7 @@ see example server controller code
   <div id="button_example" class="collapse no-transition">
 
   components/button/events.js
-  <pre class="prettyprint"><code>module.exports = { events: {
+  <pre class="prettyprint"><code class="javascript">module.exports = { events: {
     "click" :  "handle_button_click"
   },
 
@@ -393,7 +393,7 @@ handle_button_click: function() {
 </code></pre>
 
 components/button/button.js
-<pre class="prettyprint"><code>module.exports = { tagName: "div",
+<pre class="prettyprint"><code class="javascript">module.exports = { tagName: "div",
   className: "btn",
 
   set_title: function(title) {
@@ -403,7 +403,7 @@ components/button/button.js
 </code></pre>
 
 components/button/button.html.erb
-<pre class="prettyprint"><code>&lt;% set_default("title", "") %&gt;
+<pre class="prettyprint"><code class="javascript">&lt;% set_default("title", "") %&gt;
 
 &lt;div class="name" title="&lt;%= title %&gt;"&gt;
 &lt;%= name %&gt;
@@ -529,7 +529,7 @@ functionality.
   <div id="async_example" class="collapse no-transition">
 
   in app/controllers/async/server.js
-  <pre class="prettyprint"><code>module.exports = {
+  <pre class="prettyprint"><code class="javascript">module.exports = {
 routes: {
           "": "index"
         },
@@ -587,11 +587,11 @@ See marshalling components
 
 <div id="component_example" class="collapse mtl no-transition">
 Server Code
-<pre class="prettyprint"><code><%= about_server_code %>
+<pre class="prettyprint"><code class="javascript"><%= about_server_code %>
 </pre></code>
 
 Client Code
-<pre class="prettyprint"><code><%= about_client_code %></pre></code>
+<pre class="prettyprint"><code class="javascript"><%= about_client_code %></pre></code>
 </div>
 
 
@@ -694,11 +694,13 @@ To do any core initialization (adding performance tracking, error monitoring,
 authorization, etc), you can add them to the setup() function inside
 app/main.js
 
+<br />
+
 <button type="button" class="btn btn-danger mbl mtm" data-toggle="collapse" data-target="#second_main_example">
 example app/main.js file with setup()
 </button>
 <div id="second_main_example" class="collapse no-transition">
-<pre class="prettyprint"><code>"use strict";
+<pre class="prettyprint"><code class="strict">"use strict";
 
 var auth = require_app("server/auth");
 var perf = require_app("server/perf");
@@ -733,7 +735,7 @@ with superfluous' packaging scheme. </p>
 example app/main.js with setup_app()
 </button>
 <div id="main_example" class="collapse no-transition">
-<pre class="prettyprint"><code>"use strict";
+<pre class="prettyprint"><code class="javascript">"use strict";
 
 var express = require('express');
 
@@ -810,6 +812,3 @@ maybe consider this server for smale to medium size sites, for now :-D
 </div>
 
 </div>
-
-<% add_javascript("https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"); %>
-<% add_stylesheet("https://google-code-prettify.googlecode.com/svn/trunk/styles/doxy.css"); %>

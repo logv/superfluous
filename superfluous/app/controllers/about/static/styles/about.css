@@ -31,6 +31,12 @@ body {
     padding: 1em;
   }
 
+  pre,
+  pre code {
+    background-color: #1d1f21;
+    border: 0px;
+  }
+
   .hide_comments .com {
     @media (max-width: 767px) {
       display: none !important
