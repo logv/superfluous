@@ -93,7 +93,7 @@ body .content .contents {
   }
   @media @computer {
     margin-left: 250px;
-    max-width: 620px;
+    max-width: 800px;
   }
 
 }
