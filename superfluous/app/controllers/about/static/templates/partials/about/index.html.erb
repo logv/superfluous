@@ -383,13 +383,15 @@ see example server controller code
   <div id="button_example" class="collapse no-transition">
 
   components/button/events.js
-  <pre class="prettyprint"><code class="javascript">module.exports = { events: {
+  <pre class="prettyprint"><code class="javascript">
+module.exports = { 
+  events: {
     "click" :  "handle_button_click"
   },
 
-handle_button_click: function() {
-                     }
-  };
+  handle_button_click: function() {
+  }
+};
 </code></pre>
 
 components/button/button.js
