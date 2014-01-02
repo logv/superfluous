@@ -1,5 +1,11 @@
 all: package
 
+test_coverage:
+	cd superfluous; rm node_modules/superfluous || true
+	cd superfluous; npm install
+	cd superfluous; ln -s ../ node_modules/superfluous || true
+	cd superfluous; bash scripts/run_covered_tests.sh || true
+	cd superfluous; rm node_modules/superfluous || true
 test:
 	cd superfluous; rm node_modules/superfluous || true
 	cd superfluous; npm install
