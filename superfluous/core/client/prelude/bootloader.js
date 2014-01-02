@@ -309,9 +309,9 @@
     var throttled_issue_request = _.throttle(issue_request, 100, { leading: false });
 
     return function bootload(modules, cb) {
-      if (bootloader.__use_storage && _storage === _blank_storage) {
-        SF.log("Caching assets in LocalStorage");
-        _storage = _component_storage;
+      if (bootloader.__use_storage && storage === _blank_storage) {
+        _storage = window.localStorage;
+        storage = _storage;
       }
 
       if (_.isString(modules)) {
