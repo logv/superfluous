@@ -3,6 +3,7 @@ superfluous/node_modules
 .*.sw?
 sync.sh
 sync_*.sh
+coverage.html
 superfluous/config/override.js
 superfluous/config/certs/
 superfluous/config/local/

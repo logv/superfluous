@@ -12,15 +12,18 @@ var SESSION_SECRET = config.session_secret || 'keyboard cat';
 module.exports = {
   install: function(app) {
     var persistence_store = store.get();
-    if (persistence_store) {
-      _session = connect.session({
-        secret: SESSION_SECRET,
-        store: persistence_store
-      });
-    } else {
-      _session = connect.cookieSession({
-        secret: SESSION_SECRET
-      });
+
+    if (!_session) {
+      if (persistence_store) {
+        _session = connect.session({
+          secret: SESSION_SECRET,
+          store: persistence_store
+        });
+      } else {
+        _session = connect.cookieSession({
+          secret: SESSION_SECRET
+        });
+      }
     }
 
     app.use(_session);

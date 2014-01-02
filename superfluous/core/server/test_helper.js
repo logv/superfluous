@@ -54,6 +54,9 @@ var TEST_HEADER = [
 
 module.exports = {
   init: function() {
+    app = require("connect")();
+    app.locals = {};
+
     console.suppress();
     var domain = require('domain');
     var d = domain.create();

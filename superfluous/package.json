@@ -38,7 +38,7 @@
   },
   "config": {
     "blanket": {
-      "pattern": [ "core/server/", "app/server/", "/components/" ]
+      "pattern": [ "core/server/", "app/server/", "/components/", "app/controllers/" ]
     }
   }
 

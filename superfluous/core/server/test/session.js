@@ -9,6 +9,8 @@ describe("core/server/session.js", function() {
   describe("#install", function() {
     test_helper.it("should have a test", function(done) {
       var app = require("connect")();
+      var store = require_core("server/store");
+      store.install(app);
       session.install(app);
       done();
     });
