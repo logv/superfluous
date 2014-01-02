@@ -39,6 +39,11 @@ module.exports = {
         context("HEAD_SUPPLEMENTS").push(line);
       }
     });
+
+    if (mod.initialize) {
+      mod.initialize();
+      delete mod.initialize;
+    }
     return mod;
   },
 

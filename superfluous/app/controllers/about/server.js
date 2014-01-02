@@ -34,7 +34,6 @@ module.exports = {
     api.page.render({ content: template_str, socket: true});
   },
   socket: function(s) { 
-
     s.emit("foo");
     s.bridge.controller("about", "test_socket", "foo", "bar");
     s.log("hello!");
