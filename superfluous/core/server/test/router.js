@@ -11,7 +11,10 @@ var router = require_core("server/router");
 
 describe('router', function(){
   describe('#install()', function(){
-    router.install(app);
+    console.silent(function() {
+      router.install(app);
+    });
+
     test_helper.it('should add the router onto the app', function(){
       assert.notEqual(app.router, null);
     });

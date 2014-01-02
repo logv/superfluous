@@ -35,5 +35,11 @@
   "scripts" : {
     "test" : "bash scripts/run_tests.sh",
     "start" : "node app.js"
+  },
+  "config": {
+    "blanket": {
+      "pattern": [ "core/server/", "app/server/", "/components/" ]
+    }
   }
+
 }
