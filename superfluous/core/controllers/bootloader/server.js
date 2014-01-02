@@ -277,8 +277,13 @@ function validate_versions(versions, socket, cb) {
   packager.less(named_styles, function(ret) {
     _.each(versions.css, function(old_hash, css) {
       var mod = stylename(css);
-      if (ret[mod] && ret[mod].signature !== old_hash) {
-        socket.emit("__update_version", 'css', css, old_hash, ret[mod].signature);
+      if (ret[mod]) {
+        if (ret[mod].signature !== old_hash) {
+          console.log("Updating version", "css", old_hash, ret[mod].signature);
+          socket.emit("__update_version", 'css', css, old_hash, ret[mod].signature);
+        }
+      } else {
+        socket.emit("__update_version", 'css', css, old_hash, null);
       }
     });
   });

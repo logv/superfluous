@@ -26,10 +26,10 @@ function wrap_socket(socket) {
 
   var ret = {};
   ret.emit = function() {
-    if (socket.emit) {
-      socket.emit.apply(socket, arguments);
-    } else if (socket.send) {
+    if (socket.send) {
       socket.send.apply(socket, arguments);
+    } else if (socket.emit) {
+      socket.emit.apply(socket, arguments);
     }  else {
       throw new Error("not so sockety");
     }

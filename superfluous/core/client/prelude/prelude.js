@@ -58,7 +58,7 @@
   };
 
   SF.log = function() {
-    if (window.DEBUG) {
+    if (window.DEBUG || window._query._debug) {
       console.log.apply(console, arguments);
     }
   };
