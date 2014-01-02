@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 
+var EventEmitter = require("events").EventEmitter;
 var _suppressed_log;
 function suppress_console_log() {
   if (_suppressed_log) {
@@ -91,8 +92,21 @@ module.exports = {
   },
 
   // TODO: define how this works better
-  test_socket: function(controller_name, socket_msg, args, cb) {
+  test_socket: function(controller_name, cb) {
+    run_in_context(function() {
+      var controller = require_core("server/controller");
+      var controller_mod = controller.load(controller_name);
+      var socket = require_core("server/socket");
+      var fakeSocket = new EventEmitter();
 
+
+      var wrappedSocket = socket.wrap_socket(fakeSocket);
+
+      cb(wrappedSocket, function(next) {
+        controller_mod.socket(wrappedSocket);
+        next();
+      });
+    });
   },
   test_route: function(controller_name, route, args, cb) {
 

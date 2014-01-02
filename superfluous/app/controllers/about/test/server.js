@@ -13,5 +13,25 @@ describe("About Controller", function() {
       assert.notEqual(rendered_page.indexOf("superfluous"), -1);
       done();
     });
+
+  });
+
+  it("should do socket stuff", function(done) {
+    test_helper.test_socket("about", function(s, do_socket_setup) {
+      var called, logged;
+      s.on("foo", function() {
+        called = true;
+      });
+
+      s.on("__log", function() {
+        logged = true;
+      });
+
+      do_socket_setup(function() {
+        assert.equal(called, true);
+        assert.equal(logged, true);
+        done();
+      });
+    });
   });
 });

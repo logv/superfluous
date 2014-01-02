@@ -26,7 +26,13 @@ function wrap_socket(socket) {
 
   var ret = {};
   ret.emit = function() {
-    socket.send.apply(socket, arguments);
+    if (socket.emit) {
+      socket.emit.apply(socket, arguments);
+    } else if (socket.send) {
+      socket.send.apply(socket, arguments);
+    }  else {
+      throw new Error("not so sockety");
+    }
   };
 
   ret.broadcast = {
@@ -58,7 +64,7 @@ function wrap_socket(socket) {
 
   ret.log = function() {
     ret.emit("__log", _.toArray(arguments));
-  }
+  };
 
   ret.socket = socket;
 
@@ -208,5 +214,6 @@ module.exports = {
   },
   set_primus: function(primus) {
     _primus = primus;
-  }
+  },
+  wrap_socket: wrap_socket
 };
