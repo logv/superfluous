@@ -169,6 +169,10 @@ var render_page = function(page_options) {
     }
 
     var use_storage = false; // TODO: turn this on for production environments
+    if (config.RELEASE) {
+      use_storage = true;
+    }
+
     var use_fullscreen = $$.use_fullscreen;
     var pageId = _.uniqueId("pg_");
     var simple_pipe = config.simple_pipe;
