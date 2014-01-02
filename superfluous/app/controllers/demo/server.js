@@ -17,7 +17,6 @@ module.exports = {
   },
 
   socket: function(socket) {
-    console.log("A new client has attached to the server");
     var counter = 0;
     var self = this;
 

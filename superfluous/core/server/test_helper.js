@@ -99,7 +99,6 @@ module.exports = {
       var socket = require_core("server/socket");
       var fakeSocket = new EventEmitter();
 
-
       var wrappedSocket = socket.wrap_socket(fakeSocket);
 
       cb(wrappedSocket, function(next) {
@@ -109,7 +108,6 @@ module.exports = {
     });
   },
   test_route: function(controller_name, route, args, cb) {
-
     var router = require_core("server/router");
     var controller = require_core("server/controller");
     var controller_mod = controller.load(controller_name);

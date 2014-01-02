@@ -14,4 +14,15 @@ describe("Demo Controller", function() {
       done();
     });
   });
+  it("should send out the initial socket payloads", function(done) {
+    test_helper.test_socket("demo", function(socket, setup_socket) {
+      setup_socket(function() {
+        socket.on("query_results", function(res) {
+          assert.notEqual(res, null);
+          done();
+        });
+        socket.emit("query");
+      });
+    });
+  });
 });
