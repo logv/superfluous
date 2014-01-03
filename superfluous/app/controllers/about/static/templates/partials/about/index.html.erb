@@ -175,39 +175,33 @@ see example controller routes
 </button>
 
 <div id="routing_example" class="collapse no-transition">
-<pre class="prettyprint"><code>
+<pre class="prettyprint"><code>// in app/controllers/my_controller/server.js 
+// if this controller is the hooked
+// up to the root URL ('/') in our routes.json. The following URL routes would be
+//  generated and handled by this server controller.
+//
+// /
+// /demo
+// /update
+// /get/*/
 
-// in app/controllers/my_controller/server.js
 module.exports = {
   routes: {
     "/" : "get_index",
     "/demo" : "get_demo",
-    "/smiley/:id" : "get_smiley",
+    "/foo/:id" : "get_foo",
   },
   post_routes: {
     "update" : post_update
   },
   get_index: function(ctx, api) {},
   get_demo: function(ctx, api) {},
-  get_smiley: function(ctx, api) {},
-  post_index: function(ctx, api) {};
+  get_foo: function(ctx, api) {},
+  post_update: function(ctx, api) {};
 };
 
 }</code></pre>
 </div>
-
-<br />
-
-Let's say this controller is the hooked up to the root URL ('/') in our
-routes.json. The following URL routes would be generated and handled by this
-server controller.
-
-<ul>
-<li><b>/</b></li>
-<li><b>/demo</b></li>
-<li><b>/update</b></li>
-<li><b>/add/*/</b></li>
-</ul>
 
 <h4>Reverse Routing</h4>
 
@@ -752,7 +746,20 @@ setup_app: function(app) {
 </code></pre>
 </div>
 
-<h3>Adding to the prelude.js</h3>
+<h3>Core Hooks</h3>
+
+Some of the functionality of superfluous is wiring together middleware in
+connect. While unopinionated, there are several defaults in place for the
+various pieces of middleware.
+
+<div class="mtl alert">This feature is currently being worked on. Expect hooks and
+their names to shift around slightly before the API stabilizes.</div>
+
+It's possible to override them in your app/main.js by using before_, after_,
+setup_ and insteadof_ functions for each hook that you want to override. See
+the demo apps for a few examples of using hook overrides.
+
+<h3>Adding to the prelude js or css</h3>
 
 <p>
 Superfluous's delivery is phased - it delivers the <b>prelude</b> of the page
@@ -760,14 +767,15 @@ and an HTML skeleton as soon as possible. when other portions of the page
 are delivered, the prelude downloads their dependencies and displays them.
 </p>
 <p>
-If you'd like to put more JS files into the prelude, you can add them to
+If you'd like to put more CSS or JS files into the prelude, you can add them to
 <b>app/client/prelude.json</b> to be served inside the initial prelude.js
 payload. If there is just some core JS, you can put it inside
 <b>app/client/prelude.js</b> and will be appended to the prelude package.
 </p>
+
 <p>
 Currently, the prelude contains <b>underscore</b>, <b>backbone</b> and
-<b>bootstrap</b> and the <b>socket</b> library is delivered separately.
+<b>bootstrap</b>, while the <b>socket</b> library is delivered separately.
 </p>
 
 <h1>Left to the developer</h1>
@@ -814,3 +822,14 @@ maybe consider this server for smale to medium size sites, for now :-D
 </div>
 
 </div>
+
+<h3>Using Bower Components</h3>
+
+<a href="http://bower.io/">Bower</a> is a great way of managing front end
+dependencies. To use them in superfluous, you can install your bower components
+into app/ or app/client and then require them from client code.
+
+<br />
+
+If you were to install jquery (as an example), in a client controller, you could use
+<code>require("app/bower_components/jquery/jquery"))</code> to require it.
