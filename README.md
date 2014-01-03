@@ -13,24 +13,26 @@ delivery, and subsequent interactions. superfluous connects the two :-D
 
 ### 0) get it running
 
-    # install node (>= 0.8)
+# install node (>= 0.8)
 
-    # get the code and dependencies for superfluous
-    npm install -g superfluous
-    superfluous create my_first_app
+```bash
+# get the code and dependencies for superfluous
+npm install -g superfluous
+superfluous create my_first_app
 
-    cd my_first_app
-    npm install
-    vim package.json # edit your app name here
+cd my_first_app
+npm install
+vim package.json # edit your app name here
 
-    # start the server with the dev environment for
-    # localhost
-    ENV=localhost nodemon app.js
+# start the server with the dev environment for
+# localhost
+ENV=localhost nodemon app.js
 
-    # visit http://localhost:3300
+# visit http://localhost:3300
 
-    # get hacking
-    vim app/controllers/home/server.js
+# get hacking
+vim app/controllers/home/server.js
+```
 
 ## Fundamentals
 
