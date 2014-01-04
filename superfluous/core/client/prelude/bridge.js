@@ -40,6 +40,11 @@
         var promise = $.get(
           "/pkg/status", function() {
 
+            // worst case, we restart in 2s, anyways
+            setTimeout(function() {
+              window.location.reload();
+            }, 2000);
+
             SF.trigger("validate/versions", SF.socket());
             SF.on("__updated_versions", function() {
               bootloader.sync();

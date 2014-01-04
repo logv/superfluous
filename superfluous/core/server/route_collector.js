@@ -44,7 +44,7 @@ module.exports = {
 
       function run_route(handler) {
         return function() {
-          context("controller", "bootloader");
+          context("controller", controller);
           inst[handler].apply(inst, arguments);
         };
       }
@@ -54,7 +54,8 @@ module.exports = {
           route: path_.normalize("/" + name + "/" + subpath),
           method: "get",
           name: name + "." + handler,
-          handler: run_route(handler)
+          handler: run_route(handler),
+          controller: inst
         });
       });
     }
@@ -80,6 +81,7 @@ module.exports = {
         return function() {
           context("controller", controller);
           context("controller_path", path);
+          context("controller_instance", inst);
 
           inst[handler].apply(inst, arguments);
         };
@@ -92,7 +94,8 @@ module.exports = {
           route: path_.normalize(subberpath),
           method: "get",
           name: controller + "." + handler,
-          handler: run_route(handler)
+          handler: run_route(handler),
+          controller: inst
         });
       });
 

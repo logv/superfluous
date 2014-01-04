@@ -27,6 +27,7 @@ module.exports = function(file, options) {
         var file_name = path.join(subpath, file);
         ret = fs.readFileSync(file_name).toString();
         var watcher = fs.watch(file, function() {
+          console.log("Deleting cached file", file);
           delete cached_files[file];
           watcher.close();
         });

@@ -95,6 +95,11 @@ function resolve_futures() {
           }
         }
 
+        var controller_instance = context("controller_instance");
+        if (controller_instance && controller_instance.after_request) {
+          controller_instance.after_request();  
+        }
+
 
         ctx.exit();
       }

@@ -52,22 +52,27 @@ _.each(API, function(v, k) {
 });
 
 var zlib = require("zlib");
-function request_handler_factory(app, route, handler, name) {
+function request_handler_factory(app, route_data) {
+  var handler = route_data.handler;
+  var route = route_data.route;
+  var name = route_data.name;
+  var controller_instance = route_data.controller;
+
   return function handle_req(req, res) {
     var stream = zlib.createGzip();
     stream._flush = zlib.Z_SYNC_FLUSH;
     stream.pipe(res);
 
     hooks.invoke("setup_request_ip", req, function() {
-      var ip = req.headers['x-forwarded-for'] || 
-        req.connection.remoteAddress || 
+      var ip = req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
         req.socket.remoteAddress ||
         req.connection.socket.remoteAddress;
 
       req.ip = ip;
     });
 
-    hooks.invoke("setup_request", req, res, function() { 
+    hooks.invoke("setup_request", req, res, function() {
       context.create(
         {
           req: req,
@@ -77,20 +82,37 @@ function request_handler_factory(app, route, handler, name) {
           app: app,
           router: app.router },
         function(ctx) {
-          hooks.invoke("setup_context", ctx, function() { 
+          hooks.invoke("setup_context", ctx, function() {
             page.emit("start", {
               route: route
             });
 
-            debug("Starting request", ctx.id, ctx.req.url.pathname);
-            res.set("Transfer-Encoding", "chunked");
+            var handled = false;
+            var handle_request = function() {
+              if (handled) {
+                return;
+              }
+              handled = true;
+              debug("Starting request", ctx.id, ctx.req.url.pathname);
+              res.set("Transfer-Encoding", "chunked");
 
-            handler(ctx, API);
+              handler(ctx, API);
 
-            page.emit("main_duration");
-            debug("Ending main request", ctx.id, ctx.req.uri.pathname);
-            // Nulling out context after request is over
-            ctx.exit();
+              page.emit("main_duration");
+              debug("Ending main request", ctx.id, ctx.req.uri.pathname);
+              ctx.exit();
+            };
+
+            if (controller_instance && controller_instance.before_request) {
+              var ret = controller_instance.before_request(ctx, API, handle_request);
+
+              // if the controller calls 'handle_request', they should definitely return true...
+              if (ret) {
+                return;
+              }
+            }
+
+            handle_request();
           });
       });
     });
@@ -107,18 +129,14 @@ var setup = function(app) {
 
   _.each(routes, function(route_data) {
     var type = route_data.method || 'get';
-    var handler = route_data.handler;
-    var route = route_data.route;
-    var name = route_data.name;
-
     if (!app[type]) {
       console.log("Route", route_data.route, "has an invalid method");
       return;
     }
 
 
-    router.add(type, route, request_handler_factory(app, route, handler, name), {
-      name: name
+    router.add(type, route_data.route, request_handler_factory(app, route_data), {
+      name: route_data.name
     });
   });
 
