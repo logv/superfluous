@@ -42,15 +42,11 @@ module.exports = {
     api.page.render({ content: template_str, socket: true});
   },
   socket: function(s) { 
-    s.emit("foo");
+    s.emit("init");
     s.bridge.controller("about", "test_socket", "foo", "bar");
     s.log("hello!");
   },
   is_package: true,
-  before_request: function() {
-    console.log("Starting request to about controller");
-  },
-  after_request: function() {
-    console.log("Ending request to about controller");
-  }
+  before_request: function() { },
+  after_request: function() { }
 };

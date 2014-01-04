@@ -19,7 +19,7 @@ describe("About Controller", function() {
   it("should do socket stuff", function(done) {
     test_helper.test_socket("about", function(s, do_socket_setup) {
       var called, logged;
-      s.on("foo", function() {
+      s.on("init", function() {
         called = true;
       });
 

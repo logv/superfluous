@@ -16,6 +16,7 @@ var _ = require_vendor("underscore");
 var context = require("./context");
 var readfile = require("./readfile");
 var hooks = require("./hooks");
+var config = require_core('server/config');
 
 context.setDefault("CSS_DEPS", {});
 context.setDefault("JS_DEPS", {});
@@ -117,7 +118,8 @@ var _render_template = function(template, template_data, options, core) {
   var template_key = template + ":" + (core ? "core" : " app");
 
   var templateSettings = {};
-  if (!_compiled_templates[template_key]) {
+  // When in production, we cache templates from server start to server start
+  if (!_compiled_templates[template_key] || !config.RELEASE) {
     try {
       _compiled_templates[template_key] = _.template(template_data);
     } catch(e) {
