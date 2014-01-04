@@ -28,8 +28,16 @@ module.exports = {
       render_sidebar: sidebar.toString
     });
 
-    api.template.add_stylesheet("tomorrow-night-bright");
-    api.bridge.call("app/static/vendor/highlight.pack", "initHighlighting");
+    // we want the highlighting on the page to happen after the the first
+    // payload displays, so it doesnt block up page load. that's why it
+    // goes in this async function... :-D
+    var async_work = api.page.async(function(flush) {
+      api.template.add_stylesheet("tomorrow-night-bright");
+      api.bridge.call("app/static/vendor/highlight.pack", "initHighlighting");
+      flush();
+    });
+    async_work();
+
     api.bridge.controller("about", "handle_sidebar", sidebar);
     api.page.render({ content: template_str, socket: true});
   },
