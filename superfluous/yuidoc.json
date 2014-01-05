@@ -5,7 +5,7 @@
     "logo" : "/favicon.ico",
     "options": {
       "outdir": "app/static/docs",
-      "exclude" : "node_modules,static,components",
+      "exclude" : "node_modules,static,components,react,vendor",
       "theme" : "Simple"
     }
 }

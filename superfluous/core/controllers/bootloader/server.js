@@ -1,13 +1,13 @@
 "use strict";
 
 var _ = require_vendor("underscore");
-var template = require_core("server/template");
 var context = require_core("server/context");
 var packager = require_core("server/packager");
 var Component = require_core("server/component");
 var socket = require_core("server/socket");
 var readfile = require_core("server/readfile");
 var quick_hash = require_core("server/hash");
+var config = require_core("server/config");
 
 var async = require("async");
 var less = require("less");
@@ -39,7 +39,7 @@ function multi_pack(dir, extension, prepack) {
     async.each(modules, function(module, done) {
       var filename = dir + "/" + module;
 
-      if (cache[module]) {
+      if (cache[module] && config.RELEASE) {
         unpack(cache[module], loaded);
         done();
         return;

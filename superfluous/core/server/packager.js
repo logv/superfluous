@@ -18,6 +18,7 @@ var path = require("path");
 var quick_hash = require_core("server/hash");
 var readfile = require_core("server/readfile");
 var hooks = require_core("server/hooks");
+var config = require_core("server/config");
 
 var less_header = readfile("app/static/styles/definitions.less") +
   readfile("core/static/styles/definitions.less");
@@ -36,7 +37,7 @@ function package_less(includes, cb) {
   var included = _.map(includes, function(s) { return s.trim(); });
   var ret = {};
   async.each(included, function(mod, done) {
-    if (_style_cache[mod]) {
+    if (_style_cache[mod] && config.RELEASE) {
       ret[mod] = _style_cache[mod];
       done();
       return;

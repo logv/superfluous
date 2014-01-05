@@ -1,0 +1,984 @@
+{
+    "project": {
+        "name": "API",
+        "url": "http://superfluous.io/docs/",
+        "header": "app/static/favicon.ico",
+        "logo": "/favicon.ico",
+        "description": "a node.js server/client understanding",
+        "version": "0.0.28"
+    },
+    "files": {
+        "app/server/db.js": {
+            "name": "app/server/db.js",
+            "modules": {},
+            "classes": {
+                "db (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/client/prelude/bootloader.js": {
+            "name": "core/client/prelude/bootloader.js",
+            "modules": {
+                "Client": 1
+            },
+            "classes": {
+                "bootloader (client)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/client/component.js": {
+            "name": "core/client/component.js",
+            "modules": {},
+            "classes": {
+                "component (client)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/client/controller.js": {
+            "name": "core/client/controller.js",
+            "modules": {},
+            "classes": {
+                "controller (client)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/auth.js": {
+            "name": "core/server/auth.js",
+            "modules": {
+                "Server": 1
+            },
+            "classes": {
+                "auth (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/bridge.js": {
+            "name": "core/server/bridge.js",
+            "modules": {},
+            "classes": {
+                "bridge (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/component.js": {
+            "name": "core/server/component.js",
+            "modules": {},
+            "classes": {
+                "component (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/config.js": {
+            "name": "core/server/config.js",
+            "modules": {},
+            "classes": {
+                "config (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/context.js": {
+            "name": "core/server/context.js",
+            "modules": {},
+            "classes": {
+                "context (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/controller.js": {
+            "name": "core/server/controller.js",
+            "modules": {},
+            "classes": {
+                "controller (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/hooks.js": {
+            "name": "core/server/hooks.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/packager.js": {
+            "name": "core/server/packager.js",
+            "modules": {},
+            "classes": {
+                "packager (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/page.js": {
+            "name": "core/server/page.js",
+            "modules": {},
+            "classes": {
+                "page (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/readfile.js": {
+            "name": "core/server/readfile.js",
+            "modules": {},
+            "classes": {
+                "readfile (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/route_collector.js": {
+            "name": "core/server/route_collector.js",
+            "modules": {},
+            "classes": {
+                "router (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/router.js": {
+            "name": "core/server/router.js",
+            "modules": {},
+            "classes": {
+                "routes (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/template.js": {
+            "name": "core/server/template.js",
+            "modules": {},
+            "classes": {
+                "template (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "Superfluous": {
+            "name": "Superfluous",
+            "submodules": {
+                "Server": 1,
+                "Client": 1
+            },
+            "classes": {
+                "db (server)": 1,
+                "bootloader (client)": 1,
+                "component (client)": 1,
+                "controller (client)": 1,
+                "auth (server)": 1,
+                "bridge (server)": 1,
+                "component (server)": 1,
+                "config (server)": 1,
+                "context (server)": 1,
+                "controller (server)": 1,
+                "packager (server)": 1,
+                "page (server)": 1,
+                "readfile (server)": 1,
+                "router (server)": 1,
+                "routes (server)": 1,
+                "template (server)": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "file": "core/server/template.js",
+            "line": 3
+        },
+        "Server": {
+            "name": "Server",
+            "submodules": {},
+            "classes": {
+                "db (server)": 1,
+                "auth (server)": 1,
+                "bridge (server)": 1,
+                "component (server)": 1,
+                "config (server)": 1,
+                "context (server)": 1,
+                "controller (server)": 1,
+                "packager (server)": 1,
+                "page (server)": 1,
+                "readfile (server)": 1,
+                "router (server)": 1,
+                "routes (server)": 1,
+                "template (server)": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/template.js",
+            "line": 3,
+            "description": "The core Server module in superfluous contains code related to routing,\n authentication, page generation, template rendering and input handling."
+        },
+        "Client": {
+            "name": "Client",
+            "submodules": {},
+            "classes": {
+                "bootloader (client)": 1,
+                "component (client)": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/client/component.js",
+            "line": 10,
+            "description": "The core Client module contains code related to page delivery, asset\nmanagement, socket setup and controller management."
+        }
+    },
+    "classes": {
+        "db (server)": {
+            "name": "db (server)",
+            "shortname": "db (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "file": "app/server/db.js",
+            "line": 1,
+            "description": "The DB is a simple API for grabbing collections from Mongo. It makes sure\n that the DB connection is created before accessing the collection. In\n general, this should not fail, but it might.",
+            "submodule": "Server"
+        },
+        "bootloader (client)": {
+            "name": "bootloader (client)",
+            "shortname": "bootloader (client)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "submodule": "Client",
+            "namespace": "",
+            "file": "core/client/prelude/bootloader.js",
+            "line": 7,
+            "description": "The bootloader is responsible for managing the assets on the page. It\nexposes an API to load javascript, styles and components asynchronously and run\na callback when they are loaded."
+        },
+        "component (client)": {
+            "name": "component (client)",
+            "shortname": "component (client)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "submodule": "Client",
+            "namespace": "",
+            "file": "core/client/component.js",
+            "line": 10,
+            "description": "This class is responsible for creating, instantiating and rendering\n components on the client."
+        },
+        "controller (client)": {
+            "name": "controller (client)",
+            "shortname": "controller (client)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/client/controller.js",
+            "line": 1,
+            "description": "This module is responsible for instantiating controllers on the client side\nand calling into the controller on directions from the bridge."
+        },
+        "auth (server)": {
+            "name": "auth (server)",
+            "shortname": "auth (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "submodule": "Server",
+            "namespace": "",
+            "file": "core/server/auth.js",
+            "line": 10,
+            "description": "The auth class helps with setting up the SSL server and connecting the\nauthentication between the sockets and request.",
+            "access": "private",
+            "tagname": ""
+        },
+        "bridge (server)": {
+            "name": "bridge (server)",
+            "shortname": "bridge (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/bridge.js",
+            "line": 1,
+            "description": "The Bridge is responsible for communication between the client and server\nduring app delivery. The bridge flushes payloads and instructions to the\nclient delivery engine, which downloads the payload dependencies before\ninserting the payload into the page.\n\nThe bridge can be used by the Server Controller to load dependencies or make\nexplicit calls into client side JS modules.",
+            "submodule": "Server"
+        },
+        "component (server)": {
+            "name": "component (server)",
+            "shortname": "component (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/component.js",
+            "line": 1,
+            "description": "A Component is a Backbone View and the templates, styles and javascript that\nit is packaged with.\n\nThis module exposes an API for creating components on the server. Any\nComponet will be an instance of a Backbone.View and have several convenience\nmethods attached, including toString and marshall.\n\n(See components/component.js for the conveniences)",
+            "submodule": "Server"
+        },
+        "config (server)": {
+            "name": "config (server)",
+            "shortname": "config (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/config.js",
+            "line": 1,
+            "description": "This module loads the configuration for the superfluous app. \n\nIt first loads config/config.js for a base set of configuration options.\nIt then loads config/override.js for any local overrides (this file should be placed .gitignore)\nIt then loads config/${ENV}.js (this should be something like 'localhost', 'production', etc\n\nWhen requiring this module, the cascading objects will be available as\nproperties on it.",
+            "submodule": "Server"
+        },
+        "context (server)": {
+            "name": "context (server)",
+            "shortname": "context (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/context.js",
+            "line": 1,
+            "description": "The Context module is how the server carries around request specific\n information.\nDuring the request execution and app render, the superfluous core code will\n use this context to coordinate information between modules. This is a sort\n of \"Request Local Storage\", that is available in PHP or other thread based\n web handlers. As a convenicence, it allows any variable to be stored and\n retrieved from the context, without having to reference the request\n explicitly.\nWhen a request is handled in a controller, it is placed into its own domain.\n It is important that when using asynchronous operation, any callbacks passed into\n them are wrapped by the context, which will re-instantiate the current domain before\n running the callback.",
+            "submodule": "Server"
+        },
+        "controller (server)": {
+            "name": "controller (server)",
+            "shortname": "controller (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/controller.js",
+            "line": 1,
+            "description": "The Server Controller is the entry point for every app. Each server\n controller dwells at a top level URL (which is registered in routes.json).\n This module deals with loading server controllers and convenience functions\n exposed to them.",
+            "access": "private",
+            "tagname": "",
+            "submodule": "Server"
+        },
+        "packager (server)": {
+            "name": "packager (server)",
+            "shortname": "packager (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/packager.js",
+            "line": 1,
+            "description": "The packager contains logic for compiling components and javascript\ndependencies, as well as the endpoints for serving them as multiplexed XHR\nRequests.",
+            "submodule": "Server"
+        },
+        "page (server)": {
+            "name": "page (server)",
+            "shortname": "page (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/page.js",
+            "line": 1,
+            "description": "This module deals with how pages are generated, rendered and delivered to\nthe client. Each server controller is expected to use this API (or the res\nobject) to send a response to the client.",
+            "submodule": "Server"
+        },
+        "readfile (server)": {
+            "name": "readfile (server)",
+            "shortname": "readfile (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/readfile.js",
+            "line": 1,
+            "description": "This module provides a simple synchronous readfile + caching mechanism.",
+            "submodule": "Server"
+        },
+        "router (server)": {
+            "name": "router (server)",
+            "shortname": "router (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/route_collector.js",
+            "line": 1,
+            "description": "The router hooks up the routes on the server to the express app. It pull the\nroutes off the bootloader, as well as any controllers listed in routes.json\nand creates their 'routes' and 'post_routes' handlers on behalf of the controller.",
+            "submodule": "Server"
+        },
+        "routes (server)": {
+            "name": "routes (server)",
+            "shortname": "routes (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/router.js",
+            "line": 1,
+            "description": "The routes module is responsible for calling a route in a controller. It is\nthe entry point for all route handling on the server and is where the\ncontext is created.",
+            "submodule": "Server"
+        },
+        "template (server)": {
+            "name": "template (server)",
+            "shortname": "template (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/template.js",
+            "line": 3,
+            "description": "This module deals with how templates are rendered and the functions exposed\nto the rendering context. In general, controllers will render templates, while Components\nhave their template rendering handled for them, so this class is mostly\ncalled into from the Server Controller of the currently running app.",
+            "submodule": "Server"
+        }
+    },
+    "classitems": [
+        {
+            "file": "app/server/db.js",
+            "line": 60,
+            "description": "This function returns a collection from the mongo DB, making sure that\nthe DB is created before using it.",
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "db_name",
+                    "description": "A namespaced name for the DB",
+                    "type": "String",
+                    "multiple": true
+                },
+                {
+                    "name": "cb",
+                    "description": "Function to run when the DB is returned.",
+                    "type": "Function"
+                }
+            ],
+            "class": "db (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "app/server/db.js",
+            "line": 110,
+            "description": "Returns the raw database connection",
+            "itemtype": "method",
+            "name": "raw",
+            "return": {
+                "description": "db Mongo DB Connection",
+                "type": "Object"
+            },
+            "class": "db (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/client/prelude/bootloader.js",
+            "line": 607,
+            "itemtype": "method",
+            "name": "inject_css",
+            "class": "bootloader (client)",
+            "module": "Superfluous",
+            "submodule": "Client"
+        },
+        {
+            "file": "core/client/prelude/bootloader.js",
+            "line": 615,
+            "description": "Load a javascript module.  (works like require.js)",
+            "itemtype": "method",
+            "name": "require",
+            "class": "bootloader (client)",
+            "module": "Superfluous",
+            "submodule": "Client"
+        },
+        {
+            "file": "core/client/prelude/bootloader.js",
+            "line": 622,
+            "description": "Inserts an asynchronous pagelet into the page",
+            "itemtype": "method",
+            "name": "deliver",
+            "access": "private",
+            "tagname": "",
+            "class": "bootloader (client)",
+            "module": "Superfluous",
+            "submodule": "Client"
+        },
+        {
+            "file": "core/client/prelude/bootloader.js",
+            "line": 643,
+            "description": "Bootload in a css file or array of css files",
+            "itemtype": "method",
+            "name": "css",
+            "class": "bootloader (client)",
+            "module": "Superfluous",
+            "submodule": "Client"
+        },
+        {
+            "file": "core/client/prelude/bootloader.js",
+            "line": 648,
+            "description": "Bootload in a js file or array of js files",
+            "itemtype": "method",
+            "name": "js",
+            "class": "bootloader (client)",
+            "module": "Superfluous",
+            "submodule": "Client"
+        },
+        {
+            "file": "core/client/component.js",
+            "line": 39,
+            "description": "Bootload in a component or array of components",
+            "itemtype": "method",
+            "name": "pkg",
+            "alias": "component",
+            "class": "component (client)",
+            "module": "Superfluous",
+            "submodule": "Client"
+        },
+        {
+            "file": "core/server/auth.js",
+            "line": 30,
+            "description": "After the http and socket servers are setup, the app and socket server are\npassed to the install method, so the socket authorization can carry forward\ncontext from the original request.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "install",
+            "params": [
+                {
+                    "name": "connect_app",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "socket_server",
+                    "description": "(primus, socket.io, etc)",
+                    "type": "Object"
+                }
+            ],
+            "class": "auth (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/bridge.js",
+            "line": 49,
+            "description": "Invokes a function in a client JS module.",
+            "itemtype": "method",
+            "name": "call",
+            "params": [
+                {
+                    "name": "module_name",
+                    "description": "the module name to load. This should be a full\npath from the app root (app/client/some_module, f.e.)",
+                    "type": "String"
+                },
+                {
+                    "name": "function_name",
+                    "description": "function name to call. This should be exposed in the module.exports of the module being loaded.",
+                    "type": "String"
+                },
+                {
+                    "name": "args",
+                    "description": "the arguments to pass the invoked function. Any\nComponents passed in will be properly marshalled to the client and\ninstantiated before calling this function.",
+                    "type": "Mixed",
+                    "multiple": true
+                }
+            ],
+            "class": "bridge (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/bridge.js",
+            "line": 70,
+            "description": "Injects raw JS into the page.\n Generally, this is used internally and not for external consumption.",
+            "itemtype": "method",
+            "name": "raw",
+            "params": [
+                {
+                    "name": "javascript_code",
+                    "description": "the javacsript code to insert into this page.",
+                    "type": "String"
+                }
+            ],
+            "class": "bridge (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/bridge.js",
+            "line": 82,
+            "description": "Invokes a function on a controller. This is useful for passing state to\n the client controller during the initial page delivery.",
+            "itemtype": "method",
+            "name": "controller",
+            "params": [
+                {
+                    "name": "controller_name",
+                    "description": "the controller name (as just the module_name, not a complete path) to invoke the function on.",
+                    "type": "String"
+                },
+                {
+                    "name": "function_name",
+                    "description": "the function to call on the controller.",
+                    "type": "String"
+                },
+                {
+                    "name": "args",
+                    "description": "any arguments to use when invoking the controller.\n Any Components used will be automatically marshalled before invoking this\n function on the client.",
+                    "type": "Mixed",
+                    "multiple": true
+                }
+            ],
+            "class": "bridge (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/bridge.js",
+            "line": 164,
+            "description": "Renders any queued up bridge invocations as a string to deliver to the client.\n This is used by core/server/page when generating the page",
+            "itemtype": "method",
+            "name": "render",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "The raw HTML for the bridge invocations to be run on the client.",
+                "type": "String"
+            },
+            "class": "bridge (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/bridge.js",
+            "line": 193,
+            "description": "Adds a function for marshalling components across boundaries",
+            "class": "bridge (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/bridge.js",
+            "line": 199,
+            "description": "Gets a marshaller by name, for testing purposes",
+            "class": "bridge (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/bridge.js",
+            "line": 207,
+            "description": "Marshalls a serious of arguments",
+            "class": "bridge (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/component.js",
+            "line": 83,
+            "description": "Creates a complete package for a component by reading package.json and\nrunning the styles, js and templates through their preprocessors.",
+            "static": 1,
+            "itemtype": "method",
+            "name": "build_package",
+            "class": "component (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/component.js",
+            "line": 192,
+            "description": "Builds a Component for usage on the server. This Component is loaded from\nthe components/ directory out of the component's package.json file. When\ninstantiated on the server side, the component is created with only its main\nJS file (the events file is only used on the client).\n\nThe component lifecycle for server created components is:\n\n Server:\n component.initialize(options)\n component.render\n component.server\n\n Client:\n component.initialize(options)\n component.client(options.client_options)",
+            "static": 1,
+            "itemtype": "method",
+            "name": "build",
+            "params": [
+                {
+                    "name": "component_name",
+                    "description": "The name of the component (\"button\", f.e.)",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "The options to pass to the component's initialize\nfunction. The 'client_options' member of this Object is special and will be\npassed to the client() function when this Component is instantiated on the\nclient.",
+                    "type": "Object"
+                },
+                {
+                    "name": "cb",
+                    "description": "The callback to run once the Component is instantiated",
+                    "type": "Function"
+                }
+            ],
+            "class": "component (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/component.js",
+            "line": 322,
+            "description": "Renders this component into HTML for the server to send to the client. The\n side effect of this is that this component is also marshalled to the\n client through the bridge. \n This function is safe to call multiple times and only one instance will be\n instantiated on the client.",
+            "itemtype": "method",
+            "name": "toString",
+            "return": {
+                "description": "the generated HTML for this component",
+                "type": "String"
+            },
+            "class": "component (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/component.js",
+            "line": 339,
+            "description": "Marshall this component through the bridge to the client.\n This function is safe to call multiple times and only one instance will be\n instantiated on the client.",
+            "itemtype": "method",
+            "name": "marshall",
+            "return": {
+                "description": "the generated HTML for this component",
+                "type": "String"
+            },
+            "class": "component (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/context.js",
+            "line": 50,
+            "description": "Sets the current context in use",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "set",
+            "class": "context (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/context.js",
+            "line": 60,
+            "description": "Sets the current context in use",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "get",
+            "class": "context (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/context.js",
+            "line": 109,
+            "description": "Creates a new context (with prefilled globals) for a request to use.",
+            "itemtype": "method",
+            "name": "create",
+            "params": [
+                {
+                    "name": "defaults",
+                    "description": "The default options to pass into the domain",
+                    "type": "Object"
+                },
+                {
+                    "name": "cb",
+                    "description": "the callback to run after this context is created",
+                    "type": "Function"
+                }
+            ],
+            "class": "context (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/context.js",
+            "line": 189,
+            "description": "Pulls the current domain out of the global namespace and makes sure that\n before 'func' is called, the domain is placed back into the global\n namespace. When running any async IO operations that potentially create\n domains, you should place the callback inside a wrap call. As a\n convenience, any function can have .wrap() or .intercept() called on it to\n do this automatically",
+            "itemtype": "method",
+            "name": "wrap",
+            "class": "context (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/controller.js",
+            "line": 79,
+            "description": "Forces this route to check for HTTPS before serving it. This lets you make sure endpoints are secured.",
+            "itemtype": "method",
+            "name": "require_https",
+            "params": [
+                {
+                    "name": "A",
+                    "description": "route handler to wrap",
+                    "type": "Function"
+                }
+            ],
+            "class": "controller (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/controller.js",
+            "line": 123,
+            "description": "Deserializes a URL param from jquery and returns it as an array.",
+            "itemtype": "method",
+            "name": "array_of",
+            "class": "controller (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/controller.js",
+            "line": 139,
+            "description": "Deserializes a URL param from jquery and returns it as a value.",
+            "itemtype": "method",
+            "name": "value_of",
+            "class": "controller (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/hooks.js",
+            "line": 12,
+            "description": "Calls a hook on the main module during the server setup.\n\nEvery hook has a 'name', which lets app interact with the hook and after the\nhook runs.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "call_hook",
+            "params": [
+                {
+                    "name": "module",
+                    "description": "the main app module to invoke the function on",
+                    "type": "Module"
+                },
+                {
+                    "name": "hook",
+                    "description": "name of function invoke",
+                    "type": "String"
+                },
+                {
+                    "name": "cb",
+                    "description": "the cb to call instead of the hook",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "packager (server)",
+            "module": "Superfluous"
+        },
+        {
+            "file": "core/server/page.js",
+            "line": 28,
+            "description": "Async page rendering function. It takes a function to run inside an async context\nand returns a placeholder to be rendered in its placed.",
+            "itemtype": "method",
+            "name": "async",
+            "class": "page (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/page.js",
+            "line": 129,
+            "description": "The main page rendering function. It takes an array of options specifying\nwhat to render in the page.",
+            "itemtype": "method",
+            "name": "render",
+            "class": "page (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/template.js",
+            "line": 198,
+            "description": "Renders a template into a string",
+            "itemtype": "method",
+            "name": "render",
+            "class": "template (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/template.js",
+            "line": 205,
+            "description": "Renders a partial into a string",
+            "itemtype": "method",
+            "name": "partial",
+            "class": "template (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/template.js",
+            "line": 212,
+            "description": "Adds a stylesheet to load before inserting the current template",
+            "itemtype": "method",
+            "name": "add_stylesheet",
+            "class": "template (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: alias",
+            "line": " core/client/component.js:39"
+        },
+        {
+            "message": "replacing incorrect tag: params with param",
+            "line": " core/server/bridge.js:70"
+        },
+        {
+            "message": "Missing item type\nAdds a function for marshalling components across boundaries",
+            "line": " core/server/bridge.js:193"
+        },
+        {
+            "message": "Missing item type\nGets a marshaller by name, for testing purposes",
+            "line": " core/server/bridge.js:199"
+        },
+        {
+            "message": "Missing item type\nMarshalls a serious of arguments",
+            "line": " core/server/bridge.js:207"
+        }
+    ]
+}

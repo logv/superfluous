@@ -1,0 +1,31 @@
+a {
+  color: #b26;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000;
+}
+
+.container {
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.whiteout {
+  color: #fff;
+  text-decoration: none;
+}
+
+a .whiteout {
+  color: #fff;
+  text-decoration: none;
+}
+
+body {
+  background-color: #eee;
+}
+
+body, html, .container, .content {
+  height: 100%;
+}

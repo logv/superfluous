@@ -1,5 +1,6 @@
 {
-  "/": "about",
+  "/": "home",
+  "/about": "about",
   "/react_demo": "react_demo",
   "/demo": "demo",
   "/kitten": "kitten",

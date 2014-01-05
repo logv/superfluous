@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>auth (server) - API</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.8.0pr2/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <script src="http://yui.yahooapis.com/combo?3.8.0pr2/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div class="yui3-g">
+
+        <div id="sidebar" class="yui3-u" style="padding-top: 5px">
+            <div id="modules" class="sidebox">
+    <div class="hd">
+        <h2 class="no-toc">Modules</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+                <li><a href="../modules/Superfluous.html">Superfluous</a>
+                
+                    <ul>
+                        
+                            <li><a href="../modules/Superfluous.html#Server">Server</a></li>
+                        
+                            <li><a href="../modules/Superfluous.html#Client">Client</a></li>
+                        
+                    </ul>
+                
+                </li>
+            
+        </ul>
+    </div>
+</div>
+
+<div id="classes" class="sidebox">
+    <div class="hd">
+        <h2 class="no-toc">Classes</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+                <li><a href="../classes/auth (server).html">auth (server)</a></li>
+            
+                <li><a href="../classes/bootloader (client).html">bootloader (client)</a></li>
+            
+                <li><a href="../classes/bridge (server).html">bridge (server)</a></li>
+            
+                <li><a href="../classes/component (client).html">component (client)</a></li>
+            
+                <li><a href="../classes/component (server).html">component (server)</a></li>
+            
+                <li><a href="../classes/config (server).html">config (server)</a></li>
+            
+                <li><a href="../classes/context (server).html">context (server)</a></li>
+            
+                <li><a href="../classes/controller (client).html">controller (client)</a></li>
+            
+                <li><a href="../classes/controller (server).html">controller (server)</a></li>
+            
+                <li><a href="../classes/db (server).html">db (server)</a></li>
+            
+                <li><a href="../classes/packager (server).html">packager (server)</a></li>
+            
+                <li><a href="../classes/page (server).html">page (server)</a></li>
+            
+                <li><a href="../classes/readfile (server).html">readfile (server)</a></li>
+            
+                <li><a href="../classes/router (server).html">router (server)</a></li>
+            
+                <li><a href="../classes/routes (server).html">routes (server)</a></li>
+            
+                <li><a href="../classes/template (server).html">template (server)</a></li>
+            
+        </ul>
+    </div>
+</div>
+
+
+<div id="methods-on-page" class="sidebox on-page">
+    <div class="hd">
+        <h2 class="no-toc">Methods On Page</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+                <li><a href="#methods_install">install</a></li>
+            
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+            <div class="version" style="text-align: right; margin-right: 5px;">
+                <span>Docs for 0.0.28</span>
+            </div>
+        </div>
+
+        <div id="main" class="yui3-u">
+            <div class="content"><h4>Class auth (server)</h4>
+
+
+
+<span class="foundat">Class defined in: <a href="../"><code>core&#x2F;server&#x2F;auth.js:10</code></a></span>
+<div class="intro"><p>The auth class helps with setting up the SSL server and connecting the
+authentication between the sockets and request.</p>
+</div>
+
+
+
+<div id="classdocs">
+    <ul>
+        
+        <li><a href="#methods">Methods</a></li>
+        
+        
+        
+        
+    </ul>
+    <div>
+        
+            <div id="methods">
+            
+                <a name="methods_install"></a>
+<div class="method item private">
+     <strong class="name"><code>install</code></strong>( <code>connect_app, socket_server </code> ) <em><code>&#x2F;* private method *&#x2F;</code></em>
+    <br>
+    <span class="foundat">
+    
+        
+    
+        <a href="../"><code>core&#x2F;server&#x2F;auth.js:30</code></a>
+    </span><br>
+    <p>After the http and socket servers are setup, the app and socket server are
+passed to the install method, so the socket authorization can carry forward
+context from the original request.</p>
+
+    
+    <strong>Parameters:</strong>
+    <ul class="params">
+    
+        <li>
+        
+            <code>connect_app</code> <strong>&lt;Object&gt;</strong>
+        
+        
+         
+            
+        </li>
+    
+        <li>
+        
+            <code>socket_server</code> <strong>&lt;Object&gt;</strong>
+        
+        
+        <p>(primus, socket.io, etc)</p>
+
+            
+        </li>
+    
+    </ul>
+    
+    
+    
+</div>
+
+            
+            </div>
+        
+        
+        
+        
+    </div>
+</div>
+</div>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/js/tabs.js"></script>
+</body>
+</html>

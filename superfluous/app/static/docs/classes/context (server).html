@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>context (server) - API</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.8.0pr2/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <script src="http://yui.yahooapis.com/combo?3.8.0pr2/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div class="yui3-g">
+
+        <div id="sidebar" class="yui3-u" style="padding-top: 5px">
+            <div id="modules" class="sidebox">
+    <div class="hd">
+        <h2 class="no-toc">Modules</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+                <li><a href="../modules/Superfluous.html">Superfluous</a>
+                
+                    <ul>
+                        
+                            <li><a href="../modules/Superfluous.html#Server">Server</a></li>
+                        
+                            <li><a href="../modules/Superfluous.html#Client">Client</a></li>
+                        
+                    </ul>
+                
+                </li>
+            
+        </ul>
+    </div>
+</div>
+
+<div id="classes" class="sidebox">
+    <div class="hd">
+        <h2 class="no-toc">Classes</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+                <li><a href="../classes/auth (server).html">auth (server)</a></li>
+            
+                <li><a href="../classes/bootloader (client).html">bootloader (client)</a></li>
+            
+                <li><a href="../classes/bridge (server).html">bridge (server)</a></li>
+            
+                <li><a href="../classes/component (client).html">component (client)</a></li>
+            
+                <li><a href="../classes/component (server).html">component (server)</a></li>
+            
+                <li><a href="../classes/config (server).html">config (server)</a></li>
+            
+                <li><a href="../classes/context (server).html">context (server)</a></li>
+            
+                <li><a href="../classes/controller (client).html">controller (client)</a></li>
+            
+                <li><a href="../classes/controller (server).html">controller (server)</a></li>
+            
+                <li><a href="../classes/db (server).html">db (server)</a></li>
+            
+                <li><a href="../classes/packager (server).html">packager (server)</a></li>
+            
+                <li><a href="../classes/page (server).html">page (server)</a></li>
+            
+                <li><a href="../classes/readfile (server).html">readfile (server)</a></li>
+            
+                <li><a href="../classes/router (server).html">router (server)</a></li>
+            
+                <li><a href="../classes/routes (server).html">routes (server)</a></li>
+            
+                <li><a href="../classes/template (server).html">template (server)</a></li>
+            
+        </ul>
+    </div>
+</div>
+
+
+<div id="methods-on-page" class="sidebox on-page">
+    <div class="hd">
+        <h2 class="no-toc">Methods On Page</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+                <li><a href="#methods_create">create</a></li>
+            
+                <li><a href="#methods_get">get</a></li>
+            
+                <li><a href="#methods_set">set</a></li>
+            
+                <li><a href="#methods_wrap">wrap</a></li>
+            
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+            <div class="version" style="text-align: right; margin-right: 5px;">
+                <span>Docs for 0.0.28</span>
+            </div>
+        </div>
+
+        <div id="main" class="yui3-u">
+            <div class="content"><h4>Class context (server)</h4>
+
+
+
+<span class="foundat">Class defined in: <a href="../"><code>core&#x2F;server&#x2F;context.js:1</code></a></span>
+<div class="intro"><p>The Context module is how the server carries around request specific
+ information.
+During the request execution and app render, the superfluous core code will
+ use this context to coordinate information between modules. This is a sort
+ of &quot;Request Local Storage&quot;, that is available in PHP or other thread based
+ web handlers. As a convenicence, it allows any variable to be stored and
+ retrieved from the context, without having to reference the request
+ explicitly.
+When a request is handled in a controller, it is placed into its own domain.
+ It is important that when using asynchronous operation, any callbacks passed into
+ them are wrapped by the context, which will re-instantiate the current domain before
+ running the callback.</p>
+</div>
+
+
+
+<div id="classdocs">
+    <ul>
+        
+        <li><a href="#methods">Methods</a></li>
+        
+        
+        
+        
+    </ul>
+    <div>
+        
+            <div id="methods">
+            
+                <a name="methods_create"></a>
+<div class="method item">
+     <strong class="name"><code>create</code></strong>( <code>defaults, cb </code> ) 
+    <br>
+    <span class="foundat">
+    
+        
+    
+        <a href="../"><code>core&#x2F;server&#x2F;context.js:109</code></a>
+    </span><br>
+    <p>Creates a new context (with prefilled globals) for a request to use.</p>
+
+    
+    <strong>Parameters:</strong>
+    <ul class="params">
+    
+        <li>
+        
+            <code>defaults</code> <strong>&lt;Object&gt;</strong>
+        
+        
+        <p>The default options to pass into the domain</p>
+
+            
+        </li>
+    
+        <li>
+        
+            <code>cb</code> <strong>&lt;Function&gt;</strong>
+        
+        
+        <p>the callback to run after this context is created</p>
+
+            
+        </li>
+    
+    </ul>
+    
+    
+    
+</div>
+
+            
+                <a name="methods_get"></a>
+<div class="method item private">
+     <strong class="name"><code>get</code></strong>( <code>  </code> ) <em><code>&#x2F;* private method *&#x2F;</code></em>
+    <br>
+    <span class="foundat">
+    
+        
+    
+        <a href="../"><code>core&#x2F;server&#x2F;context.js:60</code></a>
+    </span><br>
+    <p>Sets the current context in use</p>
+
+    
+    
+    
+</div>
+
+            
+                <a name="methods_set"></a>
+<div class="method item private">
+     <strong class="name"><code>set</code></strong>( <code>  </code> ) <em><code>&#x2F;* private method *&#x2F;</code></em>
+    <br>
+    <span class="foundat">
+    
+        
+    
+        <a href="../"><code>core&#x2F;server&#x2F;context.js:50</code></a>
+    </span><br>
+    <p>Sets the current context in use</p>
+
+    
+    
+    
+</div>
+
+            
+                <a name="methods_wrap"></a>
+<div class="method item">
+     <strong class="name"><code>wrap</code></strong>( <code>  </code> ) 
+    <br>
+    <span class="foundat">
+    
+        
+    
+        <a href="../"><code>core&#x2F;server&#x2F;context.js:189</code></a>
+    </span><br>
+    <p>Pulls the current domain out of the global namespace and makes sure that
+ before &#39;func&#39; is called, the domain is placed back into the global
+ namespace. When running any async IO operations that potentially create
+ domains, you should place the callback inside a wrap call. As a
+ convenience, any function can have .wrap() or .intercept() called on it to
+ do this automatically</p>
+
+    
+    
+    
+</div>
+
+            
+            </div>
+        
+        
+        
+        
+    </div>
+</div>
+</div>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/js/tabs.js"></script>
+</body>
+</html>
