@@ -746,20 +746,23 @@ setup_app: function(app) {
 </code></pre>
 </div>
 
-<h3>Core Hooks</h3>
+<h3>App Hooks</h3>
+
+<div class="mtl mbl alert">This feature is currently being worked on. Expect hooks and
+their names to shift around slightly before the API stabilizes.</div>
+
 
 Some of the functionality of superfluous is wiring together middleware in
 connect. While unopinionated, there are several defaults in place for the
 various pieces of middleware.
 
-<div class="mtl alert">This feature is currently being worked on. Expect hooks and
-their names to shift around slightly before the API stabilizes.</div>
+<br />
 
 It's possible to override them in your app/main.js by using before_, after_,
 setup_ and insteadof_ functions for each hook that you want to override. See
 the demo apps for a few examples of using hook overrides.
 
-<h3>Adding to the prelude js or css</h3>
+<h3>Adding to the prelude</h3>
 
 <p>
 Superfluous's delivery is phased - it delivers the <b>prelude</b> of the page
@@ -768,8 +771,8 @@ are delivered, the prelude downloads their dependencies and displays them.
 </p>
 <p>
 If you'd like to put more CSS or JS files into the prelude, you can add them to
-<b>app/client/prelude.json</b> to be served inside the initial prelude.js
-payload. If there is just some core JS, you can put it inside
+<b>app/client/prelude.json</b> to be served inside the initial prelude.js or
+prelude.css payload. If there is just some core JS, you can put it inside
 <b>app/client/prelude.js</b> and will be appended to the prelude package.
 </p>
 
