@@ -1,0 +1,53 @@
+<h1>Left to the developer</h1>
+
+<p>
+<s>superfluous</s> leaves a lot of app building questions up to the developer, since
+it is mainly concerned how the app is created, delivered and interacted with.
+
+Most of these can be answered with out of the box solutions and middleware.
+</p>
+
+<h3>Caching Data</h3>
+
+How data is cached on the client and server is unanswered. It could be in
+localstorage, it could be RAM, it could be memcache. That's up to you :-D
+
+<h3>ORM &amp; DB</h3>
+
+Similarly, no ORM or DB is preferred for holding your data. If you choose to
+use one at all. Check out <a href="https://github.com/balderdashy/waterline ">waterline.js</a>
+or <a href="https://github.com/dresende/node-orm2">node-orm2</a>, though, when you do
+want to use one :-D
+
+
+<h3>DOM Data Binding</h3>
+
+For data binding, <a href="https://github.com/mikeric/rivets">Rivets</a> goes
+well with Backbone and the template structure of Components. It keeps the DOM
+and models in sync in your app, easily. If you are more into Functional
+programming, check out <a href="https://github.com/facebook/react">React</a>
+
+<h3>Authentication</h3>
+
+Authentication Authentishmation. Check out <a href="http://passportjs.org/">passport</a>
+
+<h3>Scaling</h3>
+
+maybe consider this server for smale to medium size sites, for now :-D
+
+<div class="alert">
+  A random guess of magnitudes says the server should scale reasonably to 5k -
+  15k messages per second on the sockets, and 50 - 100 requests per second on
+  the app delivery, allowing for sites that serve up to 10k visitors per hour.
+</div>
+
+<h3>Using Bower Components</h3>
+
+<a href="http://bower.io/">Bower</a> is a great way of managing front end
+dependencies. To use them in superfluous, you can install your bower components
+into app/ or app/client and then require them from client code.
+
+<br />
+
+If you were to install jquery (as an example), in a client controller, you could use
+<code>require("app/bower_components/jquery/jquery"))</code> to require it.

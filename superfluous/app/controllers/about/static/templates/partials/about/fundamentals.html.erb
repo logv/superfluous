@@ -1,0 +1,386 @@
+
+  <h1>Fundamentals</h1>
+
+  <h3>Server</h3>
+
+  <p>
+  In superfluous, the server is composed of <a
+  href="http://www.senchalabs.org/connect/">connect middleware</a> running on
+  <a href="http://nodejs.org">node.js</a>. The server is responsible for
+  sending <b>apps</b> (a <b>page</b> can be considered a type of app) to the
+  client.  The server hosts multiple web apps, each handling a URL path and
+  it's sub paths.
+
+  <p>
+  In addition to delivering the app to the client, the server is generally
+  responsible for performing business logic and manipulating the database in
+  response to client actions.
+  </p>
+
+  <p class="alert">
+  superfluous is not opinionated about being a client heavy or server heavy app.
+  how much work is done on the server and how much on the client is left up to
+  the developer.
+  </p>
+
+  <h3>Apps &amp; Pages</h3>
+
+  <p>
+  <b>apps</b> and <b>pages</b> are very similar, but with one difference: a
+  page has no client controller, while an app does. Apps and pages live at URLs
+  and are responsible for delivering a rendered page to the client web browser.
+  </p>
+
+  <h3>File Layout</h3>
+
+  <s>superfluous</s> very much cares about file layout, and expects files to be in
+  certain locations. The majority of the files you'll be working with as an
+  app developer are in app/, components/ &amp; config/
+
+  <pre class="mtl prettyprint lang-bash hide_comments"><code class="bash shell"><s>
+superfluous</s>/
+  app/                  # application specific code and assets
+    client/             # client specific code and helpers
+    controllers/        # controllers
+    main.js             # server setup code goes in here
+    server/             # server specific logic
+    static/             # assets and templates used by controllers
+  app.js                # This is the app entry point. Run this file
+  components/           # components that this app uses
+  config/               # options for your app and dev environments
+    config.js           # default app configuration
+    override.js         # use this with `ENV=override node app.js`
+  node_modules/         # node modules installed by npm
+  package.json          # information about your app
+  routes.json           # the route -&gt; app mapping in the app
+  scripts/              # scripts for maintaining this app
+  </code></pre>
+
+  <div class="controllers">
+  <h3>Routes and the Router</h3>
+  <p>
+  Every app has an entry point on the server (through its <b>server
+  controller</b>), accessed via its top level URL (or <b>route</b>). The route
+  tells the router where to find the controllers to instantiate the app that
+  the user will be interacting with.  </p>
+
+  <p>
+  App Routes are configured in the <b>routes.json</b> file - it is a global
+  index of what apps the server is going to be serving and where. Inside the
+  routes.json, each server controller has an entry that tells the router which
+  controller to hand requests to when looking at the path of the incoming
+  request's URL. Inside each controller is a list of <b>routes</b> that the
+  controller will handle.
+  </p>
+
+  <div class="mtl mbl">
+
+  <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#routes_example">
+  see example routes.json
+  </button>
+
+  <div id="routes_example" class="collapse no-transition">
+  <pre class="prettyprint"><code>{
+    "/": "about",
+    "/demo": "demo",
+    "/kitten": "kitten"
+}</code></pre>
+</div>
+</div>
+
+<p>Each <b>server controller</b> has a <b>routes</b> and <b>post_routes</b>
+method that tell the app where to find the handler for that given sub-route.
+</p>
+
+<button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#routing_example">
+see example controller routes
+</button>
+
+<div id="routing_example" class="collapse no-transition">
+<pre class="prettyprint"><code>// in app/controllers/my_controller/server.js 
+// if this controller is the hooked
+// up to the root URL ('/') in our routes.json. The following URL routes would be
+//  generated and handled by this server controller.
+//
+// /
+// /demo
+// /update
+// /get/*/
+
+module.exports = {
+  routes: {
+    "/" : "get_index",
+    "/demo" : "get_demo",
+    "/foo/:id" : "get_foo",
+  },
+  post_routes: {
+    "update" : post_update
+  },
+  get_index: function(ctx, api) {},
+  get_demo: function(ctx, api) {},
+  get_foo: function(ctx, api) {},
+  post_update: function(ctx, api) {};
+};
+
+}</code></pre>
+</div>
+
+<h4>Reverse Routing</h4>
+
+To access each route, the <b>controller</b> and <b>method</b> can be used. For
+example, <code>url_for("my_controller.get_demo")</code> would return
+<b>/demo</b>.  The reverse router can also resolve parameters, so
+<code>url_for("my_controller.get_add", { id: "12"})</code> will generate
+<b>/add/12</b>.
+
+<p>
+The router's build function is available as <b>api.router.build</b> in the
+server controller and <b>url_for</b> inside templates.
+</p>
+
+<h3>MVC</h3>
+
+<p>
+if you are familiar with other frameworks, you'll recognize them as MVC.
+(Models, Views &amp; Controllers).
+</p>
+
+<p>
+<s>superfluous</s> is <b>not</b> a full MVC solution. It takes care of Views (Templates &amp;
+    Components) and Controllers (Client &amp; Server) like MVC, but leaves the
+Model layer up to the developer.
+</p>
+
+<h3>Controllers</h3>
+
+<p>
+Each app has two controllers, the <b>client controller</b> and the <b>server
+controller</b>. The server controller is the entry point for the app. It
+renders the app by placing <b>components</b> into <b>templates</b> and
+<b>partials</b> and delivers the constructed app to the browser, where the
+client controller is initialized and handles further user interactions.
+</p>
+
+<div class="mtl mbl">
+
+<button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#server_controller_example">
+see example server controller code
+</button>
+
+<div id="server_controller_example" class="collapse no-transition">
+<pre class="prettyprint"> <code class="javascript"><%= server_controller_code %></code> </pre>
+</div>
+</div>
+
+<p>
+  The <b>client controller</b> is responsible for handling the UI interactions
+  of the user and syncing state with the server. (it runs on the client)
+  </p>
+
+  <div class="mtl mbl">
+
+  <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#client_controller_example">
+  see example client controller code
+  </button>
+
+  <div id="client_controller_example" class="collapse no-transition">
+  <pre class="prettyprint"> <code class="javascript"><%= client_controller_code %></code> </pre>
+  </div>
+  </div>
+
+  <p>
+  During the initial page delivery, the server controller uses the
+  <b>bridge</b> to talk to the client and run JS. After the app is delivered,
+  the two controllers communicate via <b>sockets</b> that are set up during
+  the app delivery process.
+  </p>
+
+  <p class="alert">
+  Use <b>scripts/create_controller.sh controller_name</b> to generate a new controller
+  </p>
+
+  <p>
+  The advantage of having two controllers is that the client controller adds
+  organization and a central page management point to the app. Components can
+  talk to the client controller, which talks to the server controller -
+  introducing a layer of <b>encapsulation</b> and <b>re-usability</b> for components.
+  </p>
+
+  </div>
+
+  <h3>Templates</h3>
+
+  <p>
+  Templates are used by controllers and components to render HTML. When the
+  server handles an app request, it will render data and components into a
+  template and send that to the client. By default, templates are based on
+  underscore's ERB template syntax.
+  </p>
+
+  <div class="mtl mbl">
+
+  <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#template_example">
+  see example template code
+  </button>
+
+  <div id="template_example" class="collapse no-transition">
+  <pre class="prettyprint"> <code class="html"><%- template_code %></code> </pre>
+  </div>
+  </div>
+
+  <p class="alert">
+  Use <b>scripts/create_partial.sh controller partial_name</b> to generate a
+  new partial template
+  </p>
+
+  <h4>Template Helpers</h4>
+
+  <p>Inside the template rendering context, several helpers functions are
+  included for common operations.</p>
+
+  <ul>
+    <li><b>set_default</b> - sets a default value of a variable in that template </li>
+    <li><b>add_stylesheet</b> - makes sure this stylesheet is loaded before the template is inserted</li>
+    <li><b>add_javascript</b> - adds JS tag to the page to load or run</li>
+    <li><b>render_partial</b> - renders a partial</li>
+    <li><b>url_for</b> - generates a URL, using reverse routing</li>
+    <li><b>ctx</b> - the request local context</li>
+  </ul>
+
+  <p class="alert">
+  It's possible to supplement the template rendering context and add your own
+  locals to the scope for use across rendering contexts. To do so, add a
+  <b>setup_template_context</b> function to your <b>app/main.js</b> and modify
+  the dictionary passed in with additional members.
+  </p>
+
+  <h4>A componentless demo</h4>
+
+  <p>
+  With the above code (the <b>client controller</b>, the <b>server controller</b>
+      and a <b>template</b>), we have enough to run a very simple <s>superfluous</s> app. <a
+  href="/demo">Click here</a> to see it in action. It doesn't do much... just
+  increments a variable on the server and propagates those changes to any other
+  connected clients.
+
+  </p>
+
+  <p>
+  You'll notice that there's no database access or components in this example.
+  It's possible to render many styles of web application with <s>superfluous</s> - from
+  static HTML, to concat'd templates, to jQuery div builders, to full components,
+  the basics are there.
+  </p>
+
+  <div class="components">
+  <h3>Components</h3>
+
+  <p>
+  Components (for simplicity) are <b>Backbone.Views</b>. They are re-usable
+  pieces of functionality that don't belong in a controller.  Components are
+  usable on the server or client and contain all the code (HTML, CSS, JS) to
+  render and interact with the component in one directory.
+
+  </p>
+
+  <p>
+  A simple example of a component would be a re-usable <b>button</b>.
+  </p>
+
+  <p>
+  A component is split into several files: the main <b>component.js</b> file,
+  the <b>events</b> file, the <b>style</b> file and the <b>template</b>.
+
+  <div>
+  <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#button_example">
+  see example button component files
+  </button>
+
+  <div id="button_example" class="collapse no-transition">
+
+  components/button/events.js
+  <pre class="prettyprint"><code class="javascript">
+module.exports = { 
+  events: {
+    "click" :  "handle_button_click"
+  },
+
+  handle_button_click: function() {
+  }
+};
+</code></pre>
+
+components/button/button.js
+<pre class="prettyprint"><code class="javascript">module.exports = { tagName: "div",
+  className: "btn",
+
+  set_title: function(title) {
+    this.$el.attr('title', title);
+  }
+};
+</code></pre>
+
+components/button/button.html.erb
+<pre class="prettyprint"><code class="javascript">&lt;% set_default("title", "") %&gt;
+
+&lt;div class="name" title="&lt;%= title %&gt;"&gt;
+&lt;%= name %&gt;
+&lt;/div&gt;
+
+</code></pre>
+</div>
+
+<p>
+The <b>main component</b> file is responsible for a component's core logic
+and rendering. The <b>events</b> file is responsible for event handling in
+the component and is only loaded on the client.  The <b>style</b> file
+contains CSS that will be automatically scoped to the component, and the
+<b>template</b> is the basic HTML used to construct the component.
+</p>
+
+<p class="alert">
+Use <b>scripts/create_component.sh component_name</b> to generate a new component
+</p>
+
+<h4>Client specific work</h4>
+<p>
+To run code only on the client, add a 'client' member to the component and voila.
+</p>
+
+<h4>Server specific work</h4>
+<p>
+there's no server only work that is done in components. instead, that should be
+left in the controller or a related file, and data should be handed to the
+component. this is because Components need to be creatable on the client side
+(without communication to the server).
+</p>
+
+</div>
+</div>
+
+<div>
+<h3>Sockets</h3>
+
+<p>
+Sockets are used for two way communication after the app is running on the
+client. The server and client both have a 'socket' function that lets them
+setup communication between each other.
+</p>
+
+<h3>The Bridge</h3>
+
+<p>
+The bridge is used by the server to run code on the client. It lets the server
+run client code and takes care of downloading the required files before doing
+so. During app delivery, the bridge lives on <b>api.bridge</b>, while during
+socket communication, the bridge lives on <b>socket.bridge</b>
+</p>
+
+<p>
+  The bridge has two main functions, <b>call</b> and <b>controller</b>, invoked in the following way:
+  <code>bridge.call("path/to/client/module", "method_name", arg1, arg2, ...,)</code>
+  <br /> and <br />
+  <code>bridge.controller("foo", "method_name", arg1, arg2, ...,)</code>.
+</p>
+</div>
+

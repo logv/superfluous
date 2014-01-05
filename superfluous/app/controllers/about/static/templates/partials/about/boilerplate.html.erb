@@ -1,0 +1,156 @@
+
+<h1>Boilerplate</h1>
+
+<s>superfluous</s> is very concerned (again :-) with app delivery and
+communication, as such it automates and simplifies some specific
+functionality.
+
+<h3>App Packaging</h3>
+
+<p>
+<s>superfluous</s> handles packaging the code and assets for the app,
+  dynamically. code minification, LESS compilation, etc, are all included
+  in the dynamic packaging endpoints. Each endpoint can dynamically serve
+  multiple files at once, reducing the number of simultaneous requests in
+  flight.
+  </p>
+  <p>
+  unlike some other JS frameworks, <s>superfluous</s> does *not* create one
+  large JS bundle. Instead, it serves versioned resources and components on
+  demand.
+  </p>
+  <p>
+  This both speeds up the time to display for the user, as well as allows
+  multiple large apps to be served from one site without bloating all the
+  pages on the site.
+  </p>
+
+  <h3>Pipelined Page Delivery</h3>
+
+  <p>
+  The traditional web server generates a blob of HTML that it sends down to the
+  client web browser for rendering. In this model, the generation of the webpage
+  is considered mostly linear.
+  </p>
+
+  <p>
+  In <s>superfluous</s>, asynchronous delivery lets you inject a placeholder into a
+  template and when you are finished preparing some HTML, the new HTML will be
+  injected into that spot of the page.
+
+  This is particularly well suited to data fetching and the callback heavy
+  style of node.js. Using pipelined page delivery, the server can delivery
+  each portion of the page as it is ready, greatly increasing the speed at
+  which the page is loaded.
+
+  See <a
+  href="https://www.facebook.com/notes/facebook-engineering/bigpipe-pipelining-web-pages-for-high-performance/389414033919">facebook's
+  note on bigpipe</a> for more info on this concept.
+  </p>
+
+  <div class="mtl mbl">
+
+  <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#async_example">
+  see example async rendering
+  </button>
+
+
+  <div id="async_example" class="collapse no-transition">
+
+  in app/controllers/async/server.js
+  <pre class="prettyprint"><code class="javascript">module.exports = {
+routes: {
+          "": "index"
+        },
+index: function() {
+         var flush;
+         var async_render = page.async(function(cb) {
+             var options = {};
+             // Pretend to do some asynchronous work, here.
+             do_some_db_call(options, function(err, data) {
+               // When cb is called, the data will be injected on the client into
+               // where async_render was originally called.
+               cb(data);
+               }, 1000);
+             });
+
+         page.render({content: async_render()});
+       }
+  }</code></pre>
+</div>
+</div>
+
+<h3>Component Delivery</h3>
+<s>superfluous</s> loads components from the server in one endpoint (including
+    templates, styles and scripts), allowing the client to load any component on
+demand. It takes care of bootloading in their dependencies and any helpers, so
+that the developer can focus on building the app, not packaging it.
+
+<h3>Component Marshalling</h3>
+<p>
+Most web frameworks implement a templating + rendering engine, but <s>superfluous</s>
+goes a step further. Many of the UI components that we want to use on a webpage
+are generated on the server and then hooked up on the client.  This process can
+be ungainly, but frameworks do their best to make it easy to do.
+</p>
+
+<p>
+In rails or django, these are usually known as 'tag helpers' or 'template tags'
+and help the developer insert dynamic components into templates.
+</p>
+
+<p>
+In <s>superfluous</s>, components can be created on the server or client and are
+automatically marshalled and handed to the client app when their necessary
+files are loaded. It's possible to create a component in the server
+controller and hand it to the client controller for further use, as though they
+are regular JS objects.
+</p>
+
+<button type="button" class="btn btn-danger mbl " data-toggle="collapse" data-target="#component_example">
+See marshalling components
+</button>
+
+<div id="component_example" class="collapse mtl no-transition">
+Server Code
+<pre class="prettyprint"><code class="javascript"><%= about_server_code %>
+</pre></code>
+
+Client Code
+<pre class="prettyprint"><code class="javascript"><%= about_client_code %></pre></code>
+</div>
+
+
+<div class="">
+<h3>Component Scoped CSS</h3>
+In <s>superfluous</s>, every component's CSS is dynamically scoped to only that
+component, reducing the cross contamination of styles between components.
+</div>
+
+
+
+<h3>Auto Socket Setup</h3>
+
+When a controller enables sockets, <b>primus</b> handles the rest. The
+client and server controller can immediately begin talking to one another.
+
+When a user authenticates, their socket is authenticated as well and the
+session carries over.
+
+<h3>Request Local Storage</h3>
+
+<p>
+Even though node.js doesn't really have threads, you can allocate variables
+into a request specific <b>context</b> from any function, without holding onto
+a request object.
+</p>
+
+<p>
+This allows your app to communicate between friendly modules without threading
+a request object through every callback. The <b>ctx</b> object is available in
+any modules through the <b>server/context</b> module, so you can store request
+specific variables and retrieve them from anywhere on the server.
+
+<br />
+In templates, the <b>ctx</b> is just exposed as <b>ctx</b> :-)
+</p>

@@ -1,0 +1,100 @@
+
+<h1>Extending</h1>
+
+<h3>Initializing the app</h3>
+
+To do any core initialization (adding performance tracking, error monitoring,
+authorization, etc), you can add them to the setup() function inside
+app/main.js
+
+<br />
+
+<button type="button" class="btn btn-danger mbl mtm" data-toggle="collapse" data-target="#second_main_example">
+example app/main.js file with setup()
+</button>
+<div id="second_main_example" class="collapse no-transition">
+<pre class="prettyprint"><code class="strict">"use strict";
+
+var auth = require_app("server/auth");
+var perf = require_app("server/perf");
+var express = require('express');
+
+module.exports = {
+  setup: function(options) {
+     if (options.collector) {
+       require_app("controllers/data/server").setup_collector();
+     }
+
+     perf.setup();
+     auth.install();
+  }
+};
+
+
+</code></pre>
+</div>
+
+<h3>Using middleware</h3>
+
+Superfluous is built on connect - if you'd like to use middleware, it's
+straightforward! In app/main.js, add any middleware to the app inside the
+setup_app function.
+
+<p class="alert">middleware that loads or packages assets could conflict
+with superfluous' packaging scheme. </p>
+
+
+<button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#main_example">
+example app/main.js with setup_app()
+</button>
+<div id="main_example" class="collapse no-transition">
+<pre class="prettyprint"><code class="javascript">"use strict";
+
+var express = require('express');
+
+module.exports = {
+setup_app: function(app) {
+             var passport = require('passport');
+             app.use(passport.initialize());
+             app.use(passport.session());
+             app.use(express.bodyParser());
+           },
+};
+</code></pre>
+</div>
+
+<h3>App Hooks</h3>
+
+<div class="mtl mbl alert">This feature is currently being worked on. Expect hooks and
+their names to shift around slightly before the API stabilizes.</div>
+
+
+Some of the functionality of superfluous is wiring together middleware in
+connect. While unopinionated, there are several defaults in place for the
+various pieces of middleware.
+
+<br />
+
+It's possible to override them in your app/main.js by using before_, after_,
+setup_ and insteadof_ functions for each hook that you want to override. See
+the demo apps for a few examples of using hook overrides.
+
+<h3>Adding to the prelude</h3>
+
+<p>
+Superfluous's delivery is phased - it delivers the <b>prelude</b> of the page
+and an HTML skeleton as soon as possible. when other portions of the page
+are delivered, the prelude downloads their dependencies and displays them.
+</p>
+<p>
+If you'd like to put more CSS or JS files into the prelude, you can add them to
+<b>app/client/prelude.json</b> to be served inside the initial prelude.js or
+prelude.css payload. If there is just some core JS, you can put it inside
+<b>app/client/prelude.js</b> and will be appended to the prelude package.
+</p>
+
+<p>
+Currently, the prelude contains <b>underscore</b>, <b>backbone</b> and
+<b>bootstrap</b>, while the <b>socket</b> library is delivered separately.
+</p>
+
