@@ -142,8 +142,10 @@ var render_page = function(page_options) {
   // strip controller slashes (just in case)
   controller = controller.replace(/^\/*/, '');
 
-  // render into page format
-  var hash = quick_hash(readfile("app/controllers/" + controller + "/client.js"));
+  // render into page formata
+  var controller_include = require("path").join(controller, "client");
+  var controller_client_path = require_core("server/controller").get_base_dir(controller_include);
+  var hash = quick_hash(readfile(controller_client_path));
   var css_hash, js_hash, socket_hash;
 
   async.parallel([function(after) {

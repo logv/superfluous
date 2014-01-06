@@ -144,12 +144,14 @@ function setup() {
     app.use(st( _.extend({ path: 'app/static',  maxAge: oneYear, url: '/' }, options)));
     app.use(st(_.extend({ path: 'core/static',  maxAge: oneYear, url: '/' }, options)));
 
-    // For all the self-contained controllers, setup their static asset endpoints, too
-    var controllers = require_core("server/route_collector").get_packaged_controllers();
-    _.each(controllers, function(controller) {
-      var controller_path = 'app/controllers/' + controller + '/static';
+    // For all the self-contained controllers and plugins, setup their static
+    // asset endpoints, too
+    var path = require("path");
+    var paths = require_core("server/plugin").get_registered_paths();
+    _.each(paths, function(path_) {
+      var registered_path = path.join(path_, "static");
       app.use(st(_.extend({
-        path: controller_path,
+        path: registered_path,
         maxAge: oneYear, url: '/' }, options)));
     });
   });

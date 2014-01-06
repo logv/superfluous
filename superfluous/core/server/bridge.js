@@ -95,7 +95,8 @@ module.exports = {
   controller: function() {
     var args = marshall_args.apply(null, arguments);
 
-    var data = readfile("app/controllers/" + args[0] + "/client.js");
+    var full_path = require_core("server/controller").get_base_dir(args[0] + "/client");
+    var data = readfile(full_path);
     var hash = quick_hash(data);
     args.push(hash);
 

@@ -394,6 +394,7 @@
   }
 
   var _controllers = {};
+  var _controller_paths = {};
   var _pending;
   function get_controller(name, cb, signature) {
     var name = name || bootloader.__controller_name;
@@ -419,13 +420,13 @@
 
     _pending = [ cb ];
 
-    bootloader.require("app/controllers/" + name + "/client", function(mod) {
+    var controller_path = "ROOT/" + name + "/client";
+
+    bootloader.require(controller_path, function(mod) {
       var ViewController = Backbone.View.extend(mod);
       var instance = new ViewController();
 
       // copy over some do_when goodness
-      // TODO: place these extensions somewhere isolated on SF for semnatic
-      // purposes
       instance.do_when = SF.do_when;
 
       _.extend(instance, Backbone.Events);
@@ -437,7 +438,7 @@
 
       // TODO: wishful thinking that this gets everyone
       _controllers[name] = controller;
-      _modules["app/controllers/" + name + "/client"] = controller;
+      _modules[controller_path] = controller;
 
       _.each(_pending, function(cb) {
         if (cb) {

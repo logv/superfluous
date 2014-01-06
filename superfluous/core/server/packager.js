@@ -23,6 +23,8 @@ var config = require_core("server/config");
 var less_header = readfile("app/static/styles/definitions.less") +
   readfile("core/static/styles/definitions.less");
 
+var ROOT_RE = new RegExp("^/?ROOT/");
+
 function readstyle(mod) {
   var data = readfile.all(mod + ".css");
   if (!data) {    
@@ -97,6 +99,7 @@ function package_and_scope_less(component, module, cb) {
 
 var _js_cache = {};
 function package_js(includes, cb) {
+
   var included = _.map(includes, function(s) { return s.trim(); });
 
   var includes_key = includes.join(",");
@@ -111,50 +114,78 @@ function package_js(includes, cb) {
     cb(ret); 
   });
 
-
+  // mapping for undefined modules by default
   _.each(included, function(inc) {
-    // mapping for undefined modules
     var name = inc.replace(/^\//, '') ;
     ret[name] = {
-      code: "console.log('Trouble loading" + name + " on the server')",
+      code: "console.log('Trouble loading " + name + " on the server')",
       type: "js",
       name: name,
       timestamp: 0
     };
   });
 
-  _.each(included, function(inc) {
+  // separate the controllers from the includes
+  var ext_includes = _.filter(included, function(inc) {
+    return inc.match(ROOT_RE);
+  });
+
+  included = _.filter(included, function(inc) {
+    return !inc.match(ROOT_RE);
+  });
+
+
+  function inc_file(inc, inc_name) {
     module_grapher.graph(inc, {
-        paths: [ './', './static', path.join(__dirname, '../../') ]
+        paths: [ 
+          './', 
+          './static', 
+          path.join(__dirname, '../../') ]
       }, function(__, resolved) {
         if (!resolved || !resolved.modules) {
-          return cb(ret);
+          return after(ret);
         }
-
         // each works on arrays, not objects
         var modules = _.map(resolved.modules, function(v) { return v; });
         async.each(
           modules,
           function(mod, done) {
             var data = readfile.both(mod + ".js");
-            hooks.invoke("before_render_js", mod.id, data, function(name, data) {
-              hooks.invoke("after_render_js", mod.id, data, function(name, data) {
+
+            var mod_name = mod.id;
+            if (inc === mod.id && inc_name) {
+              mod_name = inc_name;
+            }
+            mod_name = mod_name.replace(/^\//, '') ;
+
+            hooks.invoke("before_render_js", mod_name, data, function(name, data) {
+              hooks.invoke("after_render_js", mod_name, data, function(name, data) {
                 ret[name] = {
                   code: data,
                   signature: quick_hash(data),
                   type: "js",
-                  name: name,
+                  name: mod_name,
                   timestamp: parseInt(+Date.now() / 1000, 10)
                 };
               });
             });
             done();
           },
-          function(err) {
+          function() {
             after(ret);
           });
       });
+  }
+
+  _.each(included, function(inc) {
+    inc_file(inc);
   });
+
+  _.each(ext_includes, function(controller_include) {
+    var full_path = require_core("server/controller").get_base_dir(controller_include);
+    inc_file(full_path, controller_include);
+  });
+
 
 }
 
@@ -162,4 +193,4 @@ module.exports = {
   js: package_js,
   less: package_less,
   scoped_less: package_and_scope_less
-}
+};

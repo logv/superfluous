@@ -15,7 +15,7 @@ var context = require("./context");
 var load_controller = require("./controller").load;
 var load_core_controller = require("./controller").core;
 var readfile = require_core("server/readfile");
-var component = require_core("server/component");
+var plugin = require_core("server/plugin");
 
 var path_ = require("path");
 
@@ -25,7 +25,6 @@ module.exports = {
   },
 
   collect: function(controllers) {
-    var config = require_core("server/config");
     // Takes an enumerable of controller names, loads the controllers and then
     // harvests their routes
     var routes = [];
@@ -36,12 +35,6 @@ module.exports = {
 
     function add_core_controller(controller, name) {
       var inst = load_core_controller(controller);
-      if (inst.is_package) {
-        self.controller_apps[controller] = true;
-        console.log("'" + controller + "' controller is packaged, adding it to static asset path");
-        readfile.register_path(path_.join("core", "controllers", controller, "static"));
-      }
-
       function run_route(handler) {
         return function() {
           context("controller", controller);
@@ -65,14 +58,15 @@ module.exports = {
     _.each(controllers, function(controller, path) {
       var inst = load_controller(controller);
 
-      if (inst.is_package) {
+      // Registering Plugins & Self Contained controllers
+      if (inst.is_plugin) {
         self.controller_apps[controller] = true;
-        console.log("'" + controller + "' controller is packaged, adding it to static asset path");
-
-        // TODO: move the path registration out of router. It seems like it belongs somewhere else
-        readfile.register_path(path_.join("app", "controllers", controller, "static"));
-        component.register_path(path_.join("app", "controllers", controller));
+        plugin.register_plugin(controller);
+      } else if (inst.is_package) {
+        self.controller_apps[controller] = true;
+        plugin.register_controller(controller);
       }
+
 
       self.paths[controller] = path;
       self.controllers[path] = controller;

@@ -12,7 +12,7 @@ module.exports = {
   setup_app: function() {
     console.log("Main setup stuff, something, something");
     if (config.slog) {
-      require_app("controllers/slog/server").install();
+      require_app("plugins/slog/server").install();
     }
   },
   setup_request: function(req) {

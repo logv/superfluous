@@ -12,19 +12,32 @@
  */
 
 "use strict";
+var path = require("path");
 var url = require("url");
+
 var context = require_core("server/context");
 var config = require_core("server/config");
+var readfile = require("./readfile");
 
+var plugin = require_core("server/plugin");
 module.exports = {
   core: function load_controller(name) {
     var mod = require_core("controllers/" + name + "/server");
     mod.name = name;
     return mod;
   },
+  get_base_dir: function(controller_include) {
+    return plugin.get_base_dir(controller_include);
+  },
 
   load: function load_controller(name) {
-    var mod = require_app("controllers/" + name + "/server");
+    var full_path = plugin.get_base_dir(name + "/server");
+    var mod = require_root(full_path);
+
+    if (full_path.indexOf("/plugins/") !== -1) {
+      mod.is_plugin = true;
+    }
+
     mod.name = name;
     _.extend(mod, {
       set_fullscreen: function(val) {

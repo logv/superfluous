@@ -14,7 +14,7 @@ describe("core/server/route_collector.js", function() {
       route_collector.collect(Controllers);
       console.restore();
       var about_path = route_collector.get_path("about");
-      assert.equal(about_path, "/");
+      assert.equal(about_path, "/about");
       done();
     });
   });
@@ -25,7 +25,7 @@ describe("core/server/route_collector.js", function() {
       console.restore();
       var about_path = route_collector.get_path("about");
       var demo_path = route_collector.get_path("demo");
-      assert.equal(about_path, "/");
+      assert.equal(about_path, "/about");
       assert.equal(demo_path, "/demo");
       done();
     });
