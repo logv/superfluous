@@ -19,7 +19,7 @@ module.exports = {
     this.set_title("Superfluous");
     this.set_fullscreen(true);
 
-    var template_str = api.template.render("about.html.erb", {
+    var template_str = api.template.render("about/about.html.erb", {
       template_code: api.readfile("app/static/templates/controllers/demo.html.erb"),
       client_code: api.readfile("app/controllers/demo/client.js"),
       server_code: api.readfile("app/controllers/demo/server.js"),
