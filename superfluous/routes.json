@@ -1,8 +1,9 @@
 {
-  "/": "home",
+  "/": "about",
   "/about": "about",
-  "/react_demo": "react_demo",
+  "/home": "home",
   "/demo": "demo",
+  "/react_demo": "react_demo",
   "/kitten": "kitten",
   "/slog" : "slog"
 }
