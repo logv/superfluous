@@ -1,15 +1,12 @@
-a {
-  color: #b26;
-  text-decoration: none;
-}
+.header {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ccc;
+  width: 100%;
+  padding-bottom: 15px;
 
-a:hover {
-  color: #000;
-}
-
-.container {
-  background-color: #fff;
-  border-radius: 10px;
+  .whiteout {
+    color: transparent;
+  }
 }
 
 .whiteout {
@@ -17,15 +14,42 @@ a:hover {
   text-decoration: none;
 }
 
+.container {
+  border-radius: 10px;
+  padding: 0px;
+}
+
+.container {
+  pre,
+  pre code {
+    background-color: #1d1f21;
+    border: 0px;
+  }
+}
+
+body, html, .container, .content {
+  height: 100%;
+}
+
+body {
+  background-color: #fff;
+}
+
 a .whiteout {
   color: #fff;
   text-decoration: none;
 }
 
-body {
-  background-color: #eee;
+a {
+  text-decoration: none;
 }
 
-body, html, .container, .content {
-  height: 100%;
+a:hover {
+  color: #000;
+}
+
+.useful_links {
+  a {
+    display: block;
+  }
 }
