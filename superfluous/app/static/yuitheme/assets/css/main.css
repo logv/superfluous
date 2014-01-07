@@ -32,11 +32,13 @@ body {
 
 /* -- Links ----------------------------------------------------------------- */
 a {
-    color: #a3b;
-    text-decoration: none;
+  font-weight: bold;
 }
 
-a:hover { text-decoration: underline; }
+a:hover { 
+  text-decoration: underline; 
+  color: inherit;
+}
 
 /* "Jump to Table of Contents" link is shown to assistive tools, but hidden from
    sight until it's focused. */
@@ -56,11 +58,16 @@ dd p:first-child, td p:first-child { margin-top: 0; }
 
 /* -- Headings -------------------------------------------------------------- */
 h1, h2, h3, h4, h5, h6 {
+    text-transform: lowercase;
     color: #000;
     font-family: 'Open Sans', Calibri, Candara, Arial, sans-serif;
     font-weight: bold;
     line-height: 1.1;
     margin: 1.1em 0 0.5em;
+}
+
+li {
+  list-style-type: none;
 }
 
 h1 {
@@ -208,6 +215,12 @@ th {
   color: #ccc;
   display: block;
 }
+#sidebar a {
+  text-decoration: none;
+  font-weight: inherit;
+  background-color: inherit;
+}
+
 #sidebar a:hover { 
   text-decoration: none; 
   display: block;

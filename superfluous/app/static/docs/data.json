@@ -844,7 +844,7 @@
         },
         {
             "file": "core/server/controller.js",
-            "line": 79,
+            "line": 63,
             "description": "Forces this route to check for HTTPS before serving it. This lets you make sure endpoints are secured.",
             "itemtype": "method",
             "name": "require_https",
@@ -861,7 +861,7 @@
         },
         {
             "file": "core/server/controller.js",
-            "line": 123,
+            "line": 107,
             "description": "Deserializes a URL param from jquery and returns it as an array.",
             "itemtype": "method",
             "name": "array_of",
@@ -871,7 +871,7 @@
         },
         {
             "file": "core/server/controller.js",
-            "line": 139,
+            "line": 123,
             "description": "Deserializes a URL param from jquery and returns it as a value.",
             "itemtype": "method",
             "name": "value_of",
