@@ -300,13 +300,6 @@ function validate_versions(versions, socket, cb) {
     });
   });
 
-  _.each(versions.js, function(old_hash, js) {
-    var hash = quick_hash(readfile.both(js + ".js"));
-    if (hash !== old_hash) {
-      socket.emit("__update_version", 'js', js, old_hash, hash);
-    }
-  });
-
   if (!versions.pkg) {
     return cb();
   }
