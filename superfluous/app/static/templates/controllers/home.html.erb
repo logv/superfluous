@@ -1,17 +1,36 @@
 <% add_stylesheet("home") %>
 
-<div class="clearfix header col-md-12">
-  <h1 class="text-right col-md-12"><small>a web framework named </small><b>superfluous</b></h1> 
+<div class="clearfix header">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="text-right"><small>a web framework named </small><b>superfluous</b></h1> 
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container">
-  <div class="clearfix body col-md-12">
-    <div class="col-md-6">
+  <div class="row">
+    <div class="col-md-8">
       <h2>Is superfluous right for you?</h2>
       <p>has your <b>packager</b> been getting you down? tired of serving <b>one
       giant blob</b> of javascript? need your server renderings connected to
       your client codes? <b>superfluous</b> has you covered!</p>
+    </div>
 
+    <div class="col-md-4 useful_links">
+      <h2>Proven Technologies</h2>
+
+      <p>
+      if words like <s>pagelets</s> async delivery, <s>slog</s> server log,
+      <s>bridge</s> RPC &amp; <s>packager</s> packaging bring a sense of
+      <s>dread</s> comfort - you'll feel right at home with superfluous.  </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
       <h2>Philosophy</h2>
       <p> some developers <a
       href="http://substack.net/how_I_write_modules">believe that minimal
@@ -31,32 +50,25 @@
       into. a <a href="https://github.com/okayzed/superfluous/blob/master/LICENSE.md">free one</a>, 
       at that.
       </p>
-
     </div>
 
-    <div class="col-md-offset-1 col-md-4 useful_links">
-      <h2>Proven Technologies</h2>
-
-      <p>
-      if words like <s>pagelets</s> async delivery, <s>slog</s> server log,
-      <s>bridge</s> RPC &amp; <s>packager</s> packaging bring a sense of
-      <s>dread</s> comfort - you'll feel right at home with superfluous.  </p>
-
+    <div class="col-md-4 useful_links">
       <h2>Useful Links</h2>
       <a href="/about">read the guide</a>
       <a href="/docs/modules/Superfluous.html">peruse the api</a> 
       <a href="https://github.com/okayzed/superfluous">get the source</a>
       <a href="https://github.com/okayzed/superfluous/issues">file bug reports</a> 
       <a href="https://github.com/okayzed/superfluous/fork">add bugs of your own</a> 
-
-
-    </div>
-
-    <div class="col-md-11">
-      <%= render_partial("about/getting_started.html.erb") %>
     </div>
 
   </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <%= render_partial("about/getting_started.html.erb") %>
+    </div>
+  </div>
+
 
 </div>
 
