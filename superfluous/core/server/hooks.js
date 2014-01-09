@@ -1,3 +1,16 @@
+/**
+ * The hooks module is responsible for exposing events in the core that can be
+ * overridden.
+ *
+ * The main type are 'setup' and 'invocations'. setup is for middleware,
+ * generally, and invocations happen for per request events, but the line
+ * is blurry.
+ *
+ * @class hooks (server)
+ * @module Superfluous
+ * @submodule Server
+ **/
+
 "use strict";
 
 var _main;
@@ -9,18 +22,6 @@ var _main;
 // setup_hook (chance to augment / replace hook)
 // after_hook (chance to modify output)
 function call_hook_builder(prefix) {
-  /**
-   * Calls a hook on the main module during the server setup.
-   *
-   * Every hook has a 'name', which lets app interact with the hook and after the
-   * hook runs.
-   *
-   * @private
-   * @method call_hook
-   * @param {Module} module the main app module to invoke the function on
-   * @param {String} hook name of function invoke
-   * @param {Function} [cb] the cb to call instead of the hook
-   */
   return function() {
     var args = _.toArray(arguments);
     var hook = args.shift();
@@ -82,7 +83,29 @@ function invoke_hook() {
 }
 
 module.exports = {
+  /**
+   * Calls a hook on the main module during a request
+   *
+   * Every hook has a 'name', which lets app interact with the hook and after the
+   * hook runs.
+   *
+   * @private
+   * @method call
+   * @param {Module} module the main app module to invoke the function on
+   * @param {String} hook name of function invoke
+   * @param {Function} [cb] the cb to call instead of the hook
+   */
   call: call_hook_builder("call"),
+  /**
+   * Calls a setup hook on the main module during the server setup / request handling
+   *
+   *
+   * @private
+   * @method setup
+   * @param {Module} module the main app module to invoke the function on
+   * @param {String} hook name of function invoke
+   * @param {Function} [cb] the cb to call instead of the hook
+   */
   setup: call_hook_builder("setup"),
   invoke: invoke_hook,
   set_main: function(m) {

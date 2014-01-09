@@ -5,7 +5,7 @@
         "header": "app/static/favicon.ico",
         "logo": "/favicon.ico",
         "description": "a node.js server/client understanding",
-        "version": "0.0.28"
+        "version": "0.0.29"
     },
     "files": {
         "app/server/db.js": {
@@ -105,7 +105,18 @@
         "core/server/hooks.js": {
             "name": "core/server/hooks.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "hooks (server)": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core/server/main.js": {
+            "name": "core/server/main.js",
+            "modules": {},
+            "classes": {
+                "main (server)": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -154,6 +165,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "core/server/socket.js": {
+            "name": "core/server/socket.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "core/server/template.js": {
             "name": "core/server/template.js",
             "modules": {},
@@ -182,6 +200,8 @@
                 "config (server)": 1,
                 "context (server)": 1,
                 "controller (server)": 1,
+                "hooks (server)": 1,
+                "main (server)": 1,
                 "packager (server)": 1,
                 "page (server)": 1,
                 "readfile (server)": 1,
@@ -205,6 +225,8 @@
                 "config (server)": 1,
                 "context (server)": 1,
                 "controller (server)": 1,
+                "hooks (server)": 1,
+                "main (server)": 1,
                 "packager (server)": 1,
                 "page (server)": 1,
                 "readfile (server)": 1,
@@ -389,6 +411,36 @@
             "description": "The Server Controller is the entry point for every app. Each server\n controller dwells at a top level URL (which is registered in routes.json).\n This module deals with loading server controllers and convenience functions\n exposed to them.",
             "access": "private",
             "tagname": "",
+            "submodule": "Server"
+        },
+        "hooks (server)": {
+            "name": "hooks (server)",
+            "shortname": "hooks (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/hooks.js",
+            "line": 1,
+            "description": "The hooks module is responsible for exposing events in the core that can be\noverridden.\n\nThe main type are 'setup' and 'invocations'. setup is for middleware,\ngenerally, and invocations happen for per request events, but the line\nis blurry.",
+            "submodule": "Server"
+        },
+        "main (server)": {
+            "name": "main (server)",
+            "shortname": "main (server)",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Superfluous",
+            "namespace": "",
+            "file": "core/server/main.js",
+            "line": 1,
+            "description": "The Main file is responsible for organizing middleware and setting up\nthe core of the main app.",
             "submodule": "Server"
         },
         "packager (server)": {
@@ -881,12 +933,12 @@
         },
         {
             "file": "core/server/hooks.js",
-            "line": 12,
+            "line": 86,
             "description": "Calls a hook on the main module during the server setup.\n\nEvery hook has a 'name', which lets app interact with the hook and after the\nhook runs.",
             "access": "private",
             "tagname": "",
             "itemtype": "method",
-            "name": "call_hook",
+            "name": "call",
             "params": [
                 {
                     "name": "module",
@@ -905,8 +957,282 @@
                     "optional": true
                 }
             ],
-            "class": "packager (server)",
-            "module": "Superfluous"
+            "class": "hooks (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/hooks.js",
+            "line": 99,
+            "description": "Calls a setup hook on the main module during the server setup.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "setup",
+            "params": [
+                {
+                    "name": "module",
+                    "description": "the main app module to invoke the function on",
+                    "type": "Module"
+                },
+                {
+                    "name": "hook",
+                    "description": "name of function invoke",
+                    "type": "String"
+                },
+                {
+                    "name": "cb",
+                    "description": "the cb to call instead of the hook",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "hooks (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 49,
+            "description": "Add query parser middleware",
+            "itemtype": "event",
+            "name": "query",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 70,
+            "description": "Add error handling middleware",
+            "itemtype": "event",
+            "name": "error_handling",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 83,
+            "description": "Add cookie parser middleware",
+            "itemtype": "event",
+            "name": "cookies",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 93,
+            "description": "Add request store middleware",
+            "itemtype": "event",
+            "name": "store",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 106,
+            "description": "Add session middleware",
+            "itemtype": "event",
+            "name": "session",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 117,
+            "description": "Add redirection middleware",
+            "itemtype": "event",
+            "name": "redirect",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 131,
+            "description": "Setup the app",
+            "itemtype": "event",
+            "name": "app",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 139,
+            "description": "Add compression middleware, for streaming response gzips",
+            "itemtype": "event",
+            "name": "compression",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 149,
+            "description": "Add packaging middleware (Currently does not do anything)",
+            "itemtype": "event",
+            "name": "packager",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 157,
+            "description": "Add realtime middleware (primus / sockets)",
+            "itemtype": "event",
+            "name": "realtime",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                },
+                {
+                    "name": "http_server",
+                    "description": "the HttpServer to listen for socket connections on",
+                    "type": "HttpServer"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 168,
+            "description": "Add marshalling hooks, for translating between server/client code",
+            "itemtype": "event",
+            "name": "marshalls",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 179,
+            "description": "Add trust proxy middleware, which accepts forwarded headers from proxies",
+            "itemtype": "event",
+            "name": "trust_proxy",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 207,
+            "description": "Add controller routing to the app",
+            "itemtype": "event",
+            "name": "routes",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 218,
+            "description": "Add caching to the app for responses",
+            "itemtype": "event",
+            "name": "cache",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
         },
         {
             "file": "core/server/page.js",
@@ -927,6 +1253,38 @@
             "class": "page (server)",
             "module": "Superfluous",
             "submodule": "Server"
+        },
+        {
+            "file": "core/server/socket.js",
+            "line": 138,
+            "description": "auth callback",
+            "itemtype": "event",
+            "name": "auth",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app to add query parsing middleware to",
+                    "type": "App"
+                }
+            ],
+            "class": "template (server)",
+            "module": "Superfluous"
+        },
+        {
+            "file": "core/server/socket.js",
+            "line": 146,
+            "description": "auth callback",
+            "itemtype": "event",
+            "name": "auth",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app to add query parsing middleware to",
+                    "type": "App"
+                }
+            ],
+            "class": "template (server)",
+            "module": "Superfluous"
         },
         {
             "file": "core/server/template.js",

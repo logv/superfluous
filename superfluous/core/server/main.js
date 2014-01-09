@@ -1,3 +1,12 @@
+/**
+ * The Main file is responsible for organizing middleware and setting up
+ * the core of the main app.
+ *
+ * @class main (server)
+ * @module Superfluous
+ * @submodule Server
+ **/
+
 "use strict";
 
 var globals = require("./globals");
@@ -37,6 +46,12 @@ function setup() {
   var main = require_app("main");
   hooks.set_main(main);
 
+  /**
+   * Add query parser middleware
+   *
+   * @event query
+   * @param {app} app the express app
+   */
   hooks.setup("query", app, function(app) {
     app.use(connect.query());
   });
@@ -52,6 +67,12 @@ function setup() {
   // Add timestamps
   require("./console").install();
 
+  /**
+   * Add error handling middleware
+   *
+   * @event error_handling
+   * @param {app} app the express app
+   */
   hooks.setup("error_handling", app, function(app) {
     // setup error handling
     //var errorHandlers = require_core("server/error_handlers");
@@ -59,12 +80,22 @@ function setup() {
     app.use(connect.errorHandler({ dumpExceptions: true, showStack: true }));
   });
 
-  // Setting up some cookie parsing goodness
+  /**
+   * Add cookie parser middleware
+   *
+   * @event cookies
+   * @param {app} app the express app
+   */
   hooks.setup("cookies", app, function() {
     app.use(connect.cookieParser());
   });
 
-  // This is where the persistance store is created
+  /**
+   * Add request store middleware
+   *
+   * @event store
+   * @param {app} app the express app
+   */
   hooks.setup("store", app, function(app) {
     var store = require("./store");
     store.install(app);
@@ -72,12 +103,23 @@ function setup() {
 
   hooks.setup("db", app, function() { });
 
-  // This is where the session is created
+  /**
+   * Add session middleware
+   *
+   * @event session
+   * @param {app} app the express app
+   */
   hooks.setup("session", app, function(app) {
     var session = require("./session");
     session.install(app);
   });
 
+  /**
+   * Add redirection middleware
+   *
+   * @event redirect
+   * @param {app} app the express app
+   */
   hooks.setup("redirect", app, function(app) {
     var redirect = require('response-redirect');
     app.use(function(req, res, next) {
@@ -86,23 +128,60 @@ function setup() {
     });
   });
 
+  /**
+   * Setup the app
+   *
+   * @event app
+   * @param {app} app the express app
+   */
   hooks.setup("app", app, function() { });
 
+  /**
+   * Add compression middleware, for streaming response gzips
+   *
+   * @event compression
+   * @param {app} app the express app
+   */
   hooks.setup("compression", app, function(app) {
     app.use(connect.compress());
   });
 
+  /**
+   * Add packaging middleware (Currently does not do anything)
+   *
+   * @event packager
+   * @param {app} app the express app
+   */
   hooks.setup("packager", app, function() { });
 
+  /**
+   * Add realtime middleware (primus / sockets)
+   *
+   * @event realtime
+   * @param {app} app the express app
+   * @param {HttpServer} http_server the HttpServer to listen for socket connections on
+   */
   hooks.setup("realtime", app, http_server, function(app, http_server) {
     socket.setup_io(app, http_server);
   });
 
+  /**
+   * Add marshalling hooks, for translating between server/client code
+   *
+   * @event marshalls
+   * @param {app} app the express app
+   */
   hooks.setup("marshalls", app, function() {
     require_core("server/component").install_marshalls();
     require_core("server/backbone").install_marshalls();
   });
 
+  /**
+   * Add trust proxy middleware, which accepts forwarded headers from proxies
+   *
+   * @event trust_proxy
+   * @param {app} app the express app
+   */
   hooks.setup("trust_proxy", app, function(app) {
     app.use(function(req, res, next) {
       req.url = req.uri.path;
@@ -125,11 +204,23 @@ function setup() {
 
   });
 
+  /**
+   * Add controller routing to the app
+   *
+   * @event routes
+   * @param {app} app the express app
+   */
   hooks.setup("routes", app, function() {
     var router = require('./router');
     router.install(app);
   });
 
+  /**
+   * Add caching to the app for responses
+   *
+   * @event cache
+   * @param {app} app the express app
+   */
   hooks.setup("cache", app, function(app) {
     // setup static helpers
     var oneDay = 1000 * 60 * 60 * 24;

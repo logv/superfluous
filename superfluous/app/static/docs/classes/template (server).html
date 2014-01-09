@@ -64,6 +64,10 @@
             
                 <li><a href="../classes/db (server).html">db (server)</a></li>
             
+                <li><a href="../classes/hooks (server).html">hooks (server)</a></li>
+            
+                <li><a href="../classes/main (server).html">main (server)</a></li>
+            
                 <li><a href="../classes/packager (server).html">packager (server)</a></li>
             
                 <li><a href="../classes/page (server).html">page (server)</a></li>
@@ -100,6 +104,21 @@
 
 
 
+<div id="events-on-page" class="sidebox on-page">
+    <div class="hd">
+        <h2 class="no-toc">Events On Page</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+                <li><a href="#events_auth">auth</a></li>
+            
+                <li><a href="#events_auth">auth</a></li>
+            
+        </ul>
+    </div>
+</div>
+
 
 
 
@@ -107,7 +126,7 @@
 
 
             <div class="version" style="text-align: right; margin-right: 5px;">
-                <span>Docs for 0.0.28</span>
+                <span>Docs for 0.0.29</span>
             </div>
         </div>
 
@@ -132,6 +151,8 @@ called into from the Server Controller of the currently running app.</p>
         
         
         
+        
+        <li><a href="#events">Events</a></li>
         
     </ul>
     <div>
@@ -196,6 +217,68 @@ called into from the Server Controller of the currently running app.</p>
         
         
         
+        
+            <div id="events">
+            
+                <a name="events_auth"></a>
+<div class="events item">
+    <code>auth</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;socket.js:138</code></a></span>
+    <p>auth callback</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app to add query parsing middleware to</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_auth"></a>
+<div class="events item">
+    <code>auth</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;socket.js:146</code></a></span>
+    <p>auth callback</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app to add query parsing middleware to</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+            </div>
         
     </div>
 </div>

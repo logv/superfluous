@@ -135,8 +135,20 @@ module.exports = {
     var shutdown = require_core('server/shutdown');
     shutdown.install(primus);
 
+    /**
+     * auth callback
+     *
+     * @event auth
+     * @param {app} app the express app to add query parsing middleware to
+     */
     hooks.setup("socket", app, primus, function() { });
 
+    /**
+     * auth callback
+     *
+     * @event auth
+     * @param {app} app the express app to add query parsing middleware to
+     */
     hooks.setup("auth", app, primus, function(app, primus) {
       var auth = require_core("server/auth");
       auth.install(app, primus);

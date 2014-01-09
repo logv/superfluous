@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>main (server) - API</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.8.0pr2/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <script src="http://yui.yahooapis.com/combo?3.8.0pr2/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div class="yui3-g">
+
+        <div id="sidebar" class="yui3-u" style="padding-top: 5px">
+            <div id="modules" class="sidebox">
+    <div class="hd">
+        <h2 class="no-toc">Modules</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+                <li><a href="../modules/Superfluous.html">Superfluous</a>
+                
+                    <ul>
+                        
+                            <li><a href="../modules/Superfluous.html#Server">Server</a></li>
+                        
+                            <li><a href="../modules/Superfluous.html#Client">Client</a></li>
+                        
+                    </ul>
+                
+                </li>
+            
+        </ul>
+    </div>
+</div>
+
+<div id="classes" class="sidebox">
+    <div class="hd">
+        <h2 class="no-toc">Classes</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+                <li><a href="../classes/auth (server).html">auth (server)</a></li>
+            
+                <li><a href="../classes/bootloader (client).html">bootloader (client)</a></li>
+            
+                <li><a href="../classes/bridge (server).html">bridge (server)</a></li>
+            
+                <li><a href="../classes/component (client).html">component (client)</a></li>
+            
+                <li><a href="../classes/component (server).html">component (server)</a></li>
+            
+                <li><a href="../classes/config (server).html">config (server)</a></li>
+            
+                <li><a href="../classes/context (server).html">context (server)</a></li>
+            
+                <li><a href="../classes/controller (client).html">controller (client)</a></li>
+            
+                <li><a href="../classes/controller (server).html">controller (server)</a></li>
+            
+                <li><a href="../classes/db (server).html">db (server)</a></li>
+            
+                <li><a href="../classes/hooks (server).html">hooks (server)</a></li>
+            
+                <li><a href="../classes/main (server).html">main (server)</a></li>
+            
+                <li><a href="../classes/packager (server).html">packager (server)</a></li>
+            
+                <li><a href="../classes/page (server).html">page (server)</a></li>
+            
+                <li><a href="../classes/readfile (server).html">readfile (server)</a></li>
+            
+                <li><a href="../classes/router (server).html">router (server)</a></li>
+            
+                <li><a href="../classes/routes (server).html">routes (server)</a></li>
+            
+                <li><a href="../classes/template (server).html">template (server)</a></li>
+            
+        </ul>
+    </div>
+</div>
+
+
+
+
+<div id="events-on-page" class="sidebox on-page">
+    <div class="hd">
+        <h2 class="no-toc">Events On Page</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+                <li><a href="#events_app">app</a></li>
+            
+                <li><a href="#events_cache">cache</a></li>
+            
+                <li><a href="#events_compression">compression</a></li>
+            
+                <li><a href="#events_cookies">cookies</a></li>
+            
+                <li><a href="#events_error_handling">error_handling</a></li>
+            
+                <li><a href="#events_marshalls">marshalls</a></li>
+            
+                <li><a href="#events_packager">packager</a></li>
+            
+                <li><a href="#events_query">query</a></li>
+            
+                <li><a href="#events_realtime">realtime</a></li>
+            
+                <li><a href="#events_redirect">redirect</a></li>
+            
+                <li><a href="#events_routes">routes</a></li>
+            
+                <li><a href="#events_session">session</a></li>
+            
+                <li><a href="#events_store">store</a></li>
+            
+                <li><a href="#events_trust_proxy">trust_proxy</a></li>
+            
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+            <div class="version" style="text-align: right; margin-right: 5px;">
+                <span>Docs for 0.0.29</span>
+            </div>
+        </div>
+
+        <div id="main" class="yui3-u">
+            <div class="content"><h4>Class main (server)</h4>
+
+
+
+<span class="foundat">Class defined in: <a href="../"><code>core&#x2F;server&#x2F;main.js:1</code></a></span>
+<div class="intro"><p>The Main file is responsible for organizing middleware and setting up
+the core of the main app.</p>
+</div>
+
+
+
+<div id="classdocs">
+    <ul>
+        
+        
+        
+        
+        <li><a href="#events">Events</a></li>
+        
+    </ul>
+    <div>
+        
+        
+        
+        
+            <div id="events">
+            
+                <a name="events_app"></a>
+<div class="events item">
+    <code>app</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:131</code></a></span>
+    <p>Setup the app</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_cache"></a>
+<div class="events item">
+    <code>cache</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:218</code></a></span>
+    <p>Add caching to the app for responses</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_compression"></a>
+<div class="events item">
+    <code>compression</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:139</code></a></span>
+    <p>Add compression middleware, for streaming response gzips</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_cookies"></a>
+<div class="events item">
+    <code>cookies</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:83</code></a></span>
+    <p>Add cookie parser middleware</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_error_handling"></a>
+<div class="events item">
+    <code>error_handling</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:70</code></a></span>
+    <p>Add error handling middleware</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_marshalls"></a>
+<div class="events item">
+    <code>marshalls</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:168</code></a></span>
+    <p>Add marshalling hooks, for translating between server/client code</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_packager"></a>
+<div class="events item">
+    <code>packager</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:149</code></a></span>
+    <p>Add packaging middleware (Currently does not do anything)</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_query"></a>
+<div class="events item">
+    <code>query</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:49</code></a></span>
+    <p>Add query parser middleware</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_realtime"></a>
+<div class="events item">
+    <code>realtime</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:157</code></a></span>
+    <p>Add realtime middleware (primus / sockets)</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+        <li>
+        
+            <code>http_server</code> <strong>&lt;HttpServer&gt;</strong>
+        
+        
+        <p>the HttpServer to listen for socket connections on</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_redirect"></a>
+<div class="events item">
+    <code>redirect</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:117</code></a></span>
+    <p>Add redirection middleware</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_routes"></a>
+<div class="events item">
+    <code>routes</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:207</code></a></span>
+    <p>Add controller routing to the app</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_session"></a>
+<div class="events item">
+    <code>session</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:106</code></a></span>
+    <p>Add session middleware</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_store"></a>
+<div class="events item">
+    <code>store</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:93</code></a></span>
+    <p>Add request store middleware</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_trust_proxy"></a>
+<div class="events item">
+    <code>trust_proxy</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:179</code></a></span>
+    <p>Add trust proxy middleware, which accepts forwarded headers from proxies</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+            </div>
+        
+    </div>
+</div>
+</div>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/js/tabs.js"></script>
+</body>
+</html>
