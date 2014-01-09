@@ -11,9 +11,6 @@ module.exports = {
   },
   setup_app: function() {
     console.log("Main setup stuff, something, something");
-    if (config.slog) {
-      require_app("plugins/slog/server").install();
-    }
   },
   setup_request: function(req) {
     // Filter out logging packager requests
@@ -28,5 +25,8 @@ module.exports = {
     var oneDay = 1000 * 60 * 60 * 24;
     var oneYear = oneDay * 365;
     app.use(connect.static('react/', { maxAge: oneYear }));
+  },
+  setup_plugins: function(app) {
+    app.add_plugin_dir("app/plugins/slog");
   }
 };

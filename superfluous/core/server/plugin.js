@@ -27,12 +27,33 @@ function register_controller(controller) {
   register_path(path_.join("app", "controllers", controller));
 }
 
+function register_external_plugin(plugin_dir, mount_point) {
+  mount_point = mount_point || "/plugins";
+  console.log("Registering plugin located at", plugin_dir);
+  external_paths[plugin_dir] = mount_point;
+  controller_paths.push(path_.dirname(plugin_dir));
+  register_path(plugin_dir);
+
+  try {
+    var ctrl = require_root(path_.join(plugin_dir, "server"));
+    if (ctrl.install) {
+      ctrl.install();
+    }
+  } catch(e) {
+    console.log("Trouble requiring plugin server controller", plugin_dir);
+
+  }
+}
+
 var path = require("path");
 var ROOT_RE = new RegExp("^/?ROOT/");
+var controller_paths = ["app/controllers", "app/plugins"];
+var external_paths = {};
+
 function get_base_dir(controller_include) {
 
   var stripped_include = controller_include.replace(ROOT_RE, "");
-  var paths = ["app/controllers", "app/plugins"];
+  var paths = controller_paths;
   var resolved;
   _.each(paths, function(p) {
     if (resolved) {
@@ -51,6 +72,13 @@ function get_base_dir(controller_include) {
 module.exports = {
   register_plugin: register_plugin,
   register_controller: register_controller,
+  register_external_plugin: register_external_plugin,
   get_registered_paths: get_registered_paths,
+  get_external_paths: function() {
+    return external_paths;
+  },
+  get_controller_paths: function() {
+    return controller_paths;
+  },
   get_base_dir: get_base_dir
 };

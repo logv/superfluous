@@ -20,6 +20,7 @@ var config = require_core("server/config");
 var readfile = require("./readfile");
 
 var plugin = require_core("server/plugin");
+var _loaded = {};
 module.exports = {
   core: function load_controller(name) {
     var mod = require_core("controllers/" + name + "/server");
@@ -29,12 +30,17 @@ module.exports = {
   get_base_dir: function(controller_include) {
     return plugin.get_base_dir(controller_include);
   },
+  get_loaded_controllers: function() {
+    return _.keys(_loaded);
+  },
 
   load: function load_controller(name) {
     var full_path = plugin.get_base_dir(name + "/server");
     var mod = require_root(full_path);
+    _loaded[name] = true;
 
-    if (full_path.indexOf("/plugins/") !== -1) {
+    // need to be smarter, here
+    if (full_path.indexOf("app/plugins/") !== -1) {
       mod.is_plugin = true;
     }
 

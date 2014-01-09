@@ -1,6 +1,6 @@
 "use strict";
 
-var load_controller = require("./controller").load;
+var load_controller = require_core("server/controller").load;
 var context = require_core("server/context");
 var bridge = require_core("server/bridge");
 var Primus = require("primus.io");
@@ -129,8 +129,7 @@ module.exports = {
     // add rooms to Primus
     _primus = primus;
 
-    var router = require('./router');
-    router.socket(primus);
+    this.install(primus);
 
     var shutdown = require_core('server/shutdown');
     shutdown.install(primus);
@@ -161,9 +160,9 @@ module.exports = {
     cb(_controller_caches);
   },
 
-  install: function(io, controllers) {
-    var self = this;
-    _.each(controllers, function(name, path) {
+  install: function(io) {
+    var controllers = require_core("server/controller").get_loaded_controllers();
+    _.each(controllers, function(name) {
       var controller = load_controller(name);
 
       if (!controller.socket) {

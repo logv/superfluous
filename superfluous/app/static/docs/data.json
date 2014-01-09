@@ -934,7 +934,7 @@
         {
             "file": "core/server/hooks.js",
             "line": 86,
-            "description": "Calls a hook on the main module during the server setup.\n\nEvery hook has a 'name', which lets app interact with the hook and after the\nhook runs.",
+            "description": "Calls a hook on the main module during a request\n\nEvery hook has a 'name', which lets app interact with the hook and after the\nhook runs.",
             "access": "private",
             "tagname": "",
             "itemtype": "method",
@@ -964,7 +964,7 @@
         {
             "file": "core/server/hooks.js",
             "line": 99,
-            "description": "Calls a setup hook on the main module during the server setup.",
+            "description": "Calls a setup hook on the main module during the server setup / request handling",
             "access": "private",
             "tagname": "",
             "itemtype": "method",

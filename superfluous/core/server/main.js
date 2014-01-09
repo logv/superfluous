@@ -129,6 +129,18 @@ function setup() {
   });
 
   /**
+   * Add plugins to the app
+   *
+   * @event plugins
+   * @param {app} app use app.add_plugin_dir to add a plugin
+   */
+  var plugin = require_core("server/plugin");
+  app.add_plugin_dir = function(dir) {
+    plugin.register_external_plugin(dir);
+  };
+  hooks.setup("plugins", app, function() { });
+
+  /**
    * Setup the app
    *
    * @event app
@@ -153,17 +165,6 @@ function setup() {
    * @param {app} app the express app
    */
   hooks.setup("packager", app, function() { });
-
-  /**
-   * Add realtime middleware (primus / sockets)
-   *
-   * @event realtime
-   * @param {app} app the express app
-   * @param {HttpServer} http_server the HttpServer to listen for socket connections on
-   */
-  hooks.setup("realtime", app, http_server, function(app, http_server) {
-    socket.setup_io(app, http_server);
-  });
 
   /**
    * Add marshalling hooks, for translating between server/client code
@@ -213,6 +214,17 @@ function setup() {
   hooks.setup("routes", app, function() {
     var router = require('./router');
     router.install(app);
+  });
+
+  /**
+   * Add realtime middleware (primus / sockets)
+   *
+   * @event realtime
+   * @param {app} app the express app
+   * @param {HttpServer} http_server the HttpServer to listen for socket connections on
+   */
+  hooks.setup("realtime", app, http_server, function(app, http_server) {
+    socket.setup_io(app, http_server);
   });
 
   /**

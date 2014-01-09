@@ -14,25 +14,37 @@ var _ = require_vendor("underscore");
 var context = require("./context");
 var load_controller = require("./controller").load;
 var load_core_controller = require("./controller").core;
-var readfile = require_core("server/readfile");
 var plugin = require_core("server/plugin");
-
 var path_ = require("path");
 
+
 module.exports = {
+  paths: {},
+  controllers: {},
+  controller_apps: {},
   get_path: function(controller_name) {
     return this.paths[controller_name];
   },
 
-  collect: function(controllers) {
-    // Takes an enumerable of controller names, loads the controllers and then
-    // harvests their routes
+  collect_plugins: function() {
+    var readfile = require_core("server/readfile");
     var routes = [];
-    var self = this;
-    self.paths = {};
-    self.controllers = {};
-    self.controller_apps = {};
+    _.each(plugin.get_external_paths(), function(mount_path, controller_path) {
+        console.log("CONTROLLER PATH CHECKING", controller_path);
+        var controller_json = readfile(path_.join(controller_path, "routes.json"));
+        if (!controller_json) {
+          return;
+        }
 
+        var external_controllers = JSON.parse(controller_json);
+        routes = routes.concat(module.exports.collect(external_controllers));
+    });
+
+    return routes;
+  },
+
+  collect_core: function() {
+    var routes = [];
     function add_core_controller(controller, name) {
       var inst = load_core_controller(controller);
       function run_route(handler) {
@@ -55,21 +67,29 @@ module.exports = {
 
     add_core_controller("bootloader", "pkg");
 
+    return routes;
+  },
+
+  collect: function(controllers, prefix) {
+    prefix = prefix || '';
+    // Takes an enumerable of controller names, loads the controllers and then
+    // harvests their routes
+    var routes = [];
     _.each(controllers, function(controller, path) {
       var inst = load_controller(controller);
 
       // Registering Plugins & Self Contained controllers
       if (inst.is_plugin) {
-        self.controller_apps[controller] = true;
+        module.exports.controller_apps[controller] = true;
         plugin.register_plugin(controller);
       } else if (inst.is_package) {
-        self.controller_apps[controller] = true;
+        module.exports.controller_apps[controller] = true;
         plugin.register_controller(controller);
       }
 
 
-      self.paths[controller] = path;
-      self.controllers[path] = controller;
+      module.exports.paths[controller] = path;
+      module.exports.controllers[path] = controller;
 
       function run_route(handler) {
         return function() {
@@ -82,7 +102,7 @@ module.exports = {
       }
 
       _.each(inst.routes, function(handler, subpath) {
-        var subberpath = path + subpath;
+        var subberpath = prefix + path + subpath;
 
         routes.push({
           route: path_.normalize(subberpath),
@@ -94,7 +114,7 @@ module.exports = {
       });
 
       _.each(inst.post_routes, function(handler, subpath) {
-        var subberpath = path + subpath;
+        var subberpath = prefix + path + subpath;
         routes.push({
           route: path_.normalize(subberpath),
           method: "post",
@@ -107,7 +127,7 @@ module.exports = {
     return routes;
   },
   get_packaged_controllers: function() {
-    return _.keys(this.controller_apps);
+    return _.keys(module.exports.controller_apps);
   }
 
 };

@@ -21,16 +21,6 @@ var readfile = require("./readfile");
 var _ = require_vendor("underscore");
 
 
-// Read the routes in from an external file
-// TODO: make this more automagic
-var Controllers = JSON.parse(readfile("routes.json"));
-
-var routes = route_collector.collect(Controllers);
-
-var install_socket = function(io) {
-  socket.install(io, Controllers);
-};
-
 var template = require_core("server/template");
 var bridge = require_core("server/bridge");
 var readfile = require_core("server/readfile");
@@ -127,7 +117,15 @@ var setup = function(app) {
 
   app.router = router;
 
-  _.each(routes, function(route_data) {
+  // Read the routes in from an external file
+  // TODO: make this more automagic
+  var Controllers = JSON.parse(readfile("routes.json"));
+
+  var app_routes = route_collector.collect(Controllers);
+  var plugin_routes = route_collector.collect_plugins();
+  var core_routes = route_collector.collect_core();
+
+  _.each(core_routes.concat(app_routes).concat(plugin_routes), function(route_data) {
     var type = route_data.method || 'get';
     if (!app[type]) {
       console.log("Route", route_data.route, "has an invalid method");
@@ -157,6 +155,5 @@ var setup = function(app) {
 
 module.exports = {
   install: setup,
-  socket: install_socket,
   API: API
 };

@@ -38,7 +38,6 @@ describe("core/server/route_collector.js", function() {
       var pkgs = route_collector.get_packaged_controllers();
       assert.equal(_.contains(pkgs, "about"), true);
       assert.equal(_.contains(pkgs, "kitten"), true);
-      assert.equal(_.contains(pkgs, "slog"), true);
       assert.equal(_.contains(pkgs, "demo"), false);
       assert.equal(_.contains(pkgs, "react_demo"), false);
       done();

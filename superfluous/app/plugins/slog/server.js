@@ -11,6 +11,7 @@ var util = require("util");
 var _sockets = [];
 var _msgs = [];
 var MAX_LINES = 1000;
+
 function write_log_to_store() {
   var used_store = store.get();
   var last_msgs = _.last(_msgs, MAX_LINES);
