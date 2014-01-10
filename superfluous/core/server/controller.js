@@ -36,12 +36,14 @@ module.exports = {
 
   load: function load_controller(name) {
     var full_path = plugin.get_base_dir(name + "/server");
+    var base_name = require("path").dirname(full_path);
     var mod = require_root(full_path);
     _loaded[name] = true;
 
-    // need to be smarter, here
-    if (full_path.indexOf("app/plugins/") !== -1) {
+    mod.base_dir = base_name;
+    if (full_path.indexOf("app/controllers") === -1) {
       mod.is_plugin = true;
+      mod.is_extern = true;
     }
 
     mod.name = name;

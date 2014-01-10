@@ -31,17 +31,18 @@ function register_external_plugin(plugin_dir, mount_point) {
   mount_point = mount_point || "/plugins";
   console.log("Registering plugin located at", plugin_dir);
   external_paths[plugin_dir] = mount_point;
-  controller_paths.push(path_.dirname(plugin_dir));
+  controller_paths.push(plugin_dir);
   register_path(plugin_dir);
 
   try {
-    var ctrl = require_root(path_.join(plugin_dir, "server"));
+    // If we are loading an external dir, load it's index file for
+    // instructions on how to install it.
+    var ctrl = require_root(path_.join(plugin_dir, "index"));
     if (ctrl.install) {
       ctrl.install();
     }
   } catch(e) {
-    console.log("Trouble requiring plugin server controller", plugin_dir);
-
+    console.log("Trouble requiring plugin index page", plugin_dir);
   }
 }
 
@@ -73,6 +74,7 @@ module.exports = {
   register_plugin: register_plugin,
   register_controller: register_controller,
   register_external_plugin: register_external_plugin,
+  register_path: register_path,
   get_registered_paths: get_registered_paths,
   get_external_paths: function() {
     return external_paths;

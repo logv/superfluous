@@ -79,9 +79,9 @@ module.exports = {
       var inst = load_controller(controller);
 
       // Registering Plugins & Self Contained controllers
-      if (inst.is_plugin) {
+      if (inst.is_extern) {
         module.exports.controller_apps[controller] = true;
-        plugin.register_plugin(controller);
+        plugin.register_external_plugin(inst.base_dir);
       } else if (inst.is_package) {
         module.exports.controller_apps[controller] = true;
         plugin.register_controller(controller);
