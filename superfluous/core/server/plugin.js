@@ -47,7 +47,7 @@ function register_external_plugin(plugin_dir, mount_point) {
 }
 
 var path = require("path");
-var ROOT_RE = new RegExp("^/?ROOT/");
+var ROOT_RE = new RegExp("^/?\\$ROOT/");
 var controller_paths = ["app/controllers", "app/plugins"];
 var external_paths = {};
 

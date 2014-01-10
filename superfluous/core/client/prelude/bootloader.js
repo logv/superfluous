@@ -420,7 +420,7 @@
 
     _pending = [ cb ];
 
-    var controller_path = "ROOT/" + name + "/client";
+    var controller_path = "$ROOT/" + name + "/client";
 
     bootloader.require(controller_path, function(mod) {
       var ViewController = Backbone.View.extend(mod);

@@ -23,7 +23,7 @@ var config = require_core("server/config");
 var less_header = readfile("app/static/styles/definitions.less") +
   readfile("core/static/styles/definitions.less");
 
-var ROOT_RE = new RegExp("^/?ROOT/");
+var ROOT_RE = new RegExp("^/?\\$ROOT/");
 
 function readstyle(mod) {
   var data = readfile.all(mod + ".css");
