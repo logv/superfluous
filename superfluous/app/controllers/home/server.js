@@ -6,6 +6,8 @@ module.exports = {
   },
 
   index: function(ctx, api) {
+    this.set_fullscreen(true);
+
     var template_str = api.template.render("controllers/home.html.erb");
     var async_work = api.page.async(function(flush) {
       api.template.add_stylesheet("tomorrow-night-bright");
