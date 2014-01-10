@@ -1,19 +1,17 @@
 <h2>Features</h2>
 
 <p>
-<b>Speed</b> - <s>superfluous</s> has the initial delivery speed of a server app,
-and the rich interactions of a client heavy app. By delivering the main core
-of the page to the client ASAP, the client can display the app and
-download assets while the slower parts of the page are still generating.
-</p>
+<b>Speed</b> - <s>superfluous</s> has the initial delivery speed of a server
+app, and the rich interactions of a client heavy app. By delivering the main
+core of the page to the client ASAP, the client can display the app and
+download assets while the slower parts of the page are still generating on
+the server.  </p>
 
 <p>
 <b>Re-usability</b> - Components are <b>Backbone.Views</b> that encapsulate
-re-usable portions of rendering, event handling and data synchronization
-code. Using components on a site adds structure and well defined behaviors.
-Every component is responsible for managing its sub DOM, so their
-responsibilities are clear cut.
-<br />
+re-usable portions of rendering and event handling. Using components on a site
+adds structure and well defined behaviors.  Every component is responsible for
+managing its sub DOM, so their responsibilities are clear cut.  <br />
 
 <div class="alert">Many large web codebases today are using Component based
 page generation on the server to minimize development friction when multiple
@@ -24,14 +22,14 @@ developers are working together on one or more projects.</div> </p>
 lifecycle: initialize, render, destroy.  How the component updates its DOM
 tree is up to the developer. It could be MVVM and a data binding engine or
 jQuery selectors - it's up to you. if  you don't like the idea of templates
-auto-syncing to data models, don't do it. If you do... go for it :-D 
+auto-syncing to data models, don't do it. If you do... go for it :-D
 </p>
 
 <p>
 <b>Dynamicism</b> - <s>superfluous</s> has no compilation step. You can
-require() your modules on the client or server and load a page. The server
-takes care of dependency graphs, minification and all that packaging stuff
-for you.
+require() your modules on the client or server and serve your pages. The server
+takes care of dependency graphs, minification and all that packaging stuff for
+you.
 </p>
 
 <p>

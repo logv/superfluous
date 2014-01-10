@@ -12,9 +12,9 @@
   it's sub paths.
 
   <p>
-  In addition to delivering the app to the client, the server is generally
-  responsible for performing business logic and manipulating the database in
-  response to client actions.
+  In addition to delivering the app to the client, the server runs business
+  logic and manipulates the database and other backends in response to client
+  actions.
   </p>
 
   <p class="alert">
@@ -43,6 +43,7 @@ superfluous</s>/
     client/             # client specific code and helpers
     controllers/        # controllers
     main.js             # server setup code goes in here
+    plugins/            # plugins live here
     server/             # server specific logic
     static/             # assets and templates used by controllers
   app.js                # This is the app entry point. Run this file
@@ -280,7 +281,6 @@ see example server controller code
   pieces of functionality that don't belong in a controller.  Components are
   usable on the server or client and contain all the code (HTML, CSS, JS) to
   render and interact with the component in one directory.
-
   </p>
 
   <p>
@@ -382,5 +382,6 @@ socket communication, the bridge lives on <b>socket.bridge</b>
   <br /> and <br />
   <code>bridge.controller("foo", "method_name", arg1, arg2, ...,)</code>.
 </p>
+
 </div>
 

@@ -1,10 +1,9 @@
 superfluous
 ===========
 
-*superfluous* is a node.js app & component server. at its core, it deals with
-how the server & client communicate in the modern app environment.  there are
-two major pieces of communication during the app life cycle. The initial
-delivery, and subsequent interactions. superfluous connects the two :-D
+*superfluous* is a web framework built in node.js. it serves apps & components
+to browsers and simplifies how the server & client communicate in the modern
+app environment.
 
 [![Build Status](https://travis-ci.org/okayzed/superfluous.png)](https://travis-ci.org/okayzed/superfluous)
 [![NPM version](https://badge.fury.io/js/superfluous.png)](http://badge.fury.io/js/superfluous)
@@ -48,9 +47,9 @@ See the guide [locally](http://localhost:3300) or [online](http://superfluous.io
 
 * pipelined page generation
 * transparently marshalled components
-* per request storage
-* socket carry over
-* server side rendering
+* per request globals, aka request local storage
+* socket setup & authorization
+* server or client side rendering
 
 #### ORM Not Included
 
@@ -73,7 +72,6 @@ See the guide [locally](http://localhost:3300) or [online](http://superfluous.io
   1. `heroku config:add MONGOHQ\_URL=mongodb://user:pwd@host:port/db` (you can use mongohq addon to get a mongo db instance)
   2. `heroku config:add ENV=heroku`
   3. `heroku config:add HTTPHOST=my_todo_app.herokuapp.com` (or whatever you use)
-  4. `heroku config:add GPLUS\_DOMAIN=yourcompanydomain.com` (or change heroku.js to configure auth)
 1. push everything under the superfluous directory (in particular the Procfile) to your heroku git repo. If you have git subtree, use: `git subtree push --prefix superfluous heroku master`
 
 ## Hacking on the core
@@ -88,4 +86,3 @@ See the guide [locally](http://localhost:3300) or [online](http://superfluous.io
 
     # start hacking in core/
     vim superfluous/core/server/main.js
-
