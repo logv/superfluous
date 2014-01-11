@@ -35,20 +35,19 @@ function register_external_plugin(plugin_dir, mount_point) {
   }
   _registered_externs[plugin_dir] = true;
 
-  console.log("Registering plugin located at", plugin_dir);
   external_paths[plugin_dir] = mount_point;
   controller_paths.push(plugin_dir);
   register_path(plugin_dir);
 
+  var ctrl;
   try {
     // If we are loading an external dir, load it's index file for
     // instructions on how to install it.
-    var ctrl = require_root(path_.join(plugin_dir, "index"));
-    if (ctrl.install) {
-      ctrl.install();
-    }
-  } catch(e) {
-    console.log("Trouble requiring plugin index page", plugin_dir);
+    ctrl = require_root(path_.join(plugin_dir, "index"));
+  } catch(e) { }
+
+  if (ctrl && ctrl.install) {
+    ctrl.install();
   }
 }
 
@@ -57,7 +56,7 @@ var ROOT_RE = new RegExp("^/?\\$ROOT/");
 var controller_paths = ["app/controllers", "app/plugins"];
 var external_paths = {};
 
-function get_base_dir(controller_include) {
+function get_full_path(controller_include) {
 
   var stripped_include = controller_include.replace(ROOT_RE, "");
   var paths = controller_paths;
@@ -70,6 +69,24 @@ function get_base_dir(controller_include) {
     var full_path = path.join(p, stripped_include);
     if (readfile(full_path + ".js")) {
       resolved = full_path;
+    }
+  });
+
+  return resolved;
+}
+function get_base_dir(controller_include) {
+
+  var stripped_include = controller_include.replace(ROOT_RE, "");
+  var paths = controller_paths;
+  var resolved;
+  _.each(paths, function(p) {
+    if (resolved) {
+      return;
+    }
+
+    var full_path = path.join(p, stripped_include);
+    if (readfile(full_path + ".js")) {
+      resolved = p;
     }
   });
 
@@ -94,5 +111,6 @@ module.exports = {
   get_controller_paths: function() {
     return controller_paths;
   },
-  get_base_dir: get_base_dir
+  get_base_dir: get_base_dir,
+  get_full_path: get_full_path
 };

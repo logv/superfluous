@@ -27,7 +27,7 @@ var ROOT_RE = new RegExp("^/?\\$ROOT/");
 
 function readstyle(mod) {
   var data = readfile.all(mod + ".css");
-  if (!data) {    
+  if (!data) {
     data = readfile.all(mod + ".less");
   }
   return data;
@@ -53,7 +53,7 @@ function package_less(includes, cb) {
             console.log("Error rendering less module:", mod, err);
           }
 
-          hooks.invoke("after_render_less", mod, css, function(mod, css) { 
+          hooks.invoke("after_render_less", mod, css, function(mod, css) {
             var hash = quick_hash(css.toString());
             ret[mod] = {
               code: css,
@@ -109,9 +109,9 @@ function package_js(includes, cb) {
   }
 
   var ret = {};
-  var after = _.after(includes.length, function() { 
+  var after = _.after(includes.length, function() {
     _js_cache[includes_key] = ret;
-    cb(ret); 
+    cb(ret);
   });
 
   // mapping for undefined modules by default
@@ -135,18 +135,31 @@ function package_js(includes, cb) {
   });
 
 
-  function inc_file(inc, inc_name) {    
+  function inc_file(inc, relatives, inc_name) {
     if (!inc) {
-      console.log("Not including", inc_name);
       after(ret);
       return;
     }
+
+    var path = require("path");
+
+    var paths = [
+      './',
+      './static',
+      path.join(__dirname, "..", "..")
+    ];
+    if (_.isString(relatives)) {
+      paths.push(relatives);
+    }
+
+    if (_.isArray(relatives)) {
+      paths = paths.concat(relatives);
+    }
+
     module_grapher.graph(inc, {
-        paths: [ 
-          './', 
-          './static', 
-          path.join(__dirname, '../../') ]
+        paths: paths,
       }, function(__, resolved) {
+
         if (!resolved || !resolved.modules) {
           return after(ret);
         }
@@ -155,12 +168,12 @@ function package_js(includes, cb) {
         async.each(
           modules,
           function(mod, done) {
-            var data = readfile.both(mod + ".js");
+            var data = readfile(mod + ".js", { paths: paths });
 
-            var mod_name = mod.id;
-            if (inc === mod.id && inc_name) {
-              mod_name = inc_name;
+            if (inc_name && mod.id === inc) {
+              mod.id = inc_name;
             }
+            var mod_name = mod.id;
             mod_name = mod_name.replace(/^\//, '') ;
 
             hooks.invoke("before_render_js", mod_name, data, function(name, data) {
@@ -189,8 +202,9 @@ function package_js(includes, cb) {
   _.each(ext_includes, function(controller_include) {
     controller_include = controller_include.replace(/^\//, '') ;
 
-    var full_path = require_core("server/controller").get_base_dir(controller_include);
-    inc_file(full_path, controller_include);
+    var base_dir = require_core("server/controller").get_base_dir(controller_include);
+    var base_name = controller_include;
+    inc_file(base_name.replace(ROOT_RE, ''), base_dir, controller_include);
   });
 
 

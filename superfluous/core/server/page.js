@@ -148,7 +148,7 @@ var render_page = function(page_options) {
 
   // render into page formata
   var controller_include = require("path").join(controller, "client");
-  var controller_client_path = require_core("server/controller").get_base_dir(controller_include);
+  var controller_client_path = require_core("server/controller").get_full_path(controller_include);
   var hash = quick_hash(readfile(controller_client_path));
   var css_hash, js_hash, socket_hash;
 

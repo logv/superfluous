@@ -27,6 +27,9 @@ module.exports = {
     mod.name = name;
     return mod;
   },
+  get_full_path: function(controller_include) {
+    return plugin.get_full_path(controller_include);
+  },
   get_base_dir: function(controller_include) {
     return plugin.get_base_dir(controller_include);
   },
@@ -39,7 +42,7 @@ module.exports = {
       return _loaded[name];
     }
 
-    var full_path = plugin.get_base_dir(name + "/server");
+    var full_path = plugin.get_full_path(name + "/server");
 
     var base_name = require("path").dirname(full_path);
 

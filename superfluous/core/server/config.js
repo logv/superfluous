@@ -50,7 +50,7 @@ _config.RELEASE = RELEASE;
 var cwd = process.cwd();
 var path = require("path");
 _config.APP_DIR = path.join(cwd, "app");
-_config.CORE_DIR = path.relative(cwd, path.normalize(__dirname + "/../"));
+_config.CORE_DIR = path.relative(cwd, path.join(__dirname, ".."));
 
 console.log("CONFIG:", _config);
 module.exports = Object.freeze(_config);
