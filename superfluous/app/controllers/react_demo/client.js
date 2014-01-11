@@ -1,9 +1,6 @@
 "use strict";
 
 require("app/client/react");
-require("core/client/backbone");
-var models = require("app/controllers/react_demo/models");
-
 module.exports = {
   load: function(todo_el, datas, sidebar) {
     console.log("Loaded React todomvc instance", todo_el);
@@ -16,11 +13,6 @@ module.exports = {
     };
 
 
-    var collection  = new models.TodoList();
-    collection.reset(datas.toJSON());
-    console.log("Loaded backbone collection", collection);
-
-    todo_el.props.todos = collection;
   },
   init: function() {
 

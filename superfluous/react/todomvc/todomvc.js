@@ -139,6 +139,23 @@ var TodoApp = React.createClass({
     return {};
   },
 
+  // Doing this so we can access models more easily
+  client_init: function(cb) {
+    var self = this;
+    require("$ROOT/react_demo/models", function(models) {
+      var collection  = new models.TodoList();
+      if (_.isArray(self.props.todos)) {
+        collection.reset(self.props.todos);
+        self.props.todos = collection;
+      }
+
+      if (cb) { cb(); }
+    });
+
+    return true;
+
+  },
+
   componentDidMount: function() {
     this.refs.newField.getDOMNode().focus();
   },
@@ -195,6 +212,7 @@ var TodoApp = React.createClass({
     var footer = null;
     var main = null;
     var self = this;
+
     var todoItems = this.props.todos.map(function(todo) {
       return (
         <TodoItem
@@ -207,6 +225,7 @@ var TodoApp = React.createClass({
           onSave={self.save.bind(self, todo)}
         />
       );
+
     }, this);
 
     var activeTodoCount = this.props.todos.remaining().length;

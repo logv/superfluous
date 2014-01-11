@@ -1,6 +1,7 @@
 "use strict";
 
 require("app/static/vendor/react/react");
+require("core/client/backbone");
 var _reacts = window.bootloader.reacts;
 
 var _reacts = {};
@@ -54,6 +55,26 @@ window.bootloader.add_marshaller("react", function(arg, cb) {
 
 });
 
+function init_react_component(el, instance) {
+
+  function do_component_render() {
+    window.React.renderComponent(instance, el);
+
+    if (instance.client) {
+      instance.client();
+    }
+  }
+
+  if (instance.client_init) {
+    if (!instance.client_init(do_component_render)) {
+      do_component_render();
+    }
+  } else {
+    do_component_render();
+  }
+
+}
+
 module.exports = {
   instantiate: function(component, options) {
     // gotta require that react component, somehow
@@ -62,9 +83,8 @@ module.exports = {
         window.bootloader.css(_definitions[component].schema.styles, function() {
           var el = window.document.getElementById(options.id);
           var instance = new _reacts[component](options);
+          init_react_component(el, instance);
           register_component(options.id, instance);
-
-          window.React.renderComponent(instance, el);
         });
       }
     });
@@ -75,8 +95,7 @@ module.exports = {
       if (_reacts[component]) {
         window.bootloader.css(_definitions[component].schema.styles, function() {
           var instance = new _reacts[component](options, { });
-          window.React.renderComponent(instance, div[0]);
-
+          init_react_component(div[0], instance);
           register_component(options.id, instance);
           callback({
             $el: div
