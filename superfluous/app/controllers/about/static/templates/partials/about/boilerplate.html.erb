@@ -2,8 +2,10 @@
 <h1>Boilerplate</h1>
 
 <s>superfluous</s> is very concerned (again :-) with app delivery and
-communication, as such it automates and simplifies some specific
-functionality.
+communication, as such it automates and simplifies some specific functionality.
+
+As part of the app delivery, superfluous puts <b>jquery</b>, <b>backbone</b>
+and <b>underscore</b> on the page, with the option of adding <b>sockets</b>.
 
 <h3>App Packaging</h3>
 
@@ -80,13 +82,14 @@ index: function() {
 </div>
 </div>
 
-<h3>Component Delivery</h3>
+<h3>Component Packaging</h3>
 <s>superfluous</s> loads components from the server in one endpoint (including
-    templates, styles and scripts), allowing the client to load any component on
-demand. It takes care of bootloading in their dependencies and any helpers, so
-that the developer can focus on building the app, not packaging it.
+templates, styles and scripts), allowing the client to load any component (or
+components) on demand in one request. It takes care of bootloading in their
+dependencies and any helpers, so that the developer can focus on building the
+app, not packaging it.
 
-<h3>Component Marshalling</h3>
+<h3>Server -&gt; Client Marshalling</h3>
 <p>
 Most web frameworks implement a templating + rendering engine, but <s>superfluous</s>
 goes a step further. Many of the UI components that we want to use on a webpage
@@ -122,7 +125,7 @@ Client Code
 
 
 <div class="">
-<h3>Component Scoped CSS</h3>
+<h3>Scoped CSS</h3>
 In <s>superfluous</s>, every component's CSS is dynamically scoped to only that
 component, reducing the cross contamination of styles between components.
 </div>
@@ -134,8 +137,8 @@ component, reducing the cross contamination of styles between components.
 When a controller enables sockets, <b>primus</b> handles the rest. The
 client and server controller can immediately begin talking to one another.
 
-When a user authenticates, their socket is authenticated as well and the
-session carries over.
+When a user authenticates, their socket is authenticated as well and their
+session is attached to the socket.
 
 <h3>Request Local Storage</h3>
 

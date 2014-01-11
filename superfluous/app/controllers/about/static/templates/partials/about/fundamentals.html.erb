@@ -284,63 +284,42 @@ see example server controller code
   </p>
 
   <p>
-  A simple example of a component would be a re-usable <b>button</b>.
+  A simple example of a component would be a re-usable <b>button</b> or <b>dropdown</b>.
   </p>
 
   <p>
   A component is split into several files: the main <b>component.js</b> file,
   the <b>events</b> file, the <b>style</b> file and the <b>template</b>.
 
-  <div>
-  <button type="button" class="btn btn-danger mbl" data-toggle="collapse" data-target="#button_example">
-  see example button component files
-  </button>
-
-  <div id="button_example" class="collapse no-transition">
-
-  components/button/events.js
-  <pre class="prettyprint"><code class="javascript">
-module.exports = { 
-  events: {
-    "click" :  "handle_button_click"
-  },
-
-  handle_button_click: function() {
-  }
-};
-</code></pre>
-
-components/button/button.js
-<pre class="prettyprint"><code class="javascript">module.exports = { tagName: "div",
-  className: "btn",
-
-  set_title: function(title) {
-    this.$el.attr('title', title);
-  }
-};
-</code></pre>
-
-components/button/button.html.erb
-<pre class="prettyprint"><code class="javascript">&lt;% set_default("title", "") %&gt;
-
-&lt;div class="name" title="&lt;%= title %&gt;"&gt;
-&lt;%= name %&gt;
-&lt;/div&gt;
-
-</code></pre>
-</div>
-
-<p>
-The <b>main component</b> file is responsible for a component's core logic
-and rendering. The <b>events</b> file is responsible for event handling in
-the component and is only loaded on the client.  The <b>style</b> file
-contains CSS that will be automatically scoped to the component, and the
-<b>template</b> is the basic HTML used to construct the component.
-</p>
+  <p>
+  The <b>main component</b> file is responsible for a component's core logic
+  and rendering. The <b>events</b> file is responsible for event handling in
+  the component and is only loaded on the client.  The <b>style</b> file
+  contains CSS that will be automatically scoped to the component, and the
+  <b>template</b> is the basic HTML used to construct the component.
+  </p>
 
 <p class="alert">
 Use <b>scripts/create_component.sh component_name</b> to generate a new component
 </p>
+
+<h4>LifeCycle</h4>
+
+A Component is created with <code>$C("my_component", {}, function(instance) {
+});</code> on the server or client. The <b>$C</b> function will do the
+following:
+
+<ul>
+  <li>render the component template using the supplied options</li>
+  <li>create a new instance of the component module, using supplied options and the DOM just rendered</li>
+  <li>call <b>.init()</b> on the component instance</li>
+  <li>if on the server, send instructions to the client on how to load the component</li>
+  <li>if on the client, load the event delegates from the <b>events.js</b> file and overlay them on the component</li>
+  <li>call the callback passed to <b>$C</b></li>
+  <li>if on the client, call <b>.client()</b> on the component instance</li>
+</ul>
+
+
 
 <h4>Client specific work</h4>
 <p>
@@ -355,7 +334,6 @@ component. this is because Components need to be creatable on the client side
 (without communication to the server).
 </p>
 
-</div>
 </div>
 
 <div>
