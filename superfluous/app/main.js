@@ -25,9 +25,5 @@ module.exports = {
     var oneDay = 1000 * 60 * 60 * 24;
     var oneYear = oneDay * 365;
     app.use(connect.static('react/', { maxAge: oneYear }));
-  },
-  setup_plugins: function(app) {
-    app.add_plugin_dir("app/plugins/slog");
-    app.add_plugin_dir("app/plugins/tester");
   }
 };

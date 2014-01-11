@@ -138,7 +138,10 @@ function setup() {
   app.add_plugin_dir = function(dir) {
     plugin.register_external_plugin(dir);
   };
-  hooks.setup("plugins", app, function() { });
+  hooks.setup("plugins", app, function() { 
+    plugin.register_core("slog");
+    plugin.register_core("tester");
+  });
 
   /**
    * Setup the app

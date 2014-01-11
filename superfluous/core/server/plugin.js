@@ -76,8 +76,14 @@ function get_base_dir(controller_include) {
   return resolved;
 }
 
+function register_core(plugin) {
+  var plugin_path = path_.join(config.CORE_DIR, "plugins", plugin);
+  register_external_plugin(plugin_path);
+}
+
 module.exports = {
   register_plugin: register_plugin,
+  register_core: register_core,
   register_controller: register_controller,
   register_external_plugin: register_external_plugin,
   register_path: register_path,
