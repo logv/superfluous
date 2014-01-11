@@ -109,7 +109,7 @@ function request_handler_factory(app, route_data) {
   };
 }
 
-var setup = function(app) {
+var install = function(app) {
   var Router = require('reversable-router');
   var router = new Router();
   router.extendExpress(app);
@@ -154,6 +154,6 @@ var setup = function(app) {
 };
 
 module.exports = {
-  install: setup,
+  install: install,
   API: API
 };

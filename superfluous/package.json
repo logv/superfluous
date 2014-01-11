@@ -1,7 +1,7 @@
 {
   "name": "superfluous",
   "description": "a node.js server/client understanding",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "private": false,
   "dependencies": {
     "connect": "2.x",
@@ -22,7 +22,8 @@
     "commander": "x",
     "fs-extra": "x",
     "continuation-local-storage": "x",
-    "mocha" : "x"
+    "mocha" : "x",
+    "mocha-phantomjs" : "x"
   },
   "bin": {
     "superfluous": "bin/superfluous"

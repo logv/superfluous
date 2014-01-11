@@ -135,7 +135,12 @@ function package_js(includes, cb) {
   });
 
 
-  function inc_file(inc, inc_name) {
+  function inc_file(inc, inc_name) {    
+    if (!inc) {
+      console.log("Not including", inc_name);
+      after(ret);
+      return;
+    }
     module_grapher.graph(inc, {
         paths: [ 
           './', 
@@ -182,6 +187,8 @@ function package_js(includes, cb) {
   });
 
   _.each(ext_includes, function(controller_include) {
+    controller_include = controller_include.replace(/^\//, '') ;
+
     var full_path = require_core("server/controller").get_base_dir(controller_include);
     inc_file(full_path, controller_include);
   });

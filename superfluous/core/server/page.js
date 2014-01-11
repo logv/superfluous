@@ -56,6 +56,10 @@ var render_async = function(func) {
   };
 };
 
+var do_async = function(func) {
+  render_async(func)();
+}
+
 function resolve_futures() {
   // FUTURES ARE ASYNC, NEED TO USE context() HERE
   // Execute all future funcs, now
@@ -97,7 +101,7 @@ function resolve_futures() {
 
         var controller_instance = context("controller_instance");
         if (controller_instance && controller_instance.after_request) {
-          controller_instance.after_request();  
+          controller_instance.after_request();
         }
 
 
@@ -163,7 +167,7 @@ var render_page = function(page_options) {
       socket_hash = hash;
       after();
     });
-  }], 
+  }],
   function () { // after everything finishes
     var config = require("./config");
     var template = require("./template");
@@ -238,4 +242,9 @@ var render_page = function(page_options) {
 };
 
 var emitter = new EventEmitter();
-module.exports = _.extend(emitter, { render: render_page, async: render_async});
+module.exports = _.extend(emitter, {
+  render: render_page,
+  async: render_async,
+  defer: do_async,
+  placeholder: render_async
+});

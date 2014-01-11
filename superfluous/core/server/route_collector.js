@@ -30,13 +30,14 @@ module.exports = {
     var readfile = require_core("server/readfile");
     var routes = [];
     _.each(plugin.get_external_paths(), function(mount_path, controller_path) {
-        console.log("CONTROLLER PATH CHECKING", controller_path);
         var controller_json = readfile(path_.join(controller_path, "routes.json"));
         if (!controller_json) {
           return;
         }
 
         var external_controllers = JSON.parse(controller_json);
+
+        plugin.register_external_plugin(controller_path);
         routes = routes.concat(module.exports.collect(external_controllers));
     });
 
@@ -76,6 +77,9 @@ module.exports = {
     // harvests their routes
     var routes = [];
     _.each(controllers, function(controller, path) {
+      if (!controller) {
+        return;
+      }
       var inst = load_controller(controller);
 
       // Registering Plugins & Self Contained controllers
@@ -83,8 +87,8 @@ module.exports = {
         module.exports.controller_apps[controller] = true;
         plugin.register_external_plugin(inst.base_dir);
       } else if (inst.is_package) {
-        module.exports.controller_apps[controller] = true;
         plugin.register_controller(controller);
+        module.exports.controller_apps[controller] = true;
       }
 
 

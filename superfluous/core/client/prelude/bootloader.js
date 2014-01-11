@@ -394,10 +394,9 @@
   }
 
   var _controllers = {};
-  var _controller_paths = {};
-  var _pending;
+  var _pending = {};
   function get_controller(name, cb, signature) {
-    var name = name || bootloader.__controller_name;
+    name = name || bootloader.__controller_name;
     signature = signature || bootloader.__controller_hash;
 
     if (!signature) {
@@ -413,12 +412,13 @@
       name: name
     };
 
-    if (_pending) {
-      _pending.push(cb);
+    var pending = _pending[name];
+    if (pending) {
+      pending.push(cb);
       return controller;
     }
 
-    _pending = [ cb ];
+    _pending[name] = [ cb ];
 
     var controller_path = "$ROOT/" + name + "/client";
 
@@ -440,7 +440,7 @@
       _controllers[name] = controller;
       _modules[controller_path] = controller;
 
-      _.each(_pending, function(cb) {
+      _.each(_pending[name], function(cb) {
         if (cb) {
           cb(controller);
         }

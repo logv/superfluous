@@ -3,7 +3,7 @@
 COMPONENT="${1}"
 
 mkdir components/${COMPONENT}
-cp components/template/* components/${COMPONENT}
+cp components/template/* components/${COMPONENT} -R
 
 cd components/${COMPONENT}
 rename s/template/${COMPONENT}/ *

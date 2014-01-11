@@ -28,5 +28,6 @@ module.exports = {
   },
   setup_plugins: function(app) {
     app.add_plugin_dir("app/plugins/slog");
+    app.add_plugin_dir("app/plugins/tester");
   }
 };

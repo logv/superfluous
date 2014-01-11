@@ -10,7 +10,7 @@ module.exports = {
     this.$el.find(".toc").empty();
 
     // For now, let's just wrap content div
-    var $el = $(options.client_options.div);
+    var $el = $(options.div);
     var headers = $el.find("h1, h2, h3, h4");
     var contents = $("<ul />");
     contents.addClass("nav");

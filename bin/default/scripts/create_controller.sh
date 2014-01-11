@@ -108,3 +108,15 @@ describe("${COMPONENT} server controller", function() {
   });
 });
 SERVER_TEST_TEMPLATE
+
+cat > app/controllers/${COMPONENT}/test/server.js << CLIENT_TEST_TEMPLATE
+describe("A blank test for ${COMPONENT}", function() {
+  it("should work", function(done) {
+    SF.controller("${COMPONENT}", function(ctrl) {
+      assert.notEqual(ctrl, null);
+
+      done();
+    });
+  });
+});
+CLIENT_TEST_TEMPLATE

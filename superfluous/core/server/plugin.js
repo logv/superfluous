@@ -27,8 +27,14 @@ function register_controller(controller) {
   register_path(path_.join("app", "controllers", controller));
 }
 
+var _registered_externs = {};
 function register_external_plugin(plugin_dir, mount_point) {
   mount_point = mount_point || "/plugins";
+  if (_registered_externs[plugin_dir]) {
+    return;
+  }
+  _registered_externs[plugin_dir] = true;
+
   console.log("Registering plugin located at", plugin_dir);
   external_paths[plugin_dir] = mount_point;
   controller_paths.push(plugin_dir);
