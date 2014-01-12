@@ -13,13 +13,20 @@ module.exports = {
     console.log("Main setup stuff, something, something");
   },
   setup_store: function() {
-    var package_json = require_core("../package.json");
-    var app_name = package_json.name;
-    var url = config.backend && config.backend.db_url;
-    var MongoStore = require('connect-mongo')(connect);
-    var store = new MongoStore({url: url, db: app_name, auto_reconnect: true } );
-    require_core("server/store").set(store);
-    return true;
+    if (config.mongo_store) {
+      var package_json = require_core("../package.json");
+      var app_name = package_json.name;
+      var url = config.backend && config.backend.db_url;
+      var MongoStore = require('connect-mongo')(connect);
+      var store = new MongoStore({url: url, db: app_name, auto_reconnect: true } );
+      require_core("server/store").set(store);
+      return true;
+    }
+  },
+  insteadof_session: function() {
+    require_core("server/session").set(connect.cookieSession({
+      secret: config.SESSION_SECRET
+    }));
   },
   setup_request: function(req) {
     // Filter out logging packager requests

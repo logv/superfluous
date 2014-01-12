@@ -8,7 +8,7 @@ HAS_MOCHA_PHANTOM=$?
 
 if [[ $HAS_PHANTOMJS == 0 && $HAS_MOCHA_PHANTOM == 0 ]]; then
   echo "Starting server for client tests on 4200"
-  HTTPS_PORT=4300 PORT=4200 node app > /dev/null &
+  ENV=test HTTPS_PORT=4300 PORT=4200 node app > /dev/null &
   PID=$!
   sleep 1
   echo "Running client tests"

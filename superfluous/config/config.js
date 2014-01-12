@@ -14,5 +14,6 @@ module.exports = {
   backend: {
     driver: "mongo"
   },
-  slog: true
+  slog: true,
+  mongo_store: true
 };

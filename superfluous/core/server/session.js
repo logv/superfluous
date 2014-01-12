@@ -15,16 +15,25 @@ module.exports = {
 
     if (!_session) {
       if (persistence_store) {
-        _session = connect.session({
-          secret: SESSION_SECRET,
-          store: persistence_store
-        });
-      } else {
-        _session = connect.cookieSession({
-          secret: SESSION_SECRET
-        });
-      }
+        try {
+          _session = connect.session({
+            secret: SESSION_SECRET,
+            store: persistence_store
+          });
+
+          app.use(_session);
+
+          return;
+        } catch(e) {
+          console.log("Session store and session are incompatible");
+        }
+      } 
+
     }
+
+    _session = connect.cookieSession({
+      secret: SESSION_SECRET
+    });
 
     app.use(_session);
 
