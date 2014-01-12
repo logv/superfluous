@@ -68,7 +68,7 @@ module.exports = {
     router.install(app);
 
     var hooks = require_core("server/hooks");
-    var main = require_app("main");
+    var main = {};
     hooks.set_main(main);
 
     require_core("server/component").install_marshalls();
