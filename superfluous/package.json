@@ -3,6 +3,10 @@
   "description": "a node.js server/client understanding",
   "version": "0.0.30",
   "private": false,
+  "devDependencies" : {
+    "mongodb": "x",
+    "connect-mongo": "x"
+  },
   "dependencies": {
     "connect": "2.x",
     "connect-redirect": "x",
@@ -13,8 +17,6 @@
     "primus.io": "x",
     "cheerio": "0.10.x",
     "module-grapher": "x",
-    "mongodb": "x",
-    "connect-mongo": "x",
     "longjohn": "x",
     "async": "x",
     "less": "x",

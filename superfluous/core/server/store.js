@@ -9,8 +9,8 @@ var _store;
 module.exports = {
   install: function() {
     var url = config.backend && config.backend.db_url;
-    var MongoStore = require('connect-mongo')(connect);
-    _store = new MongoStore({url: url, db: app_name, auto_reconnect: true } );
+    var CookieStore = connect.session.Cookie;
+    _store = new CookieStore({url: url, db: app_name, auto_reconnect: true } );
   },
   get: function() {
     return _store;
