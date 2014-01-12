@@ -184,6 +184,8 @@ var render_page = function(page_options) {
       use_storage = true;
     }
 
+    var use_chunked_xhr = false; // TODO: turn this on after more testing
+
     var use_fullscreen = $$.use_fullscreen;
     var pageId = _.uniqueId("pg_");
     var simple_pipe = config.simple_pipe;
@@ -198,6 +200,7 @@ var render_page = function(page_options) {
       controller: controller,
       use_storage: use_storage,
       use_fullscreen: use_fullscreen,
+      use_chunked_xhr: use_chunked_xhr,
       js_deps: [],
       css_deps: [],
       content: page_options.content,

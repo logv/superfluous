@@ -118,7 +118,7 @@
 
     // remove old keys
     for (var key in localStorage) {
-      
+
       if (key === "_versions" || key === "_signatures") {
         continue;
       }
@@ -228,6 +228,73 @@
     }
   }
 
+  var can_stream_response;
+  (function() {
+    var xhr = new XMLHttpRequest();
+    can_stream_response = !! (xhr && 'onprogress' in xhr);
+  })();
+
+  function stream_response(url, config, load_data) {
+    var xhr = new XMLHttpRequest();
+    var nextLine = 0;
+
+    config.data.streaming = 1;
+
+    var full_url = url + "?" + $.param(config.data || {});
+
+    var PAYLOAD_SEPARATOR = "#$%PAYLOAD^%$";
+    var leftover_data = "";
+    function parse_data(nextData) {
+      if (!nextData) {
+        return;
+      }
+
+      if (leftover_data) {
+        nextData = leftover_data + nextData;
+        leftover_data = "";
+      }
+
+      var datas = nextData.split(PAYLOAD_SEPARATOR);
+      _.each(datas, function(data) {
+        if (!data) {
+          return;
+        }
+
+        try {
+          var module_obj = JSON.parse(data);
+          load_data(module_obj);
+        } catch(e) {
+          leftover_data = data;
+        }
+      });
+    }
+    xhr.open('GET', full_url, true);
+    xhr.onprogress = function () {
+      //readyState: headers received 2, body received 3, done 4
+      if (xhr.readyState !== 2 && xhr.readyState !== 3 && xhr.readyState !== 4)
+        return;
+      if (xhr.readyState === 3 && xhr.status !== 200)
+        return;
+
+      var nextData = xhr.response.slice(nextLine);
+      parse_data(nextData);
+      nextLine = xhr.response.length;
+    };
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        var nextData = xhr.response.slice(nextLine);
+        parse_data(nextData);
+        if (leftover_data) {
+          throw new Error("Still have leftover data from request", full_url);
+        }
+      }
+    };
+
+
+    xhr.send();
+  }
+
   function bootload_factory(type, module_dict, postload, storage) {
     var factory_emitter = _.clone(Backbone.Events);
     storage = storage || _storage;
@@ -248,6 +315,7 @@
       if (!_.keys(to_load).length) {
         return;
       }
+
       var config = {
         data: {
           m: JSON.stringify(_.keys(to_load))
@@ -261,8 +329,7 @@
       to_load = {};
 
 
-      var req = $.ajax("/pkg/" + type, config);
-      req.done(function(data) {
+      function handle_module_dict(data) {
         var versions = {};
         if (module_dict) {
           _.each(data, function(v, k) {
@@ -294,16 +361,23 @@
 
           _.defer(sync_storage);
         }
-      });
 
-      req.fail(function(data) {
-        console.error("Failed to load", data);
-      });
+      }
 
-      req.always(function() {
+      if (can_stream_response && (bootloader.__stream_packages || window._query.chunk_xhr)) {
+        stream_response("/pkg/" + type, config, handle_module_dict);
+      } else {
+        var req = $.ajax("/pkg/" + type, config);
+        req.done(handle_module_dict);
 
-      });
+        req.fail(function(data) {
+          console.error("Failed to load", data);
+        });
 
+        req.always(function() {
+
+        });
+      }
     };
 
     var throttled_issue_request = _.throttle(issue_request, 100, { leading: false });

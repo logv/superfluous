@@ -56,6 +56,8 @@
       <script> bootloader.__use_storage = true; </script>
     <% } %>
 
+    <script> bootloader.__stream_packages = <%= use_chunked_xhr %>; </script>
+
     <script> bootloader.__mux_resources = <%= mux_resources %>; </script>
   </div>
 

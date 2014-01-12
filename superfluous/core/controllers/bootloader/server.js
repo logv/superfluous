@@ -13,27 +13,49 @@ var async = require("async");
 var less = require("less");
 var stringify = require("json-stable-stringify");
 
+var PAYLOAD_SEPARATOR = "#$%PAYLOAD^%$";
+
 function multi_pack(dir, extension, prepack) {
   var cache = {};
   return function() {
     var req = context("req");
     var res = context("res");
+    var stream = context("stream");
+
+    var streaming = req.query.streaming;
 
     var loaded = {};
     var modules = JSON.parse(req.query.m);
 
     function unpack(data, loaded) {
+      var just_loaded = {};
       if (_.isObject(data)) {
         _.each(data, function(v, k) {
           if (dir) {
-            loaded[k.replace(dir + "/", '')] = v;
+            just_loaded[k.replace(dir + "/", '')] = v;
           } else {
-            loaded[k] = v;
+            just_loaded[k] = v;
           }
         });
       } else {
-        loaded[module] = data;
+        just_loaded[module] = data;
       }
+
+      _.extend(loaded, just_loaded);
+
+      if (streaming) {
+        stream.write(JSON.stringify(just_loaded));
+        stream.write(PAYLOAD_SEPARATOR);
+        stream.flush();
+      }
+
+    }
+
+    if (streaming) {
+      res.setHeader("Content-Type", "text/plain");
+      res.setHeader("Content-Encoding", "gzip");
+    } else {
+      res.setHeader("Content-Type", "application/json");
     }
 
     async.each(modules, function(module, done) {
@@ -53,11 +75,16 @@ function multi_pack(dir, extension, prepack) {
           done();
         });
 
+      } else {
+        console.log("No prepack?", extension, module);
       }
-    }, function resolution(err) {
-      res.set("Content-Type", "application/json");
-      res.write(JSON.stringify(loaded));
-      res.end();
+    }, function resolution() {
+      if (streaming) {
+        stream.end();
+      } else {
+        res.write(JSON.stringify(loaded));
+        res.end();
+      }
     });
   };
 }
