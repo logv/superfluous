@@ -6,7 +6,7 @@ to browsers and simplifies how the server & client communicate in the modern
 app environment.
 
 [![Build Status](https://travis-ci.org/logicflower/superfluous.png)](https://travis-ci.org/logicflower/superfluous)
-[![NPM version](https://badge.fury.io/js/logicflower.png)](http://badge.fury.io/js/superfluous)
+[![NPM version](https://badge.fury.io/js/superfluous.png)](http://badge.fury.io/js/superfluous)
 
 ## Quick Start
 
@@ -59,6 +59,7 @@ See the guide [locally](http://localhost:3300) or [online](http://superfluous.io
 * [underscore](http://underscorejs.org)
 * [express](http://expressjs.com)
 * [node.js](http://nodejs.org)
+* [primus.io](http://primus.io)
 
 ## default app comes with
 
