@@ -5,7 +5,7 @@
         "header": "app/static/favicon.ico",
         "logo": "/favicon.ico",
         "description": "a node.js server/client understanding",
-        "version": "0.0.29"
+        "version": "0.0.30"
     },
     "files": {
         "app/server/db.js": {
@@ -574,7 +574,7 @@
         },
         {
             "file": "core/client/prelude/bootloader.js",
-            "line": 607,
+            "line": 681,
             "itemtype": "method",
             "name": "inject_css",
             "class": "bootloader (client)",
@@ -583,7 +583,7 @@
         },
         {
             "file": "core/client/prelude/bootloader.js",
-            "line": 615,
+            "line": 689,
             "description": "Load a javascript module.  (works like require.js)",
             "itemtype": "method",
             "name": "require",
@@ -593,7 +593,7 @@
         },
         {
             "file": "core/client/prelude/bootloader.js",
-            "line": 622,
+            "line": 696,
             "description": "Inserts an asynchronous pagelet into the page",
             "itemtype": "method",
             "name": "deliver",
@@ -605,7 +605,7 @@
         },
         {
             "file": "core/client/prelude/bootloader.js",
-            "line": 643,
+            "line": 717,
             "description": "Bootload in a css file or array of css files",
             "itemtype": "method",
             "name": "css",
@@ -615,7 +615,7 @@
         },
         {
             "file": "core/client/prelude/bootloader.js",
-            "line": 648,
+            "line": 722,
             "description": "Bootload in a js file or array of js files",
             "itemtype": "method",
             "name": "js",
@@ -896,7 +896,7 @@
         },
         {
             "file": "core/server/controller.js",
-            "line": 63,
+            "line": 80,
             "description": "Forces this route to check for HTTPS before serving it. This lets you make sure endpoints are secured.",
             "itemtype": "method",
             "name": "require_https",
@@ -913,7 +913,7 @@
         },
         {
             "file": "core/server/controller.js",
-            "line": 107,
+            "line": 124,
             "description": "Deserializes a URL param from jquery and returns it as an array.",
             "itemtype": "method",
             "name": "array_of",
@@ -923,7 +923,7 @@
         },
         {
             "file": "core/server/controller.js",
-            "line": 123,
+            "line": 140,
             "description": "Deserializes a URL param from jquery and returns it as a value.",
             "itemtype": "method",
             "name": "value_of",
@@ -1096,6 +1096,23 @@
         {
             "file": "core/server/main.js",
             "line": 131,
+            "description": "Add plugins to the app",
+            "itemtype": "event",
+            "name": "plugins",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "use app.add_plugin_dir to add a plugin",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 146,
             "description": "Setup the app",
             "itemtype": "event",
             "name": "app",
@@ -1112,7 +1129,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 139,
+            "line": 154,
             "description": "Add compression middleware, for streaming response gzips",
             "itemtype": "event",
             "name": "compression",
@@ -1129,7 +1146,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 149,
+            "line": 164,
             "description": "Add packaging middleware (Currently does not do anything)",
             "itemtype": "event",
             "name": "packager",
@@ -1146,7 +1163,58 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 157,
+            "line": 172,
+            "description": "Add marshalling hooks, for translating between server/client code",
+            "itemtype": "event",
+            "name": "marshalls",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 183,
+            "description": "Add trust proxy middleware, which accepts forwarded headers from proxies",
+            "itemtype": "event",
+            "name": "trust_proxy",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 211,
+            "description": "Add controller routing to the app",
+            "itemtype": "event",
+            "name": "routes",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app",
+                    "type": "App"
+                }
+            ],
+            "class": "main (server)",
+            "module": "Superfluous",
+            "submodule": "Server"
+        },
+        {
+            "file": "core/server/main.js",
+            "line": 222,
             "description": "Add realtime middleware (primus / sockets)",
             "itemtype": "event",
             "name": "realtime",
@@ -1168,58 +1236,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 168,
-            "description": "Add marshalling hooks, for translating between server/client code",
-            "itemtype": "event",
-            "name": "marshalls",
-            "params": [
-                {
-                    "name": "app",
-                    "description": "the express app",
-                    "type": "App"
-                }
-            ],
-            "class": "main (server)",
-            "module": "Superfluous",
-            "submodule": "Server"
-        },
-        {
-            "file": "core/server/main.js",
-            "line": 179,
-            "description": "Add trust proxy middleware, which accepts forwarded headers from proxies",
-            "itemtype": "event",
-            "name": "trust_proxy",
-            "params": [
-                {
-                    "name": "app",
-                    "description": "the express app",
-                    "type": "App"
-                }
-            ],
-            "class": "main (server)",
-            "module": "Superfluous",
-            "submodule": "Server"
-        },
-        {
-            "file": "core/server/main.js",
-            "line": 207,
-            "description": "Add controller routing to the app",
-            "itemtype": "event",
-            "name": "routes",
-            "params": [
-                {
-                    "name": "app",
-                    "description": "the express app",
-                    "type": "App"
-                }
-            ],
-            "class": "main (server)",
-            "module": "Superfluous",
-            "submodule": "Server"
-        },
-        {
-            "file": "core/server/main.js",
-            "line": 218,
+            "line": 233,
             "description": "Add caching to the app for responses",
             "itemtype": "event",
             "name": "cache",
@@ -1246,7 +1263,7 @@
         },
         {
             "file": "core/server/page.js",
-            "line": 129,
+            "line": 133,
             "description": "The main page rendering function. It takes an array of options specifying\nwhat to render in the page.",
             "itemtype": "method",
             "name": "render",
@@ -1256,7 +1273,7 @@
         },
         {
             "file": "core/server/socket.js",
-            "line": 138,
+            "line": 137,
             "description": "auth callback",
             "itemtype": "event",
             "name": "auth",
@@ -1272,7 +1289,7 @@
         },
         {
             "file": "core/server/socket.js",
-            "line": 146,
+            "line": 145,
             "description": "auth callback",
             "itemtype": "event",
             "name": "auth",

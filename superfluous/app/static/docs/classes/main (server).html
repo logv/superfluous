@@ -108,6 +108,8 @@
             
                 <li><a href="#events_packager">packager</a></li>
             
+                <li><a href="#events_plugins">plugins</a></li>
+            
                 <li><a href="#events_query">query</a></li>
             
                 <li><a href="#events_realtime">realtime</a></li>
@@ -133,7 +135,7 @@
 
 
             <div class="version" style="text-align: right; margin-right: 5px;">
-                <span>Docs for 0.0.29</span>
+                <span>Docs for 0.0.30</span>
             </div>
         </div>
 
@@ -171,7 +173,7 @@ the core of the main app.</p>
     
     
     <br>
-    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:131</code></a></span>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:146</code></a></span>
     <p>Setup the app</p>
 
     
@@ -200,7 +202,7 @@ the core of the main app.</p>
     
     
     <br>
-    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:218</code></a></span>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:233</code></a></span>
     <p>Add caching to the app for responses</p>
 
     
@@ -229,7 +231,7 @@ the core of the main app.</p>
     
     
     <br>
-    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:139</code></a></span>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:154</code></a></span>
     <p>Add compression middleware, for streaming response gzips</p>
 
     
@@ -316,7 +318,7 @@ the core of the main app.</p>
     
     
     <br>
-    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:168</code></a></span>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:172</code></a></span>
     <p>Add marshalling hooks, for translating between server/client code</p>
 
     
@@ -345,7 +347,7 @@ the core of the main app.</p>
     
     
     <br>
-    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:149</code></a></span>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:164</code></a></span>
     <p>Add packaging middleware (Currently does not do anything)</p>
 
     
@@ -358,6 +360,35 @@ the core of the main app.</p>
         
         
         <p>the express app</p>
+
+            
+        </li>
+    
+    </ul>
+    
+</div>
+
+
+            
+                <a name="events_plugins"></a>
+<div class="events item">
+    <code>plugins</code> 
+    
+    
+    <br>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:131</code></a></span>
+    <p>Add plugins to the app</p>
+
+    
+    <strong>Extra event object properties:</strong>
+    <ul>
+    
+        <li>
+        
+            <code>app</code> <strong>&lt;App&gt;</strong>
+        
+        
+        <p>use app.add_plugin_dir to add a plugin</p>
 
             
         </li>
@@ -403,7 +434,7 @@ the core of the main app.</p>
     
     
     <br>
-    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:157</code></a></span>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:222</code></a></span>
     <p>Add realtime middleware (primus / sockets)</p>
 
     
@@ -471,7 +502,7 @@ the core of the main app.</p>
     
     
     <br>
-    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:207</code></a></span>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:211</code></a></span>
     <p>Add controller routing to the app</p>
 
     
@@ -558,7 +589,7 @@ the core of the main app.</p>
     
     
     <br>
-    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:179</code></a></span>
+    <span class="foundat"><a href="../"><code>core&#x2F;server&#x2F;main.js:183</code></a></span>
     <p>Add trust proxy middleware, which accepts forwarded headers from proxies</p>
 
     
