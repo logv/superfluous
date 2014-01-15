@@ -26,6 +26,7 @@ module.exports = function(file, options) {
       try {
         var file_name = path.join(subpath, file);
         ret = fs.readFileSync(file_name).toString();
+        resolved_paths[file] = file_name;
         var watcher = fs.watch(file, function() {
           delete cached_files[file];
           watcher.close();
@@ -43,6 +44,15 @@ module.exports = function(file, options) {
 
   return cached_files[file];
 };
+
+var resolved_paths = {};
+function get_full_path(file, options) {
+  if (!cached_files[file]) {
+    module.exports(file, options);
+  }
+
+  return resolved_paths[file];
+}
 
 var core_path = __dirname + "/../../";
 // This is for letting us read core files...
@@ -89,6 +99,8 @@ module.exports.all = function(file) {
   return ret;
 
 };
+
+module.exports.get_path = get_full_path;
 
 module.exports.register_path = function(subpath) {
   _paths[subpath] = true;

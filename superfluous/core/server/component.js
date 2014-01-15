@@ -19,7 +19,6 @@ var _ = require_vendor("underscore");
 var Backbone = require_vendor("backbone");
 var async = require("async");
 
-var fs = require("fs");
 var path = require("path");
 var context = require_core("server/context");
 var bridge = require_core("server/bridge");
@@ -41,12 +40,25 @@ var _component_paths = {
   "app/static" : true // serve component helpers out of app/static, just in case
 };
 
+
+function get_base_dir(component) {
+  return path.join("components", component);
+}
+
+function get_relative_path(component) {
+  var plugin = require_core("server/plugin");
+  var full_path = plugin.get_full_path(path.join("components", component, component));
+  return path.dirname(full_path);
+}
+
 Component.register_path = function(subpath) {
   _component_paths[subpath] = true;
 };
 
 Component.load = function(component) {
-  var base_dir = path.join(".", "components", component);
+  var relative_dir = get_relative_path(component);
+  var base_dir = get_base_dir(component);
+
   var read_options = {
     paths: _.keys(_component_paths)
   };
@@ -65,7 +77,7 @@ Component.load = function(component) {
   // this will contain dependencies, stylesheets, etc
 
   var cmp = {};
-  var main = require_root(path.join(base_dir, pkg.main + ".js"), read_options);
+  var main = require_root(path.join(relative_dir, pkg.main + ".js"), read_options);
   var tmpl = readfile(path.join(base_dir, pkg.template), read_options);
 
   cmp.schema = pkg;
@@ -89,7 +101,7 @@ var _packages = {};
  *
  */
 Component.build_package = function(component, cb) {
-  var base_dir = path.join(".", "components", component);
+  var base_dir = get_base_dir(component);
   var read_options = {
     paths: _.keys(_component_paths)
   };
@@ -132,7 +144,7 @@ Component.build_package = function(component, cb) {
 
   function process_file(obj, file, key) {
     return function(cb) {
-      var data = readfile(file, read_options);
+      var data = readfile.all(file);
       if (!data) {
         obj[key] = "console.log('Couldnt find helper " + key + " for " + component + " component');";
       } else {
@@ -218,11 +230,13 @@ Component.build_package = function(component, cb) {
  */
 var __id = 0;
 Component.build = function(component, options, cb) {
-  var base_dir = path.join(".", "components", component);
+  var relative_dir = get_relative_path(component);
+  var base_dir = get_base_dir(component);
+
   var cmp = Component.load(component);
   var id = "s" + __id;
   __id += 1;
-  var main = require_root(path.join(base_dir, cmp.schema.main + ".js"));
+  var main = require_root(path.join(relative_dir, cmp.schema.main + ".js"));
   var cmpClass = Component.extend(main);
   var cmpInstance = new cmpClass(_.extend({ id: id }, options));
 

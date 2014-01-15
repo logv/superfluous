@@ -19,8 +19,6 @@ var readfile = require_core("server/readfile");
 var async = require("async");
 
 var cheerio = require("cheerio");
-var app = require_core("server/main").app;
-
 
 var __async_id = 0;
 context.setDefault("ASYNC_FUTURES", []);

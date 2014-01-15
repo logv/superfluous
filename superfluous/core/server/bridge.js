@@ -139,8 +139,9 @@ module.exports = {
     context.reset("CSS_DEPS");
 
     data = data || "";
+
     var data_tmpl = template.render_core("helpers/bridge_payload_content.html.erb", {
-      payload: data.replace(/<!--(.*?)-->/, ''),
+      payload: data.toString().replace(/<!--(.*?)-->/, ''),
       payload_id: id
     });
 

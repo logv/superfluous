@@ -36,6 +36,7 @@ function setup() {
   app_name = package_json.name;
 
   app = connect();
+  module.exports.app = app;
   router = app;
 
 

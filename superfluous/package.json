@@ -1,12 +1,8 @@
 {
   "name": "superfluous",
   "description": "a node.js server/client understanding",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "private": false,
-  "devDependencies" : {
-    "mongodb": "x",
-    "connect-mongo": "x"
-  },
   "dependencies": {
     "connect": "2.x",
     "connect-redirect": "x",
@@ -26,6 +22,10 @@
     "continuation-local-storage": "x",
     "mocha" : "x",
     "mocha-phantomjs" : "x"
+  },
+  "optionalDependencies" : {
+    "mongodb": "x",
+    "connect-mongo": "x"
   },
   "bin": {
     "superfluous": "bin/superfluous"

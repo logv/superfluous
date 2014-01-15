@@ -54,7 +54,11 @@ _.extend(module.exports, {
    * @method set
    */
   set: function(ctx) {
-    process.domain.ctx = ctx;
+    if (USE_CLS) {
+      ns.active = ctx;
+    } else {
+      process.domain.ctx = ctx;
+    }
   },
 
   /**
@@ -150,9 +154,9 @@ _.extend(module.exports, {
       },
       exit: function() {
         if (USE_CLS) {
+
         } else {
           d.exit();
-
         }
       },
       wrap: function(f) {

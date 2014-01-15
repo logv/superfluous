@@ -60,11 +60,12 @@ function render_js_link(script) {
 function setup_render_context(options) {
   var ret = {};
   hooks.invoke("setup_template_context", ret, function() {
+    var app = require_core("server/main").app || context("app");
     _.extend(ret, options, {
       add_stylesheet: add_stylesheet,
       add_javascript: add_js,
       ctx: context.get(),
-      url_for: _.bind(context("router").build, context("router")),
+      url_for: _.bind(app.router.build, app.router),
       add_socket: add_socket,
       render_template: render_template,
       render_partial: render_partial,

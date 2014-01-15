@@ -35,8 +35,16 @@ function register_external_plugin(plugin_dir, mount_point) {
   }
   _registered_externs[plugin_dir] = true;
 
+  // So we can read component styles out of it
+  readfile.register_path(plugin_dir);
+
+  // So we can hook up routes
   external_paths[plugin_dir] = mount_point;
+
+  // So we can load $ROOT files for this controller
   controller_paths.push(plugin_dir);
+
+  // so we can load other goodies (static assets, components)
   register_path(plugin_dir);
 
   var ctrl;
@@ -53,7 +61,7 @@ function register_external_plugin(plugin_dir, mount_point) {
 
 var path = require("path");
 var ROOT_RE = new RegExp("^/?\\$ROOT/");
-var controller_paths = ["app/controllers", "app/plugins"];
+var controller_paths = ["app/controllers", "app/plugins", "." ];
 var external_paths = {};
 
 function get_full_path(controller_include) {
@@ -68,12 +76,13 @@ function get_full_path(controller_include) {
 
     var full_path = path.join(p, stripped_include);
     if (readfile(full_path + ".js")) {
-      resolved = full_path;
+      resolved = readfile.get_path(full_path + ".js");
     }
   });
 
   return resolved;
 }
+
 function get_base_dir(controller_include) {
 
   var stripped_include = controller_include.replace(ROOT_RE, "");
