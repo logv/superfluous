@@ -1,0 +1,24 @@
+<% set_default(files, []) %>
+
+<div class="container">
+  <div class="row-fluid">
+    <h1>Chapter Helpers</h1>
+
+    <table class="table col-md-8">
+      <% _.each(files, function(filename) { %>
+        <tr>
+          <td class="">
+            <a href="<%= url_for("mars.get_read", { id: filename }) %>"><%= filename %></a>
+          </td>
+          <td class="">
+            <a href="<%= url_for("mars.get_watch", { id: filename }) %>">viewership</a>
+          </td>
+          <td class="">
+            <a href="<%= url_for("mars.get_comments", { id: filename }) %>">comments
+              (<%= (grouped_comments[filename] && grouped_comments[filename].length) || 0 %>)</a>
+          </td>
+        </tr>
+      <% }) %>
+    </ul>
+  </div>
+</div>

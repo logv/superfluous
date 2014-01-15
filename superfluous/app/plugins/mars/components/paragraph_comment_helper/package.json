@@ -1,0 +1,9 @@
+{
+  "main" : "paragraph_comment_helper",
+  "style": "paragraph_comment_helper.css",
+  "styles": [],
+
+  "template": "paragraph_comment_helper.html.erb",
+  "helpers": [],
+  "no_redefine" : false
+}

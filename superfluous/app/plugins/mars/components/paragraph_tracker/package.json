@@ -1,0 +1,8 @@
+{
+  "main" : "paragraph_tracker",
+  "helpers": [ "vendor/viewport", "vendor/jquery.colors", "vendor/hash"],
+  "no_redefine" : true,
+  "style": "paragraph_tracker.css",
+  "styles": [],
+  "template": "paragraph_tracker.html.erb"
+}

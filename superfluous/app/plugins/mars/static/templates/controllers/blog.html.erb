@@ -1,0 +1,15 @@
+<% set_default(files, []) %>
+<% set_default("title", "no one can hear you read in space"); %>
+<div class="container">
+  <div class="row-fluid">
+    <h1><%= title %></h1>
+
+    <ul class="nav nav-pills nav-stacked">
+      <% _.each(files, function(filename) { %>
+        <li class="">
+          <a href="<%= url_for("mars.get_read", { id: filename }) %>"><%= filename %></a>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+{
+  "main" : "paragraph_viz",
+  "helpers": ["vendor/jquery.colors", "vendor/hash"],
+  "style": "paragraph_viz.css",
+  "styles": [],
+  "no_redefine" : true,
+  "template": "paragraph_viz.html.erb"
+}

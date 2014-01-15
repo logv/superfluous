@@ -1,0 +1,9 @@
+{
+  "main" : "comment_adder",
+  "style": "comment_adder.css",
+  "styles": [],
+
+  "template": "comment_adder.html.erb",
+  "helpers": [],
+  "no_redefine" : false
+}

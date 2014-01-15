@@ -1,0 +1,9 @@
+{
+  "main" : "admin_comment",
+  "style": "admin_comment.css",
+  "styles": [],
+
+  "template": "admin_comment.html.erb",
+  "helpers": [],
+  "no_redefine" : false
+}

@@ -15,5 +15,6 @@ module.exports = {
     driver: "mongo"
   },
   slog: true,
-  mongo_store: true
+  mongo_store: true,
+  blog_root: "app/glossary"
 };

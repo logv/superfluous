@@ -1,0 +1,16 @@
+
+<div class="container-fluid clearfix">
+  <h1>See what people are reading...</h1>
+
+  <h2>Reads: <%= results.length %></h2>
+  <h2>Unique Readers: <%= _.keys(_.countBy(results, function(r) { return r.sid })).length %></h2>
+
+  <div class="clearfix mtl mbl pbl">
+    <% _.each(_.groupBy(results, function(r) { return r.sid }), function(results, sid) { %>
+      <span class="viz_separator lfloat"> </span>
+        <% _.each(results, function(result) { %>
+          <%= $C("paragraph_viz", { timespent: result, client_options: { result: result } }).toString() %>
+        <% }); %>
+    <% }); %>
+  </div>
+</div>
