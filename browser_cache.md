@@ -1,5 +1,5 @@
 beware the browser cache
-------------------------
+========================
 
 the browser cache is kind of like a hotel. assets go to rest there, between
 page loads.  you can ask the bellhop to get an asset, but if they aren't

@@ -1,5 +1,5 @@
 what is the packager, anyways?
-------------------------------
+==============================
 
 when building a web site or application, it's important to deliver the client code
 and assets to the browser in a timely fashion. 
@@ -24,6 +24,9 @@ in multi page apps, figuring out which assets exist inside which package
 becomes a problem, because it doesn't make sense to distribute a massive bundle
 consisting of several apps. instead, the assets should be loaded only on pages
 that they are needed for. 
+
+how good is your packager?
+--------------------------
 
 packagers can be graded along several dimensions:
 
