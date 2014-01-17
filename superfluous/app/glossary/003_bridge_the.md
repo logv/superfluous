@@ -1,5 +1,5 @@
 a bridge is where things cross
-------------------------------
+==============================
 
 when servers render programs, they like to have the client run some JS on their
 behalf. Usually, it is initialization code for the client application. the process

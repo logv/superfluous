@@ -1,5 +1,5 @@
-CDN: Content Distribution Network
-=================================
+Content Distribution Network
+============================
 
 CDNs let web developers put their assets all over the world, by giving them the
 use of their servers. they can be very profitable businesses, because no one
