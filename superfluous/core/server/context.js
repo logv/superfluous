@@ -207,8 +207,7 @@ _.extend(module.exports, {
     var d;
     if (USE_CLS) {
       d = ns;
-    } else {
-      d = process.domain;
+      return ns.bind(func);
     }
 
     if (!d) { 
