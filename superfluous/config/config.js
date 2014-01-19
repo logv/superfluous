@@ -16,5 +16,6 @@ module.exports = {
   },
   slog: true,
   mongo_store: true,
-  blog_root: "app/glossary"
+  blog_root: "app/glossary",
+  use_cls: true
 };
