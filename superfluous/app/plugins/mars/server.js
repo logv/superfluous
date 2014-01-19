@@ -32,7 +32,8 @@ function load_blog_files(cb) {
 
 function render_chapter_listing() {
     var template_str = template.render("controllers/blog.html.erb", {
-      files: BLOG_FILES
+      files: BLOG_FILES,
+      title: "a web glossary, of sorts"
     });
 
     page.render({ content: template_str, socket: true });

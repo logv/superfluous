@@ -325,5 +325,6 @@ module.exports = {
 
 
   },
+  connect: connect,
   test_helper: require_core("server/test_helper")
 };
