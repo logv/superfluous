@@ -1,0 +1,126 @@
+<div class="components">
+  <h3>Components</h3>
+
+  <p>
+  Components (for simplicity) are <b>Backbone.Views</b>. They are re-usable
+  pieces of functionality that don't belong in a controller.  Components are
+  usable on the server or client and contain all the code (HTML, CSS, JS) to
+  render and interact with the component in one directory.
+  </p>
+
+  <p>
+  A simple example of a component would be a re-usable <b>button</b> or <b>dropdown</b>.
+  </p>
+
+  <p>
+  A component is split into several files: the main <b>component.js</b> file,
+  the <b>events</b> file, the <b>style</b> file and the <b>template</b>.
+
+  <p>
+  The <b>main component</b> file is responsible for a component's core logic
+  and rendering. The <b>events</b> file is responsible for event handling in
+  the component and is only loaded on the client.  The <b>style</b> file
+  contains CSS that will be automatically scoped to the component, and the
+  <b>template</b> is the basic HTML used to construct the component.
+  </p>
+
+<p class="alert">
+Use <b>scripts/create_component.sh component_name</b> to generate a new component
+</p>
+
+<h4>LifeCycle</h4>
+
+A Component is created with <code>$C("my_component", {}, function(instance) {
+});</code> on the server or client. The <b>$C</b> function will do the
+following:
+
+<ul>
+  <li>render the component template using the supplied options</li>
+  <li>create a new instance of the component module, using supplied options and the DOM just rendered</li>
+  <li>call <b>.init()</b> on the component instance</li>
+  <li>if on the server, send instructions to the client on how to load the component</li>
+  <li>if on the client, load the event delegates from the <b>events.js</b> file and overlay them on the component</li>
+  <li>call the callback passed to <b>$C</b></li>
+  <li>if on the client, call <b>.client()</b> on the component instance</li>
+</ul>
+
+
+
+<h4>Server specific work</h4>
+<p>
+there's no server only work that is done in components. instead, that should be
+left in the controller or a related file, and data should be handed to the
+component. this is because Components need to be creatable on the client side
+(without communication to the server).
+</p>
+
+<h4>Components &amp; Controllers</h4>
+
+<p>
+since Components are meant to be used in many applications, they usually do not
+interact with the server directly. they communicate with the Client Controller
+via Backbone.Events and the Controller has to implement the appropriate signal
+handling and synchronization with the server. This gives the control of how the
+page works to the controller, instead of to the components.
+</p>
+
+<p>
+When a component is used by multiple controllers, the urge to refactor the
+component may set in.  the developer may want to generalize the components in
+a way that allows the controllers to customize the way events work. when this happens,
+it is appropriate to use <b>behaviors</b> and <b>controller delegated events</b>.
+</p>
+
+<p>
+<b>Behaviors</b> and <b>CDE</b> represent different ways of expressing where
+additional event handling for the component lives - in a separate file, or on
+the controller that is creating the component.
+</p>
+
+<h4>Behaviors </h4>
+
+  When a <b>behavior</b> is supplied to a component constructor, the behavior
+  module will be loaded and used as mixin for the component, and
+  <s>superfluous</s> will install the event handlers and functions inside the
+  behavior module onto the component.
+
+  See <b>app/client/behaviors/kitten/go_button.js</b> and
+  <b>app/controllers/kitten/server.js</b> for an example usage of behaviors.
+
+
+<h4>Controller Delegated Events</h4>
+
+With <b>Controller Delegated Events</b>, the controller specifies a list of
+events that the controller wants to handle when creating the component.
+
+<pre>
+<code>
+
+  // Somewhere
+  $C("button", { 
+    delegate: 
+      events: {
+        "click td" : "handle_td_click"
+      }
+    });
+
+  // In the client controllers
+
+  module.exports == {
+    delegates: {
+      handle_td_click(el) {
+        // dontroller instance is set to this
+        this.do_some_work($(el).val());
+      }
+    },
+    do_some_work: function(a_value) {
+      console.log("Doing some work with", a_value);
+    }
+  }
+
+</code>
+</pre>
+
+</div>
+
+

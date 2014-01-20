@@ -273,70 +273,9 @@ see example server controller code
   the basics are there.
   </p>
 
-  <div class="components">
-  <h3>Components</h3>
+  <div>
 
-  <p>
-  Components (for simplicity) are <b>Backbone.Views</b>. They are re-usable
-  pieces of functionality that don't belong in a controller.  Components are
-  usable on the server or client and contain all the code (HTML, CSS, JS) to
-  render and interact with the component in one directory.
-  </p>
-
-  <p>
-  A simple example of a component would be a re-usable <b>button</b> or <b>dropdown</b>.
-  </p>
-
-  <p>
-  A component is split into several files: the main <b>component.js</b> file,
-  the <b>events</b> file, the <b>style</b> file and the <b>template</b>.
-
-  <p>
-  The <b>main component</b> file is responsible for a component's core logic
-  and rendering. The <b>events</b> file is responsible for event handling in
-  the component and is only loaded on the client.  The <b>style</b> file
-  contains CSS that will be automatically scoped to the component, and the
-  <b>template</b> is the basic HTML used to construct the component.
-  </p>
-
-<p class="alert">
-Use <b>scripts/create_component.sh component_name</b> to generate a new component
-</p>
-
-<h4>LifeCycle</h4>
-
-A Component is created with <code>$C("my_component", {}, function(instance) {
-});</code> on the server or client. The <b>$C</b> function will do the
-following:
-
-<ul>
-  <li>render the component template using the supplied options</li>
-  <li>create a new instance of the component module, using supplied options and the DOM just rendered</li>
-  <li>call <b>.init()</b> on the component instance</li>
-  <li>if on the server, send instructions to the client on how to load the component</li>
-  <li>if on the client, load the event delegates from the <b>events.js</b> file and overlay them on the component</li>
-  <li>call the callback passed to <b>$C</b></li>
-  <li>if on the client, call <b>.client()</b> on the component instance</li>
-</ul>
-
-
-
-<h4>Client specific work</h4>
-<p>
-To run code only on the client, add a 'client' member to the component and voila.
-</p>
-
-<h4>Server specific work</h4>
-<p>
-there's no server only work that is done in components. instead, that should be
-left in the controller or a related file, and data should be handed to the
-component. this is because Components need to be creatable on the client side
-(without communication to the server).
-</p>
-
-</div>
-
-<div>
+<%= render_partial("about/components.html.erb") %>
 <h3>Sockets</h3>
 
 <p>
