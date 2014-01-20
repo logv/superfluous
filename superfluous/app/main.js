@@ -23,11 +23,6 @@ module.exports = {
       return true;
     }
   },
-  insteadof_session: function() {
-    require_core("server/session").set(connect.cookieSession({
-      secret: config.SESSION_SECRET
-    }));
-  },
   setup_request: function(req) {
     // Filter out logging packager requests
     if (!req.path.indexOf("/pkg")) {
