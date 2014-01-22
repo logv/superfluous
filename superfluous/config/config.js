@@ -17,5 +17,7 @@ module.exports = {
   slog: true,
   mongo_store: true,
   blog_root: "app/glossary",
-  use_cls: true
+  use_cls: true,
+  email_comments_to: ["okay@logicflower.com", "okay.zed@gmail.com"],
+  email_from: "webgloss@logicflower.com"
 };

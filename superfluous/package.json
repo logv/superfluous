@@ -25,6 +25,7 @@
     "marked" : "x",
     "orm" : "x",
     "mocha" : "x",
+    "nodemailer" : "x",
     "mocha-phantomjs" : "x"
   },
   "optionalDependencies" : {

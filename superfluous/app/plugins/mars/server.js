@@ -17,6 +17,9 @@ var BLOG_PATH = config.blog_root;
 var BLOG_FILES = null;
 var value_of = require_core("server/controller").value_of;
 
+var mail = require("nodemailer").mail;
+
+
 function load_blog_files(cb) {
   fs.readdir(BLOG_PATH, function(err, files) {
     if (!err) {
@@ -32,8 +35,7 @@ function load_blog_files(cb) {
 
 function render_chapter_listing() {
     var template_str = template.render("controllers/blog.html.erb", {
-      files: BLOG_FILES,
-      title: "a web glossary, of sorts"
+      files: BLOG_FILES
     });
 
     page.render({ content: template_str, socket: true });
@@ -119,6 +121,7 @@ module.exports = {
   is_package: true,
 
   get_index: function() {
+    this.set_fullscreen(true);
     template.add_stylesheet("blog.css");
 
     if (BLOG_FILES) {
@@ -139,7 +142,6 @@ module.exports = {
     var async_work = api.page.async(function(flush) { 
       var grouped_comments, comments;
       var after = _.after(2, context.wrap(function() {
-        context.set(ctx);
         // Load all the comments from the db
         var template_str = template.partial("blog/admin.html.erb", { 
           files: BLOG_FILES,
@@ -167,6 +169,7 @@ module.exports = {
   },
 
   get_comments: function(ctx) {
+    this.set_fullscreen(true);
     template.add_stylesheet("blog.css");
     var filename = ctx.req.params.id;
 
@@ -195,6 +198,7 @@ module.exports = {
   },
 
   get_read: function(ctx) {
+    this.set_fullscreen(true);
     // TODO: make sure filename is only a basepath
     // ../../../etc/passwd
     var filename = ctx.req.params.id;
@@ -227,8 +231,28 @@ module.exports = {
       } else {
         console.log("Adding comment", comment_data);
 
-        models.comment.create([comment_data], function(err, result) { 
+        models.comment.create([comment_data], function(err) { 
           cb("comment_added"); 
+
+          if (!err && config.email_comments_to && config.email_from) {
+            var author = comment_data.author || "anon";
+            var text = "From: " + author + "\n\n Context: " +
+              comment_data.paragraph + "\n\nText: " + comment_data.comment;
+            var html_text = text.replace(/\n/g, "<br />");
+            var subject = "You've received a new comment on " + comment_data.page;
+
+            mail({
+              from: config.email_from,
+              
+              to: config.email_comments_to.join(','), // list of receivers
+              subject: subject, // plaintext body
+              text: text,
+              html: html_text
+            });
+          }
+
+
+          
         });
       }
     });
