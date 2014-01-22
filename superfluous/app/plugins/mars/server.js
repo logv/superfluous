@@ -153,8 +153,10 @@ module.exports = {
       }));
 
       models.comment.find({}, function(err, results) {
-        comments = _.toArray(results);
-        grouped_comments = _.groupBy(results, function(r) { return r.page; });
+        comments = _.filter(_.toArray(results), function(comment) {
+          return !comment.resolved;
+        });
+        grouped_comments = _.groupBy(comments, function(r) { return r.page; });
         after();
       });
 
@@ -255,6 +257,18 @@ module.exports = {
           
         });
       }
+    });
+
+    socket.on("resolve_comment", function(comment) {
+      models.comment.find({ _id: comment._id}, function(err, results) {
+        if (results.length) {
+          var comment = results.pop();
+          comment.resolved = true;
+          comment.save();
+        }
+
+      });
+
     });
 
     // TODO: need to actually trust the incoming data

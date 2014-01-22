@@ -18,6 +18,7 @@ module.exports = {
               comment: String,
               paragraph: String,
               public: Boolean,
+              resolved: Boolean,
               sid: String,
               time: Number,
               index: Number,

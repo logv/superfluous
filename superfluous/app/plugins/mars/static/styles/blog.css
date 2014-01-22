@@ -9,6 +9,23 @@
     }
   }
 
+  .comment {
+    background-color: #dedede;
+
+    a {
+      color: #000;
+      text-decoration: underline;
+    }
+  }
+
+  .comment.resolved {
+    opacity: 0.1;
+
+    &:hover {
+      opacity: 1.0;
+    }
+  }
+
 
   p {
     text-align: justify;
