@@ -35,9 +35,15 @@ function wrap_socket(socket) {
     }
   };
 
+  ret.send = ret.emit;
+
   ret.broadcast = {
     emit: function(evt, data) {
       socket.channel.send(evt, data);
+    },
+    to: function(room) {
+      return wrap_socket(socket.room(room));
+
     }
   };
 
@@ -66,7 +72,9 @@ function wrap_socket(socket) {
     ret.emit("__log", _.toArray(arguments));
   };
 
+  ret.primus = _primus;
   ret.socket = socket;
+  ret.spark = socket;
 
   // incoming connections have headers
   if (socket.headers) {
@@ -174,7 +182,8 @@ module.exports = {
       }
       var controller_cache = _controller_caches[name];
 
-      var controller_socket = get_socket(io, name);
+      var controller_socket_path = "ctrl_" + name;
+      var controller_socket = get_socket(io, controller_socket_path);
       controller.get_shared_value = function(key) {
         return _controller_caches[name][key];
       };
@@ -226,5 +235,8 @@ module.exports = {
   set_primus: function(primus) {
     _primus = primus;
   },
-  wrap_socket: wrap_socket
+  wrap_socket: wrap_socket,
+  get_primus: function() {
+    return _primus;
+  }
 };

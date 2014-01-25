@@ -5,7 +5,7 @@
       SF.primus = Primus.connect('//<%= host %>/');
     }
 
-    var _socket = SF.primus.channel("<%= name %>");
+    var _socket = SF.primus.channel("ctrl_<%= name %>");
 
     var socket = {
       emit: function() {
