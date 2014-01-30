@@ -1,11 +1,13 @@
 .slog {
   table.table {
     table-layout: fixed;
+
+    font-size: 10px;
+    font-family: monospace;
+
     td {
       overflow: hidden;
-      height: 40px;
       min-height: 0px;
-      line-height: 40px;
       padding: 0px;
       text-overflow: ellipsis;
       white-space: no-wrap;
