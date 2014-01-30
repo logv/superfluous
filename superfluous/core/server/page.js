@@ -17,6 +17,7 @@ var EventEmitter = require('events').EventEmitter;
 var quick_hash = require_core("server/hash");
 var readfile = require_core("server/readfile");
 var async = require("async");
+var hooks = require_core("server/hooks");
 
 var cheerio = require("cheerio");
 
@@ -101,6 +102,8 @@ function resolve_futures() {
         if (controller_instance && controller_instance.after_request) {
           controller_instance.after_request();
         }
+
+        hooks.invoke("end_request", context("req"), context("res"), function() { });
 
 
         ctx.exit();
