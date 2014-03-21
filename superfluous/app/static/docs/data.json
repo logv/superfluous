@@ -5,7 +5,7 @@
         "header": "app/static/favicon.ico",
         "logo": "/favicon.ico",
         "description": "a node.js server/client understanding",
-        "version": "0.0.30"
+        "version": "0.0.38"
     },
     "files": {
         "app/server/db.js": {
@@ -733,7 +733,7 @@
         },
         {
             "file": "core/server/bridge.js",
-            "line": 164,
+            "line": 165,
             "description": "Renders any queued up bridge invocations as a string to deliver to the client.\n This is used by core/server/page when generating the page",
             "itemtype": "method",
             "name": "render",
@@ -749,7 +749,7 @@
         },
         {
             "file": "core/server/bridge.js",
-            "line": 193,
+            "line": 194,
             "description": "Adds a function for marshalling components across boundaries",
             "class": "bridge (server)",
             "module": "Superfluous",
@@ -757,7 +757,7 @@
         },
         {
             "file": "core/server/bridge.js",
-            "line": 199,
+            "line": 200,
             "description": "Gets a marshaller by name, for testing purposes",
             "class": "bridge (server)",
             "module": "Superfluous",
@@ -765,7 +765,7 @@
         },
         {
             "file": "core/server/bridge.js",
-            "line": 207,
+            "line": 208,
             "description": "Marshalls a serious of arguments",
             "class": "bridge (server)",
             "module": "Superfluous",
@@ -773,7 +773,7 @@
         },
         {
             "file": "core/server/component.js",
-            "line": 83,
+            "line": 95,
             "description": "Creates a complete package for a component by reading package.json and\nrunning the styles, js and templates through their preprocessors.",
             "static": 1,
             "itemtype": "method",
@@ -784,7 +784,7 @@
         },
         {
             "file": "core/server/component.js",
-            "line": 192,
+            "line": 204,
             "description": "Builds a Component for usage on the server. This Component is loaded from\nthe components/ directory out of the component's package.json file. When\ninstantiated on the server side, the component is created with only its main\nJS file (the events file is only used on the client).\n\nThe component lifecycle for server created components is:\n\n Server:\n component.initialize(options)\n component.render\n component.server\n\n Client:\n component.initialize(options)\n component.client(options.client_options)",
             "static": 1,
             "itemtype": "method",
@@ -812,7 +812,7 @@
         },
         {
             "file": "core/server/component.js",
-            "line": 322,
+            "line": 336,
             "description": "Renders this component into HTML for the server to send to the client. The\n side effect of this is that this component is also marshalled to the\n client through the bridge. \n This function is safe to call multiple times and only one instance will be\n instantiated on the client.",
             "itemtype": "method",
             "name": "toString",
@@ -826,7 +826,7 @@
         },
         {
             "file": "core/server/component.js",
-            "line": 339,
+            "line": 353,
             "description": "Marshall this component through the bridge to the client.\n This function is safe to call multiple times and only one instance will be\n instantiated on the client.",
             "itemtype": "method",
             "name": "marshall",
@@ -852,7 +852,7 @@
         },
         {
             "file": "core/server/context.js",
-            "line": 60,
+            "line": 64,
             "description": "Sets the current context in use",
             "access": "private",
             "tagname": "",
@@ -864,7 +864,7 @@
         },
         {
             "file": "core/server/context.js",
-            "line": 109,
+            "line": 113,
             "description": "Creates a new context (with prefilled globals) for a request to use.",
             "itemtype": "method",
             "name": "create",
@@ -886,7 +886,7 @@
         },
         {
             "file": "core/server/context.js",
-            "line": 189,
+            "line": 193,
             "description": "Pulls the current domain out of the global namespace and makes sure that\n before 'func' is called, the domain is placed back into the global\n namespace. When running any async IO operations that potentially create\n domains, you should place the callback inside a wrap call. As a\n convenience, any function can have .wrap() or .intercept() called on it to\n do this automatically",
             "itemtype": "method",
             "name": "wrap",
@@ -993,7 +993,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 49,
+            "line": 50,
             "description": "Add query parser middleware",
             "itemtype": "event",
             "name": "query",
@@ -1010,7 +1010,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 70,
+            "line": 71,
             "description": "Add error handling middleware",
             "itemtype": "event",
             "name": "error_handling",
@@ -1027,7 +1027,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 83,
+            "line": 84,
             "description": "Add cookie parser middleware",
             "itemtype": "event",
             "name": "cookies",
@@ -1044,7 +1044,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 93,
+            "line": 94,
             "description": "Add request store middleware",
             "itemtype": "event",
             "name": "store",
@@ -1061,7 +1061,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 106,
+            "line": 107,
             "description": "Add session middleware",
             "itemtype": "event",
             "name": "session",
@@ -1078,7 +1078,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 117,
+            "line": 118,
             "description": "Add redirection middleware",
             "itemtype": "event",
             "name": "redirect",
@@ -1095,7 +1095,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 131,
+            "line": 132,
             "description": "Add plugins to the app",
             "itemtype": "event",
             "name": "plugins",
@@ -1112,7 +1112,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 146,
+            "line": 147,
             "description": "Setup the app",
             "itemtype": "event",
             "name": "app",
@@ -1129,7 +1129,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 154,
+            "line": 155,
             "description": "Add compression middleware, for streaming response gzips",
             "itemtype": "event",
             "name": "compression",
@@ -1146,7 +1146,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 164,
+            "line": 165,
             "description": "Add packaging middleware (Currently does not do anything)",
             "itemtype": "event",
             "name": "packager",
@@ -1163,7 +1163,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 172,
+            "line": 173,
             "description": "Add marshalling hooks, for translating between server/client code",
             "itemtype": "event",
             "name": "marshalls",
@@ -1180,7 +1180,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 183,
+            "line": 184,
             "description": "Add trust proxy middleware, which accepts forwarded headers from proxies",
             "itemtype": "event",
             "name": "trust_proxy",
@@ -1197,7 +1197,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 211,
+            "line": 212,
             "description": "Add controller routing to the app",
             "itemtype": "event",
             "name": "routes",
@@ -1214,7 +1214,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 222,
+            "line": 223,
             "description": "Add realtime middleware (primus / sockets)",
             "itemtype": "event",
             "name": "realtime",
@@ -1236,7 +1236,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 233,
+            "line": 234,
             "description": "Add caching to the app for responses",
             "itemtype": "event",
             "name": "cache",
@@ -1253,7 +1253,7 @@
         },
         {
             "file": "core/server/page.js",
-            "line": 28,
+            "line": 27,
             "description": "Async page rendering function. It takes a function to run inside an async context\nand returns a placeholder to be rendered in its placed.",
             "itemtype": "method",
             "name": "async",
@@ -1263,29 +1263,13 @@
         },
         {
             "file": "core/server/page.js",
-            "line": 133,
+            "line": 134,
             "description": "The main page rendering function. It takes an array of options specifying\nwhat to render in the page.",
             "itemtype": "method",
             "name": "render",
             "class": "page (server)",
             "module": "Superfluous",
             "submodule": "Server"
-        },
-        {
-            "file": "core/server/socket.js",
-            "line": 137,
-            "description": "auth callback",
-            "itemtype": "event",
-            "name": "auth",
-            "params": [
-                {
-                    "name": "app",
-                    "description": "the express app to add query parsing middleware to",
-                    "type": "App"
-                }
-            ],
-            "class": "template (server)",
-            "module": "Superfluous"
         },
         {
             "file": "core/server/socket.js",
@@ -1304,8 +1288,24 @@
             "module": "Superfluous"
         },
         {
+            "file": "core/server/socket.js",
+            "line": 153,
+            "description": "auth callback",
+            "itemtype": "event",
+            "name": "auth",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "the express app to add query parsing middleware to",
+                    "type": "App"
+                }
+            ],
+            "class": "template (server)",
+            "module": "Superfluous"
+        },
+        {
             "file": "core/server/template.js",
-            "line": 198,
+            "line": 199,
             "description": "Renders a template into a string",
             "itemtype": "method",
             "name": "render",
@@ -1315,7 +1315,7 @@
         },
         {
             "file": "core/server/template.js",
-            "line": 205,
+            "line": 206,
             "description": "Renders a partial into a string",
             "itemtype": "method",
             "name": "partial",
@@ -1325,7 +1325,7 @@
         },
         {
             "file": "core/server/template.js",
-            "line": 212,
+            "line": 213,
             "description": "Adds a stylesheet to load before inserting the current template",
             "itemtype": "method",
             "name": "add_stylesheet",
@@ -1345,15 +1345,15 @@
         },
         {
             "message": "Missing item type\nAdds a function for marshalling components across boundaries",
-            "line": " core/server/bridge.js:193"
+            "line": " core/server/bridge.js:194"
         },
         {
             "message": "Missing item type\nGets a marshaller by name, for testing purposes",
-            "line": " core/server/bridge.js:199"
+            "line": " core/server/bridge.js:200"
         },
         {
             "message": "Missing item type\nMarshalls a serious of arguments",
-            "line": " core/server/bridge.js:207"
+            "line": " core/server/bridge.js:208"
         }
     ]
 }
