@@ -7,7 +7,7 @@ function gracefulShutdown(io, cb) {
   var sockets = socket.get_open_sockets();
 
   // if we are in development mode
-  if (!config.RELEASE || config.REFRESH_ON_RESTART) {
+  if (!config.RELEASE || config.refresh_on_restart) {
     _.each(sockets, function(socket) {
       socket.emit("__refresh", { auth: parseInt(Math.random() * 120098, 10)});
     });
