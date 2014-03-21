@@ -20,6 +20,27 @@
     }
   });
 
+  function refresh_page() {
+    var promise = $.get(
+      "/pkg/status", function() {
+
+        // worst case, we restart in 2s, anyways
+        setTimeout(function() {
+          window.location.reload();
+        }, 2000);
+
+        SF.trigger("validate/versions", SF.socket());
+        SF.on("__updated_versions", function() {
+          bootloader.sync();
+          window.location.reload();
+        });
+      });
+
+    promise.fail(function() {
+      setTimeout(refresh_page, 500);
+    });
+  }
+
   var _sockets = {};
   function install_socket(name, socket) {
     // Presumes that name starts with a slash
@@ -36,27 +57,6 @@
     // when the page refreshes, let's first expire our localStorage cache, if
     // we can.
     socket.on("__refresh", function(data) {
-      function refresh_page() {
-        var promise = $.get(
-          "/pkg/status", function() {
-
-            // worst case, we restart in 2s, anyways
-            setTimeout(function() {
-              window.location.reload();
-            }, 2000);
-
-            SF.trigger("validate/versions", SF.socket());
-            SF.on("__updated_versions", function() {
-              bootloader.sync();
-              window.location.reload();
-            });
-          });
-
-        promise.fail(function() {
-          setTimeout(refresh_page, 500);
-        });
-      }
-
       // First ping the server, to see if its safe to reload
       setTimeout(refresh_page, 1500);
     });
@@ -164,6 +164,7 @@
   }
 
   var bootloader = window.bootloader;
+  bootloader.refresh = refresh_page;
   bootloader.call = call;
   bootloader.controller_call = controller_call;
   bootloader.get_socket = get_socket;
