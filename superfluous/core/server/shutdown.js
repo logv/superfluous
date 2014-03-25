@@ -24,7 +24,7 @@ module.exports = {
 
     process.once('SIGINT', function () {
       gracefulShutdown(io, function () {
-        process.kill(process.pid, 'SIGINT'); 
+        process.exit(1);
       });
     });
     process.once('SIGUSR2', function () {
