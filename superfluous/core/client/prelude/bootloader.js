@@ -24,7 +24,8 @@
   };
   var _module_defs = {};
   var _signatures = {};
-  var _versions = { };
+  var _ignored = {};
+  var _versions = {};
   var _garbage = {};
 
   var SF = window.SF;
@@ -81,6 +82,14 @@
   function sync_metadata() {
 
     try {
+      var ignored = JSON.parse(_component_storage.getItem("_ignored"));
+      _.defaults(_ignored, ignored);
+    } catch(e) {
+      SF.log(e);
+      console.trace();
+    }
+
+    try {
       var signatures = JSON.parse(_component_storage.getItem("_signatures"));
       _.defaults(_signatures, signatures);
     } catch(e) {
@@ -119,11 +128,15 @@
     // remove old keys
     for (var key in localStorage) {
 
-      if (key === "_versions" || key === "_signatures") {
+      if (key === "_versions" || key === "_signatures" || key === "_ignored") {
         continue;
       }
 
-      if (!_signatures[key] ) {
+      if (_ignored[key]) {
+        continue;
+      }
+
+      if (!_signatures[key]) {
         try {
           var item = localStorage.getItem(key);
           if (!item) {
@@ -165,6 +178,7 @@
     }
 
     // write metadata
+    _component_storage.setItem("_ignored", JSON.stringify(_ignored));
     _component_storage.setItem("_versions", JSON.stringify(_versions));
 
     // sync versions and signatures to our known ones
@@ -702,6 +716,21 @@
     deliver: deliver_pagelet,
     versions: _versions,
     signatures: _signatures,
+    storage: {
+      get: function(key) {
+        return _component_storage.getItem(key);
+      },
+      set: function(key, value) {
+        _ignored[key] = 1;
+        _component_storage.setItem(key, value);
+        _component_storage.setItem("_ignored", JSON.stringify(_ignored));
+
+      },
+      delete: function(key) {
+        _component_storage.removeItem(key);
+        delete _ignored[key];
+      }
+    },
     sync: function() {
       sync_metadata();
       sync_storage();
