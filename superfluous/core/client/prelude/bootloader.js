@@ -36,13 +36,19 @@
   var _storage = _blank_storage;
   var _component_storage = _blank_storage;
 
-  if (window.localStorage) {
-    SF.log("Caching components in LocalStorage");
-    _component_storage = window.localStorage;
+  try {
+    if (window.localStorage) {
+      SF.log("Caching components in LocalStorage");
+      _component_storage = window.localStorage;
+    }
+  } catch (e) {
   }
 
   if (window._query.use_storage) {
-    _storage = (window.localStorage || _storage);
+    try {
+      _storage = (window.localStorage || _storage);
+    } catch (e) {
+    }
   }
   if (window._query.skip_storage) {
     _storage = _blank_storage;
@@ -126,6 +132,12 @@
     SF.log("Syncing to local storage");
 
     // remove old keys
+    try {
+      window.localStorage;
+    } catch(e) {
+      return;
+    }
+
     for (var key in localStorage) {
 
       if (key === "_versions" || key === "_signatures" || key === "_ignored") {
@@ -398,7 +410,10 @@
 
     return function bootload(modules, cb) {
       if (bootloader.__use_storage && storage === _blank_storage) {
-        _storage = window.localStorage;
+        try {
+          _storage = window.localStorage;
+        } catch(e) {
+        }
         storage = _storage;
       }
 
