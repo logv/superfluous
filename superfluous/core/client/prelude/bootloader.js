@@ -571,22 +571,30 @@
       }
     }
 
-    if (_module_defs[module]) {
-      _modules[module] = raw_import(_module_defs[module].code, module);
-      if (cb) {
-        cb(_modules[module]);
+    function load_deps_then_import() {
+      var def = _module_defs[module];
+      if (def && def.deps) {
+        bootloader.js(def.deps, function() {
+          if (!_modules[module]) {
+            _modules[module] = raw_import(def.code, module);
+          }
+          if (cb) { cb(_modules[module]); }
+
+        });
+      } else {
+        if (!_modules[module]) {
+          _modules[module] = raw_import(def.code, module);
+        }
+        if (cb) { cb(_modules[module]); }
       }
+
+    }
+
+    if (_module_defs[module]) {
+      load_deps_then_import();
     } else {
       bootloader.js([module], function() {
-        // race to evaluate! but only once
-        if (!_modules[module]) {
-          var data = raw_import(_module_defs[module].code, module);
-          _modules[module] = data;
-        }
-
-        if (cb) {
-          cb(_modules[module]);
-        }
+        load_deps_then_import();
       });
     }
 

@@ -176,12 +176,17 @@ function package_js(includes, cb) {
             var mod_name = mod.id;
             mod_name = mod_name.replace(/^\//, '') ;
 
+            var deps = _.filter(_.keys(resolved.modules), function(k) {
+              return k !== mod_name; 
+            });
+
             hooks.invoke("before_render_js", mod_name, data, function(name, data) {
               hooks.invoke("after_render_js", mod_name, data, function(name, data) {
                 ret[name] = {
                   code: data,
                   signature: quick_hash(data),
                   type: "js",
+                  deps: deps,
                   name: mod_name,
                   timestamp: parseInt(+Date.now() / 1000, 10)
                 };
