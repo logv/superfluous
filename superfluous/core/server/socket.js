@@ -132,7 +132,7 @@ module.exports = {
     // Setup Socket.IO
     var io;
     var primus = new Primus(server, {
-      transformer: 'socket.io'
+      transformer: 'engine.io'
     });
     // add rooms to Primus
     _primus = primus;

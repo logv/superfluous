@@ -54,6 +54,11 @@ function package_less(includes, cb) {
           }
 
           hooks.invoke("after_render_less", mod, css, function(mod, css) {
+            if (css.css) {
+              // THIS IS FOR UPDATES TO CSS RENDERING LIBS?
+              css = css.css;
+            }
+
             var hash = quick_hash(css.toString());
             ret[mod] = {
               code: css,
@@ -87,7 +92,7 @@ function package_and_scope_less(component, module, cb) {
   var hash = quick_hash(data.toString());
   less.render(less_header + module_css + (data || "") + module_end, function(err, css) {
     ret[module] = {
-      code: css,
+      code: css.css,
       signature: hash,
       name: module,
       type: "css"

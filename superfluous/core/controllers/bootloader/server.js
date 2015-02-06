@@ -173,6 +173,9 @@ function get_css_prelude(after_read_prelude) {
         if (css_data) {
           less.render(css_data, function(err, data) {
             if (!err) {
+              if (data.css) {
+                data = data.css;
+              }
               _css_prelude[file] = data;
             } else {
               console.log("Error lessing", file, ", sending uncompiled version");
