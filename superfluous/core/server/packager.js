@@ -181,8 +181,12 @@ function package_js(includes, cb) {
             var mod_name = mod.id;
             mod_name = mod_name.replace(/^\//, '') ;
 
-            var deps = _.filter(_.keys(resolved.modules), function(k) {
-              return k !== mod_name; 
+            var deps = _.filter(mod._directDependencies, function(k) {
+              return k.identifier !== mod_name; 
+            });
+
+            var dep_names = _.map(deps, function(dep) {
+              return dep.identifier.terms.join("/");
             });
 
             hooks.invoke("before_render_js", mod_name, data, function(name, data) {
@@ -191,7 +195,7 @@ function package_js(includes, cb) {
                   code: data,
                   signature: quick_hash(data),
                   type: "js",
-                  deps: deps,
+                  deps: dep_names,
                   name: mod_name,
                   timestamp: parseInt(+Date.now() / 1000, 10)
                 };
