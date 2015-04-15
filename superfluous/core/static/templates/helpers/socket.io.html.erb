@@ -2,7 +2,7 @@
 
   function init_socket() { 
     if (!SF.primus) {
-      SF.primus = Primus.connect('//<%= host %>/');
+      SF.primus = Primus.connect('//<%= host %>:<%= port %>/');
     }
 
     var _socket = SF.primus.channel("ctrl_<%= name %>");

@@ -190,7 +190,8 @@ var add_socket = function(socket) {
 
   return render_core_template("helpers/socket.io.html.erb", {
     name: (socket || context("controller")),
-    host: context("req").headers.host
+    host: context("req").headers.host,
+    port: context("req").headers.port
   });
 };
 
