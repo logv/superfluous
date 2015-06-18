@@ -27,11 +27,6 @@ module.exports = function(file, options) {
         var file_name = path.join(subpath, file);
         ret = fs.readFileSync(file_name).toString();
         resolved_paths[file] = file_name;
-        var watcher = fs.watch(file, function() {
-          delete cached_files[file];
-          watcher.close();
-        });
-
       } catch(e) { 
       }
 

@@ -188,10 +188,14 @@ var add_socket = function(socket) {
     context("added_socket", true);
   }
 
+  var host = context("req").headers.host;
+  var host_tokens = host.split(":");
+  var host_name = host_tokens[0];
+  var port = context("req").headers.port || host_tokens[1];
   return render_core_template("helpers/socket.io.html.erb", {
     name: (socket || context("controller")),
-    host: context("req").headers.host,
-    port: context("req").headers.port
+    host: host_name,
+    port: port
   });
 };
 
