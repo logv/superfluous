@@ -7,6 +7,8 @@ var Primus = require("primus.io");
 var hooks = require_core("server/hooks");
 var domain = require("domain");
 
+var config = require_core("server/config");
+
 
 var _sockets = [];
 var _dirty = false;
@@ -131,8 +133,9 @@ module.exports = {
   setup_io: function(app, server) {
     // Setup Socket.IO
     var io;
+    var transformer = config.primus_transformer || "engine.io";
     var primus = new Primus(server, {
-      transformer: 'engine.io'
+      transformer: transformer,
     });
     // add rooms to Primus
     _primus = primus;
