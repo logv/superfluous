@@ -43,15 +43,23 @@ module.exports = {
     this.io = io;
 
     io.authorize(function(handshake_data, cb) {
-      var parseCookie = require("connect").cookieParser(session.secret());
+      var secret = session.secret();
+      var parseCookie = require("connect").cookieParser(secret);
 
       parseCookie(handshake_data, null, function() {
         var sid = handshake_data.signedCookies['connect.sid'];
         var used_store = store.get();
 
+
         if (!sid) {
-          cb("No SID specified");
-          return;
+          var signed_sid = handshake_data.query['connect.sid'];
+          sid = require("connect").cookieParser.signedCookie(signed_sid, secret);
+
+
+          if (!sid) {
+            cb("No SID specified");
+            return;
+          }
         }
 
         // check to see if session is being held in the cookie proper, if there
