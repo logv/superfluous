@@ -58,6 +58,10 @@
   window.SF.once("bridge/socket", function(socket) {
     socket.on("__update_version", function(type, entry, old_hash, new_hash) {
       SF.log("Updated version", type, entry, old_hash, new_hash);
+      if (!_versions[type]) {
+        return;
+      }
+
       delete _versions[type][old_hash];
       delete _versions[type][entry];
       _garbage[old_hash] = true;
@@ -488,6 +492,13 @@
     return bootload_factory(type, module_dict, postload, _component_storage);
   }
 
+  function delete_component_packager(name) {
+    if (_versions[name]) {
+      delete _versions[name];
+    }
+
+  }
+
   function register_component_packager(name, def_dict, postload) {
     if (!_versions[name]) {
       _versions[name] = {};
@@ -774,6 +785,7 @@
     },
     from_storage: { },
     register_component_packager: register_component_packager,
+    delete_component_packager: delete_component_packager,
     register_resource_packager: register_resource_packager
   };
 

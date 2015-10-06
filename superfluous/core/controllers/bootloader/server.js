@@ -330,20 +330,20 @@ function validate_versions(versions, socket, cb) {
     });
   });
 
-  if (!versions.pkg) {
+  if (!versions.component) {
     return cb();
   }
 
-  var after = _.after(_.keys(versions.pkg).length, cb);
-  _.each(versions.pkg, function(old_hash, pkg) {
+  var after = _.after(_.keys(versions.component).length, cb);
+  _.each(versions.component, function(old_hash, pkg) {
     Component.build_package(pkg, function(ret) {
       if (!ret) {
-        socket.emit("__update_version", 'pkg', pkg, old_hash, null);
+        socket.emit("__update_version", 'component', pkg, old_hash, null);
         return;
       }
 
       if (old_hash !== ret.signature) {
-        socket.emit("__update_version", 'pkg', pkg, old_hash, ret.signature);
+        socket.emit("__update_version", 'component', pkg, old_hash, ret.signature);
       }
 
       after();
