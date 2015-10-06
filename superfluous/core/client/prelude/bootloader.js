@@ -216,6 +216,20 @@
     localStorage.clear();
   }
 
+  if (window._query && window._query.clear_components) {
+    try {
+      var signatures = window.bootloader.storage.get("_signatures") || "{}";
+      signatures = JSON.parse(signatures);
+      console.log("Clearing Stored Modules", signatures);
+      _.each(signatures, function(name, sig) {
+        window.bootloader.storage.delete(sig);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+
   var MODULE_PREFIX="var module = {}; (function() {\n";
   var MODULE_SUFFIX="})(); module.exports";
 

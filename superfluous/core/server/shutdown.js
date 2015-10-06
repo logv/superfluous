@@ -27,6 +27,11 @@ module.exports = {
         process.exit(1);
       });
     });
+    process.once('SIGTERM', function () {
+      gracefulShutdown(io, function () {
+        process.exit(1);
+      });
+    });
     process.once('SIGUSR2', function () {
       gracefulShutdown(io, function () {
         process.kill(process.pid, 'SIGUSR2'); 

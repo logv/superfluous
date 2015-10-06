@@ -53,7 +53,9 @@ module.exports = {
 
         if (!sid) {
           var signed_sid = handshake_data.query['connect.sid'];
-          sid = require("connect").cookieParser.signedCookie(signed_sid, secret);
+          if (signed_sid) {
+            sid = require("connect").cookieParser.signedCookie(signed_sid, secret);
+          }
 
 
           if (!sid) {
