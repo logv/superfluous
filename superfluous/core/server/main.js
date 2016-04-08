@@ -25,7 +25,6 @@ var http_server,
 
 var app_name;
 
-require("longjohn");
 function setup() {
   // setup helpers
   var config = require_core("server/config");
@@ -38,6 +37,13 @@ function setup() {
   app = connect();
   module.exports.app = app;
   router = app;
+
+  // dont use longjohn in production, because it uses up extra memory
+  if (!config.RELEASE && process.env.NODE_ENV !== 'production'){
+    console.log("NOTE: Using longjohn error traces for easier debugging");
+    console.log("NOTE: To turn off (and save RAM) set RELEASE or NODE_ENV=production");
+    require("longjohn");
+  }
 
 
   // this is here for the reversable router which uses .locals
