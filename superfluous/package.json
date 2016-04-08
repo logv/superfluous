@@ -1,7 +1,7 @@
 {
   "name": "superfluous",
   "description": "a node.js server/client understanding",
-  "version": "0.0.55",
+  "version": "0.0.58",
   "private": false,
   "dependencies": {
     "async": "x",
@@ -19,7 +19,7 @@
     "module-grapher": "x",
     "primus.io": "x",
     "response-redirect": "x",
-    "reversable-router": "x",
+    "reversable-router": "git://github.com/logv/node-reversable-router",
     "st": "x"
   },
   "devDependencies": {
