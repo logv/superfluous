@@ -91,8 +91,12 @@ function package_and_scope_less(component, module, cb) {
   var module_end = "\n}";
   var hash = quick_hash(data.toString());
   less.render(less_header + module_css + (data || "") + module_end, function(err, css) {
+    if (css.css) {
+      css = css.css;
+    }
+
     ret[module] = {
-      code: css.css,
+      code: css,
       signature: hash,
       name: module,
       type: "css"
