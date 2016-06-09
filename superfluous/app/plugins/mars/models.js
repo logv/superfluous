@@ -3,8 +3,7 @@
 var orm = require('orm');
 var package_json = require_core("../package.json");
 var app_name = package_json.name;
-var mongodb = require("mongodb"),
-    port = mongodb.Connection.DEFAULT_PORT;
+var mongodb = require("mongodb");
 
 
 module.exports = {

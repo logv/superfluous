@@ -266,8 +266,9 @@ var write_css_prelude = function() {
 
   get_css_prelude(function after_read_prelude(err) {
     _.each(_css_prelude, function(data, file) {
-      if (_css_prelude[file]) {
-        res.write(_css_prelude[file]);
+      var prelude_data = _css_prelude[file];
+      if (_.isString(prelude_data)) {
+        res.write(prelude_data);
       }
     });
     res.end();

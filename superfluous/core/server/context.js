@@ -135,6 +135,11 @@ _.extend(module.exports, {
       if (USE_CLS) {
         d.bind(v);
       } else {
+        // can't add strings into a domain, anyways
+        if (_.isString(v)) {
+          return;
+        }
+
         d.add(v);
       }
     });

@@ -13,7 +13,9 @@ module.exports = {
   max_https_sockets: 1000,
   require_https: true,
   backend: {
-    driver: "mongo"
+    driver: "mongo",
+    db_url: "mongodb://localhost:27017"
+
   },
   slog: true,
   mongo_store: true,
