@@ -212,6 +212,7 @@ var render_page = function(page_options) {
       id: pageId,
       misc_header: misc_header,
       js_header: template.js_header(js_hash),
+      server_time: (new Date()).toUTCString(),
       simple_pipe: simple_pipe,
       css_header: template.css_header(css_hash)
     });
