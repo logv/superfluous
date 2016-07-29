@@ -270,10 +270,15 @@ function setup() {
   });
 
 
+  var bind_ip = "0.0.0.0";
+  if (config.behind_proxy) {
+    bind_ip = "127.0.0.1";
+  }
+
   var when_ready = function() {
     hooks.setup("http_server", http_server, function() {
       var http_port = config.http_port;
-      http_server.listen(http_port);
+      http_server.listen(http_port, bind_ip);
       http_server.on('error', try_restart(http_server, http_port));
 
       console.log("Listening for HTTP connections on port", http_port);
@@ -288,7 +293,7 @@ function setup() {
           socket.setup_io(app, https_server);
         });
 
-        https_server.listen(https_port);
+        https_server.listen(https_port, bind_ip);
         https_server.on('error', try_restart(https_server, https_port));
       }
     });
