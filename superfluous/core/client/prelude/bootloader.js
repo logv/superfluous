@@ -37,7 +37,7 @@
   var _component_storage = _blank_storage;
 
   try {
-    if (window.localStorage) {
+    if (window.localStorage && bootloader.__use_storage) {
       SF.log("Caching components in LocalStorage");
       _component_storage = window.localStorage;
     }
@@ -581,6 +581,10 @@
   }
 
   function require_js(module, cb, signature) {
+    if (!_.isFunction(cb)) {
+      cb = null;
+    }
+
     if (_modules[module]) {
       if (cb) {
         cb(_modules[module]);
