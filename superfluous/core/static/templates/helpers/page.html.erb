@@ -60,6 +60,8 @@
 
     <% if (use_storage) { %>
       <script> bootloader.__use_storage = true; </script>
+    <% } else { %>
+      <script> bootloader.disable_storage(); </script>
     <% } %>
 
     <script> bootloader.__stream_packages = <%= use_chunked_xhr %>; </script>

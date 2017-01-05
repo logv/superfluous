@@ -37,7 +37,7 @@
   var _component_storage = _blank_storage;
 
   try {
-    if (window.localStorage && bootloader.__use_storage) {
+    if (window.localStorage) {
       SF.log("Caching components in LocalStorage");
       _component_storage = window.localStorage;
     }
@@ -768,6 +768,11 @@
     deliver: deliver_pagelet,
     versions: _versions,
     signatures: _signatures,
+    disable_storage: function() {
+      SF.log("Disabling local storage");
+      _component_storage = _blank_storage;
+      _storage = _blank_storage;
+    },
     storage: {
       get: function(key) {
         return _component_storage.getItem(key);
