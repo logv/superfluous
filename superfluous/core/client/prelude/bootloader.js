@@ -35,10 +35,12 @@
   };
   var _storage = _blank_storage;
   var _component_storage = _blank_storage;
+  var _local_storage = _blank_storage;
 
   try {
     if (window.localStorage) {
       SF.log("Caching components in LocalStorage");
+      _local_storage = window.localStorage;
       _component_storage = window.localStorage;
     }
   } catch (e) {
@@ -92,7 +94,7 @@
   function sync_metadata() {
 
     try {
-      var ignored = JSON.parse(_component_storage.getItem("_ignored"));
+      var ignored = JSON.parse(_local_storage.getItem("_ignored"));
       _.defaults(_ignored, ignored);
     } catch(e) {
       SF.log(e);
@@ -194,7 +196,7 @@
     }
 
     // write metadata
-    _component_storage.setItem("_ignored", JSON.stringify(_ignored));
+    _local_storage.setItem("_ignored", JSON.stringify(_ignored));
     _component_storage.setItem("_versions", JSON.stringify(_versions));
 
     // sync versions and signatures to our known ones
@@ -775,16 +777,18 @@
     },
     storage: {
       get: function(key) {
-        return _component_storage.getItem(key);
+        return _local_storage.getItem(key);
       },
       set: function(key, value) {
         _ignored[key] = 1;
-        _component_storage.setItem(key, value);
-        _component_storage.setItem("_ignored", JSON.stringify(_ignored));
+        _local_storage.setItem(key, value);
+        _local_storage.setItem("_ignored", JSON.stringify(_ignored));
 
       },
       delete: function(key) {
-        _component_storage.removeItem(key);
+        if (_component_storage.removeItem) {
+          _local_storage.removeItem(key);
+        }
         delete _ignored[key];
       }
     },
