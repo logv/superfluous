@@ -1,7 +1,7 @@
 {
   "name": "superfluous",
   "description": "a node.js server/client understanding",
-  "version": "0.0.67",
+  "version": "0.0.68",
   "private": false,
   "dependencies": {
     "async": "x",
@@ -10,7 +10,7 @@
     "connect": "2.x",
     "connect-redirect": "x",
     "continuation-local-storage": "x",
-    "engine.io": "1.8.2",
+    "engine.io": "^2.0.1",
     "sockjs" : "x",
     "fs-extra": "x",
     "json-stable-stringify": "x",
