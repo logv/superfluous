@@ -1,5 +1,5 @@
 /**
- * This module loads the configuration for the superfluous app. 
+ * This module loads the configuration for the superfluous app.
  *
  * It first loads config/config.js for a base set of configuration options.
  * It then loads config/override.js for any local overrides (this file should be placed .gitignore)
@@ -13,6 +13,7 @@
  * @submodule Server
  **/
 
+var path = require("path");
 var _config = {};
 
 var env = process.env.ENV;
@@ -23,32 +24,72 @@ if (!RELEASE) {
 
 }
 
-var base_config = require_root("config/config");
-
-_.extend(_config, base_config);
-
-var override;
-
-try {
-  override = require_root("config/override");
-  _.extend(_config, override);
-  console.log("Using custom overrides in config/override");
-} catch(e) {
-}
-
-if (env) {
-  try {
-    override = require_root("config/" + env);
-    _.extend(_config, override);
-    console.log("Using custom overrides in config/" + env);
-  } catch(e) {
-    console.log("Couldn't load Environment config from config/" + env);
+var _loaded = {};
+function load_config(base_path, add_supplements) {
+  base_path = path.resolve(base_path);
+  if (_loaded[base_path]) {
+    return;
   }
+
+  console.log("LOADING CONFIG FROM", base_path);
+  _loaded[base_path] = true;
+
+  var ret = {};
+
+
+  try {
+    var main_config = path.join(base_path, "config/config");
+    var base_config = require(main_config);
+    _.extend(ret, base_config);
+    console.log("Using config in", main_config);
+  } catch (e) {
+    console.log(e);
+  }
+
+
+  if (!add_supplements) {
+    return;
+  }
+
+  var override;
+
+  try {
+    var override_config = path.join(base_path, "config/override");
+    override = require(override_config);
+    _.extend(ret, override);
+    console.log("Using custom overrides in", override_config);
+  } catch(e) {
+    console.log("Couldn't load override from", env_config);
+  }
+
+  if (env) {
+    var env_config = path.join(base_path, "config", env);
+    try {
+      override = require(env_config);
+      _.extend(ret, override);
+      console.log("Using custom overrides in", env_config);
+    } catch(e) {
+      console.log("Couldn't load env conf from", env_config);
+    }
+  }
+
+
+
+  // LOADING ret.config_dir + config/config.js
+  if (ret.config_dir) {
+    var resolved = path.resolve(ret.config_dir);
+    if (resolved != base_path) {
+      load_config(ret.config_dir);
+    }
+  }
+
+  _.extend(_config, ret);
 }
+
+var cwd = process.cwd();
+load_config(cwd, true /* add supplemental configs, too */);
 
 _config.RELEASE = RELEASE;
-var cwd = process.cwd();
-var path = require("path");
 _config.APP_DIR = path.join(cwd, "app");
 _config.CORE_DIR = path.relative(cwd, path.join(__dirname, ".."));
 
