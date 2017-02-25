@@ -103,7 +103,17 @@ function resolve_futures() {
           controller_instance.after_request();
         }
 
-        hooks.invoke("end_request", context("req"), context("res"), function() { });
+        hooks.invoke("end_request", context("req"), context("res"), function() { 
+
+          var req = context("req");
+          var sample_api = require_core("server/sample_api");
+          var s = new sample_api.Sample("pagestats");
+          s.string("page", req.path);
+          s.integer("time", parseInt(Date.now() / 1000, 10));
+          sample_api.decorate_sample(s, sample_api.DECO.browser_info, req);
+          s.send();
+
+        });
 
 
         ctx.exit();

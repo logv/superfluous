@@ -21,6 +21,16 @@ module.exports = {
   mongo_store: true,
   blog_root: "app/glossary",
   use_cls: true,
-  email_comments_to: ["okay@logicflower.com", "okay.zed@gmail.com"],
-  email_from: "webgloss@logicflower.com"
+  email_comments_to: ["okay.zed@gmail.com"],
+  email_from: "comments@superfluous.io",
+
+  // emit JSON instrumentation to localhost:3000
+  // these options are directly used when  constructing
+  // the http request
+  analytics: {
+    enabled: false,
+    host: "localhost",
+    port: 3000,
+    url: "/data/import"
+  }
 };
