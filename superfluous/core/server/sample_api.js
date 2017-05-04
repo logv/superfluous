@@ -136,7 +136,7 @@ var DECO = {
 };
 
 // Post it to the snorkel instance...
-module.exports = { 
+module.exports = {
   Sample: Sample,
   decorate_sample: function(s, decorations, request) {
     if (!_.isArray(decorations)) {
@@ -156,7 +156,7 @@ module.exports = {
     s.data.integer = json_obj.integer || {};
     s.data.string = json_obj.string || {};
     s.data.set = json_obj.set || {};
- 
+
     // record server and client side timestamps, separately
     var ts = Date.now();
     if (s.__ts) {
@@ -209,6 +209,9 @@ function send_samples(dataset, samples) {
 
 
   var http = require('http');
+  if (options.https) {
+    http = require('https');
+  }
 
   var req = http.request(options, function(res) { });
   req.on('error', function(err) { });
