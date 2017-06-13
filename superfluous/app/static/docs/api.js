@@ -40,6 +40,7 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "Superfluous",
             "name": "Superfluous"
         }
-    ]
+    ],
+    "elements": []
 } };
 });

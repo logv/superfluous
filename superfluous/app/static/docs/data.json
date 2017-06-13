@@ -5,7 +5,7 @@
         "header": "app/static/favicon.ico",
         "logo": "/favicon.ico",
         "description": "a node.js server/client understanding",
-        "version": "0.0.38"
+        "version": "0.0.72"
     },
     "files": {
         "app/server/db.js": {
@@ -189,6 +189,7 @@
                 "Server": 1,
                 "Client": 1
             },
+            "elements": {},
             "classes": {
                 "db (server)": 1,
                 "bootloader (client)": 1,
@@ -217,6 +218,7 @@
         "Server": {
             "name": "Server",
             "submodules": {},
+            "elements": {},
             "classes": {
                 "db (server)": 1,
                 "auth (server)": 1,
@@ -246,6 +248,7 @@
         "Client": {
             "name": "Client",
             "submodules": {},
+            "elements": {},
             "classes": {
                 "bootloader (client)": 1,
                 "component (client)": 1
@@ -378,7 +381,7 @@
             "namespace": "",
             "file": "core/server/config.js",
             "line": 1,
-            "description": "This module loads the configuration for the superfluous app. \n\nIt first loads config/config.js for a base set of configuration options.\nIt then loads config/override.js for any local overrides (this file should be placed .gitignore)\nIt then loads config/${ENV}.js (this should be something like 'localhost', 'production', etc\n\nWhen requiring this module, the cascading objects will be available as\nproperties on it.",
+            "description": "This module loads the configuration for the superfluous app.\n\nIt first loads config/config.js for a base set of configuration options.\nIt then loads config/override.js for any local overrides (this file should be placed .gitignore)\nIt then loads config/${ENV}.js (this should be something like 'localhost', 'production', etc\n\nWhen requiring this module, the cascading objects will be available as\nproperties on it.",
             "submodule": "Server"
         },
         "context (server)": {
@@ -534,6 +537,7 @@
             "submodule": "Server"
         }
     },
+    "elements": {},
     "classitems": [
         {
             "file": "app/server/db.js",
@@ -574,7 +578,7 @@
         },
         {
             "file": "core/client/prelude/bootloader.js",
-            "line": 681,
+            "line": 749,
             "itemtype": "method",
             "name": "inject_css",
             "class": "bootloader (client)",
@@ -583,7 +587,7 @@
         },
         {
             "file": "core/client/prelude/bootloader.js",
-            "line": 689,
+            "line": 757,
             "description": "Load a javascript module.  (works like require.js)",
             "itemtype": "method",
             "name": "require",
@@ -593,7 +597,7 @@
         },
         {
             "file": "core/client/prelude/bootloader.js",
-            "line": 696,
+            "line": 764,
             "description": "Inserts an asynchronous pagelet into the page",
             "itemtype": "method",
             "name": "deliver",
@@ -605,7 +609,7 @@
         },
         {
             "file": "core/client/prelude/bootloader.js",
-            "line": 717,
+            "line": 808,
             "description": "Bootload in a css file or array of css files",
             "itemtype": "method",
             "name": "css",
@@ -615,7 +619,7 @@
         },
         {
             "file": "core/client/prelude/bootloader.js",
-            "line": 722,
+            "line": 813,
             "description": "Bootload in a js file or array of js files",
             "itemtype": "method",
             "name": "js",
@@ -886,7 +890,7 @@
         },
         {
             "file": "core/server/context.js",
-            "line": 193,
+            "line": 198,
             "description": "Pulls the current domain out of the global namespace and makes sure that\n before 'func' is called, the domain is placed back into the global\n namespace. When running any async IO operations that potentially create\n domains, you should place the callback inside a wrap call. As a\n convenience, any function can have .wrap() or .intercept() called on it to\n do this automatically",
             "itemtype": "method",
             "name": "wrap",
@@ -993,7 +997,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 50,
+            "line": 56,
             "description": "Add query parser middleware",
             "itemtype": "event",
             "name": "query",
@@ -1010,7 +1014,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 71,
+            "line": 77,
             "description": "Add error handling middleware",
             "itemtype": "event",
             "name": "error_handling",
@@ -1027,7 +1031,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 84,
+            "line": 90,
             "description": "Add cookie parser middleware",
             "itemtype": "event",
             "name": "cookies",
@@ -1044,7 +1048,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 94,
+            "line": 100,
             "description": "Add request store middleware",
             "itemtype": "event",
             "name": "store",
@@ -1061,7 +1065,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 107,
+            "line": 113,
             "description": "Add session middleware",
             "itemtype": "event",
             "name": "session",
@@ -1078,7 +1082,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 118,
+            "line": 124,
             "description": "Add redirection middleware",
             "itemtype": "event",
             "name": "redirect",
@@ -1095,7 +1099,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 132,
+            "line": 138,
             "description": "Add plugins to the app",
             "itemtype": "event",
             "name": "plugins",
@@ -1112,7 +1116,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 147,
+            "line": 153,
             "description": "Setup the app",
             "itemtype": "event",
             "name": "app",
@@ -1129,7 +1133,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 155,
+            "line": 161,
             "description": "Add compression middleware, for streaming response gzips",
             "itemtype": "event",
             "name": "compression",
@@ -1146,7 +1150,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 165,
+            "line": 171,
             "description": "Add packaging middleware (Currently does not do anything)",
             "itemtype": "event",
             "name": "packager",
@@ -1163,7 +1167,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 173,
+            "line": 179,
             "description": "Add marshalling hooks, for translating between server/client code",
             "itemtype": "event",
             "name": "marshalls",
@@ -1180,7 +1184,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 184,
+            "line": 190,
             "description": "Add trust proxy middleware, which accepts forwarded headers from proxies",
             "itemtype": "event",
             "name": "trust_proxy",
@@ -1197,7 +1201,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 212,
+            "line": 218,
             "description": "Add controller routing to the app",
             "itemtype": "event",
             "name": "routes",
@@ -1214,7 +1218,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 223,
+            "line": 229,
             "description": "Add realtime middleware (primus / sockets)",
             "itemtype": "event",
             "name": "realtime",
@@ -1236,7 +1240,7 @@
         },
         {
             "file": "core/server/main.js",
-            "line": 234,
+            "line": 240,
             "description": "Add caching to the app for responses",
             "itemtype": "event",
             "name": "cache",
@@ -1263,7 +1267,7 @@
         },
         {
             "file": "core/server/page.js",
-            "line": 134,
+            "line": 144,
             "description": "The main page rendering function. It takes an array of options specifying\nwhat to render in the page.",
             "itemtype": "method",
             "name": "render",
@@ -1273,7 +1277,7 @@
         },
         {
             "file": "core/server/socket.js",
-            "line": 145,
+            "line": 148,
             "description": "auth callback",
             "itemtype": "event",
             "name": "auth",
@@ -1289,7 +1293,7 @@
         },
         {
             "file": "core/server/socket.js",
-            "line": 153,
+            "line": 156,
             "description": "auth callback",
             "itemtype": "event",
             "name": "auth",
@@ -1305,7 +1309,7 @@
         },
         {
             "file": "core/server/template.js",
-            "line": 199,
+            "line": 204,
             "description": "Renders a template into a string",
             "itemtype": "method",
             "name": "render",
@@ -1315,7 +1319,7 @@
         },
         {
             "file": "core/server/template.js",
-            "line": 206,
+            "line": 211,
             "description": "Renders a partial into a string",
             "itemtype": "method",
             "name": "partial",
@@ -1325,7 +1329,7 @@
         },
         {
             "file": "core/server/template.js",
-            "line": 213,
+            "line": 218,
             "description": "Adds a stylesheet to load before inserting the current template",
             "itemtype": "method",
             "name": "add_stylesheet",

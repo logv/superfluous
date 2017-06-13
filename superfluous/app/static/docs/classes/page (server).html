@@ -15,109 +15,71 @@
 
         <div id="sidebar" class="yui3-u" style="padding-top: 5px">
             <div id="modules" class="sidebox">
-    <div class="hd">
-        <h2 class="no-toc">Modules</h2>
-    </div>
-    <div class="bd">
-        <ul>
-            
-                <li><a href="../modules/Superfluous.html">Superfluous</a>
-                
+                <div class="hd">
+                    <h2 class="no-toc">Modules</h2>
+                </div>
+                <div class="bd">
                     <ul>
-                        
-                            <li><a href="../modules/Superfluous.html#Server">Server</a></li>
-                        
-                            <li><a href="../modules/Superfluous.html#Client">Client</a></li>
-                        
+                            <li><a href="../modules/Superfluous.html">Superfluous</a>
+                                <ul>
+                                        <li><a href="../modules/Superfluous.html#Server">Server</a></li>
+                                        <li><a href="../modules/Superfluous.html#Client">Client</a></li>
+                                </ul>
+                            </li>
                     </ul>
-                
-                </li>
+                </div>
+            </div>
             
-        </ul>
-    </div>
-</div>
-
-<div id="classes" class="sidebox">
-    <div class="hd">
-        <h2 class="no-toc">Classes</h2>
-    </div>
-    <div class="bd">
-        <ul>
+            <div id="classes" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Classes</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="../classes/auth (server).html">auth (server)</a></li>
+                            <li><a href="../classes/bootloader (client).html">bootloader (client)</a></li>
+                            <li><a href="../classes/bridge (server).html">bridge (server)</a></li>
+                            <li><a href="../classes/component (client).html">component (client)</a></li>
+                            <li><a href="../classes/component (server).html">component (server)</a></li>
+                            <li><a href="../classes/config (server).html">config (server)</a></li>
+                            <li><a href="../classes/context (server).html">context (server)</a></li>
+                            <li><a href="../classes/controller (client).html">controller (client)</a></li>
+                            <li><a href="../classes/controller (server).html">controller (server)</a></li>
+                            <li><a href="../classes/db (server).html">db (server)</a></li>
+                            <li><a href="../classes/hooks (server).html">hooks (server)</a></li>
+                            <li><a href="../classes/main (server).html">main (server)</a></li>
+                            <li><a href="../classes/packager (server).html">packager (server)</a></li>
+                            <li><a href="../classes/page (server).html">page (server)</a></li>
+                            <li><a href="../classes/readfile (server).html">readfile (server)</a></li>
+                            <li><a href="../classes/router (server).html">router (server)</a></li>
+                            <li><a href="../classes/routes (server).html">routes (server)</a></li>
+                            <li><a href="../classes/template (server).html">template (server)</a></li>
+                    </ul>
+                </div>
+            </div>
             
-                <li><a href="../classes/auth (server).html">auth (server)</a></li>
+            <div id="methods-on-page" class="sidebox on-page">
+                <div class="hd">
+                    <h2 class="no-toc">Methods On Page</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="#methods_async">async</a></li>
+                            <li><a href="#methods_render">render</a></li>
+                    </ul>
+                </div>
+            </div>
             
-                <li><a href="../classes/bootloader (client).html">bootloader (client)</a></li>
             
-                <li><a href="../classes/bridge (server).html">bridge (server)</a></li>
             
-                <li><a href="../classes/component (client).html">component (client)</a></li>
-            
-                <li><a href="../classes/component (server).html">component (server)</a></li>
-            
-                <li><a href="../classes/config (server).html">config (server)</a></li>
-            
-                <li><a href="../classes/context (server).html">context (server)</a></li>
-            
-                <li><a href="../classes/controller (client).html">controller (client)</a></li>
-            
-                <li><a href="../classes/controller (server).html">controller (server)</a></li>
-            
-                <li><a href="../classes/db (server).html">db (server)</a></li>
-            
-                <li><a href="../classes/hooks (server).html">hooks (server)</a></li>
-            
-                <li><a href="../classes/main (server).html">main (server)</a></li>
-            
-                <li><a href="../classes/packager (server).html">packager (server)</a></li>
-            
-                <li><a href="../classes/page (server).html">page (server)</a></li>
-            
-                <li><a href="../classes/readfile (server).html">readfile (server)</a></li>
-            
-                <li><a href="../classes/router (server).html">router (server)</a></li>
-            
-                <li><a href="../classes/routes (server).html">routes (server)</a></li>
-            
-                <li><a href="../classes/template (server).html">template (server)</a></li>
-            
-        </ul>
-    </div>
-</div>
-
-
-<div id="methods-on-page" class="sidebox on-page">
-    <div class="hd">
-        <h2 class="no-toc">Methods On Page</h2>
-    </div>
-    <div class="bd">
-        <ul>
-            
-                <li><a href="#methods_async">async</a></li>
-            
-                <li><a href="#methods_render">render</a></li>
-            
-        </ul>
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
             <div class="version" style="text-align: right; margin-right: 5px;">
-                <span>Docs for 0.0.38</span>
+                <span>Docs for 0.0.72</span>
             </div>
         </div>
 
         <div id="main" class="yui3-u">
             <div class="content"><h4>Class page (server)</h4>
-
-
-
 <span class="foundat">Class defined in: <a href="../"><code>core&#x2F;server&#x2F;page.js:1</code></a></span>
 <div class="intro"><p>This module deals with how pages are generated, rendered and delivered to
 the client. Each server controller is expected to use this API (or the res
@@ -125,63 +87,37 @@ object) to send a response to the client.</p>
 </div>
 
 
-
 <div id="classdocs">
     <ul>
-        
         <li><a href="#methods">Methods</a></li>
-        
-        
-        
-        
     </ul>
     <div>
-        
             <div id="methods">
-            
                 <a name="methods_async"></a>
-<div class="method item">
-     <strong class="name"><code>async</code></strong>( <code>  </code> ) 
-    <br>
-    <span class="foundat">
-    
-        
-    
-        <a href="../"><code>core&#x2F;server&#x2F;page.js:27</code></a>
-    </span><br>
-    <p>Async page rendering function. It takes a function to run inside an async context
-and returns a placeholder to be rendered in its placed.</p>
-
-    
-    
-    
-</div>
-
-            
+                <div class="method item">
+                     <strong class="name"><code>async</code></strong>( <code>  </code> ) 
+                    <br>
+                    <span class="foundat">
+                        
+                        <a href="../"><code>core&#x2F;server&#x2F;page.js:27</code></a>
+                    </span><br>
+                    <p>Async page rendering function. It takes a function to run inside an async context
+                and returns a placeholder to be rendered in its placed.</p>
+                
+                </div>
                 <a name="methods_render"></a>
-<div class="method item">
-     <strong class="name"><code>render</code></strong>( <code>  </code> ) 
-    <br>
-    <span class="foundat">
-    
-        
-    
-        <a href="../"><code>core&#x2F;server&#x2F;page.js:134</code></a>
-    </span><br>
-    <p>The main page rendering function. It takes an array of options specifying
-what to render in the page.</p>
-
-    
-    
-    
-</div>
-
-            
+                <div class="method item">
+                     <strong class="name"><code>render</code></strong>( <code>  </code> ) 
+                    <br>
+                    <span class="foundat">
+                        
+                        <a href="../"><code>core&#x2F;server&#x2F;page.js:144</code></a>
+                    </span><br>
+                    <p>The main page rendering function. It takes an array of options specifying
+                what to render in the page.</p>
+                
+                </div>
             </div>
-        
-        
-        
-        
     </div>
 </div>
 </div>
