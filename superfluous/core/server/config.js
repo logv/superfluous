@@ -13,6 +13,7 @@
  * @submodule Server
  **/
 
+var readfile = require_core("server/readfile");
 var path = require("path");
 var _config = {};
 
@@ -48,6 +49,7 @@ function load_config(base_path, add_supplements) {
 
 
   if (!add_supplements) {
+    _.extend(_config, ret);
     return;
   }
 
@@ -57,9 +59,9 @@ function load_config(base_path, add_supplements) {
     var override_config = path.join(base_path, "config/override");
     override = require(override_config);
     _.extend(ret, override);
-    console.log("Using custom overrides in", override_config);
+    console.log("Using overrides in", override_config);
   } catch(e) {
-    console.log("Couldn't load override from", env_config);
+    console.log("Couldn't load override from", override_config);
   }
 
   if (env) {
@@ -67,23 +69,26 @@ function load_config(base_path, add_supplements) {
     try {
       override = require(env_config);
       _.extend(ret, override);
-      console.log("Using custom overrides in", env_config);
+      console.log("Using ENV overrides in", env_config);
     } catch(e) {
       console.log("Couldn't load env conf from", env_config);
     }
   }
 
-
+  // We apply our own config to global config before
+  // recursing into config_dir
+  _.extend(_config, ret);
 
   // LOADING ret.config_dir + config/config.js
   if (ret.config_dir) {
     var resolved = path.resolve(ret.config_dir);
     if (resolved != base_path) {
-      load_config(ret.config_dir);
+      readfile.register_path(ret.config_dir);
+      load_config(ret.config_dir, add_supplements);
     }
   }
 
-  _.extend(_config, ret);
+
 }
 
 var cwd = process.cwd();

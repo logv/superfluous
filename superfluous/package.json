@@ -1,7 +1,7 @@
 {
   "name": "superfluous",
   "description": "a node.js server/client understanding",
-  "version": "0.0.72",
+  "version": "0.0.73",
   "private": false,
   "dependencies": {
     "async": "x",
