@@ -32,7 +32,7 @@ function load_config(base_path, add_supplements) {
     return;
   }
 
-  console.log("LOADING CONFIG FROM", base_path);
+  console.log("CONFIG: LOADING CONFIG DIR FROM", base_path);
   _loaded[base_path] = true;
 
   var ret = {};
@@ -42,9 +42,9 @@ function load_config(base_path, add_supplements) {
     var main_config = path.join(base_path, "config/config");
     var base_config = require(main_config);
     _.extend(ret, base_config);
-    console.log("Using config in", main_config);
+    console.log("CONFIG: Using config in config/config");
   } catch (e) {
-    console.log(e);
+    console.log("CONFIG: Main config error:", e);
   }
 
 
@@ -59,9 +59,9 @@ function load_config(base_path, add_supplements) {
     var override_config = path.join(base_path, "config/override");
     override = require(override_config);
     _.extend(ret, override);
-    console.log("Using overrides in", override_config);
+    console.log("CONFIG: Adding overrides from config/override.js");
   } catch(e) {
-    console.log("Couldn't load override from", override_config);
+    console.log("CONFIG: Couldn't load overrides in config/override.js");
   }
 
   if (env) {
@@ -69,9 +69,9 @@ function load_config(base_path, add_supplements) {
     try {
       override = require(env_config);
       _.extend(ret, override);
-      console.log("Using ENV overrides in", env_config);
+      console.log("CONFIG: Using ENV overrides in config/" + env);
     } catch(e) {
-      console.log("Couldn't load env conf from", env_config);
+      console.log("CONFIG: Couldn't load env conf from config/" + env);
     }
   }
 
@@ -98,5 +98,5 @@ _config.RELEASE = RELEASE;
 _config.APP_DIR = path.join(cwd, "app");
 _config.CORE_DIR = path.relative(cwd, path.join(__dirname, ".."));
 
-console.log("CONFIG:", _config);
+console.log("CONFIG: FINAL OBJ: ", _config);
 module.exports = Object.freeze(_config);
