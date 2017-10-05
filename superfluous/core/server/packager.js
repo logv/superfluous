@@ -26,11 +26,28 @@ var less_header = readfile("app/static/styles/definitions.less") +
 var ROOT_RE = new RegExp("^/?\\$ROOT/");
 
 function readstyle(mod) {
-  var data = readfile.all(mod + ".css");
-  if (!data) {
-    data = readfile.all(mod + ".less");
-  }
-  return data;
+  var ret;
+  var prefixes = [ "", "styles/" ];
+  _.each(prefixes, function(prefix) {
+    if (ret) {
+      return;
+    }
+
+    var cmod = mod;
+    if (prefix) {
+      var re = new RegExp("^" + prefix);
+      cmod = mod.replace(re, "");
+    }
+
+    var data = readfile.all(cmod + ".css");
+    if (!data) {
+      data = readfile.all(cmod + ".less");
+    }
+
+    ret = data;
+  });
+
+  return ret;
 }
 
 var _style_cache = {};
