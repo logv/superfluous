@@ -46,7 +46,6 @@
     // Presumes that name starts with a slash
     _sockets[name] = socket;
 
-    socket.on("__store", SF.data_sync);
     socket.on("__call", call);
     socket.on("__controller_call", controller_call);
     socket.on("__log", function() {

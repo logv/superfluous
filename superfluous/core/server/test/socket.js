@@ -20,14 +20,6 @@ describe("core/server/socket.js", function() {
       }, Backbone.Events);
     }
   };
-  describe("#get_cache", function() {
-    test_helper.it("should have a test", function(done) {
-      socket.get_cache(function(ret) {
-        assert.notEqual(ret, null);
-        done();
-      });
-    });
-  });
   describe("#install", function() {
     var readfile = require_core("server/readfile");
     test_helper.it("should have a test", function(done) {

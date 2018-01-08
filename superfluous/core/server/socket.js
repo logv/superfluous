@@ -97,24 +97,6 @@ function setup_new_socket(controller_cache, name, controller, socket) {
 
   _sockets.push(socket);
 
-  _.each(controller_cache, function(v, k) {
-    socket.emit('__store', {
-      key: k,
-      value: v,
-      controller: name
-    });
-  });
-
-  socket.on('__store', function(data) {
-    var controller_cache = _controller_caches[data.controller];
-    _dirty = true;
-
-    controller_cache[data.key] = data.value;
-
-    // TODO: validate this before sending it to other clients.
-    socket.broadcast.emit("__store", data);
-  });
-
   socket.on('__validate_versions', function(versions, cb) {
     var bootloader = require_core("controllers/bootloader/server");
     bootloader.validate_versions(versions, socket, cb);
