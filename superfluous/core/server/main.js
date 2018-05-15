@@ -60,7 +60,8 @@ function setup() {
    * @param {app} app the express app
    */
   hooks.setup("query", app, function(app) {
-    app.use(connect.query());
+    var query = require("connect-query");
+    app.use(query());
   });
 
   http_server = http.createServer(app);
@@ -84,7 +85,8 @@ function setup() {
     // setup error handling
     //var errorHandlers = require_core("server/error_handlers");
     //app.use(errorHandlers.default);
-    app.use(connect.errorHandler({ dumpExceptions: true, showStack: true }));
+    var errorHandler = require("errorhandler");
+    app.use(errorHandler({ dumpExceptions: true, showStack: true }));
   });
 
   /**
@@ -94,7 +96,8 @@ function setup() {
    * @param {app} app the express app
    */
   hooks.setup("cookies", app, function() {
-    app.use(connect.cookieParser());
+    var cookieParser = require("cookie-parser");
+    app.use(cookieParser());
   });
 
   /**
@@ -165,7 +168,8 @@ function setup() {
    * @param {app} app the express app
    */
   hooks.setup("compression", app, function(app) {
-    app.use(connect.compress());
+    var compress = require("compression");
+    app.use(compress());
   });
 
   /**

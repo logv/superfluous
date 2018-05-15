@@ -42,9 +42,10 @@ module.exports = {
     this.app = app;
     this.io = io;
 
+    var cookieParser = require("cookie-parser");
     io.authorize(function(handshake_data, cb) {
       var secret = session.secret();
-      var parseCookie = require("connect").cookieParser(secret);
+      var parseCookie = cookieParser(secret);
 
       parseCookie(handshake_data, null, function() {
         var sid = handshake_data.signedCookies['connect.sid'];
@@ -54,7 +55,7 @@ module.exports = {
         if (!sid) {
           var signed_sid = handshake_data.query['connect.sid'];
           if (signed_sid) {
-            sid = require("connect").cookieParser.signedCookie(signed_sid, secret);
+            sid = cookieParser.signedCookie(signed_sid, secret);
           }
 
 

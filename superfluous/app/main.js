@@ -14,10 +14,12 @@ module.exports = {
   },
   setup_store: function() {
     if (config.mongo_store) {
+      var session = require('express-session');
+
       var package_json = require_core("../package.json");
       var app_name = package_json.name;
       var url = config.backend && config.backend.db_url;
-      var MongoStore = require('connect-mongo')(connect);
+      var MongoStore = require('connect-mongo')(session);
       var store = new MongoStore({url: url, db: app_name, auto_reconnect: true } );
       require_core("server/store").set(store);
       return true;
@@ -38,6 +40,7 @@ module.exports = {
     // setup static helpers
     var oneDay = 1000 * 60 * 60 * 24;
     var oneYear = oneDay * 365;
-    app.use(connect.static('react/', { maxAge: oneYear }));
+    var st = require("serve-static");
+    app.use(st('react/', { maxAge: oneYear }));
   }
 };

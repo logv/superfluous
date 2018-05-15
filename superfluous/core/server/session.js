@@ -11,6 +11,7 @@ var SESSION_SECRET = config.session_secret || 'keyboard cat';
 
 module.exports = {
   install: function(app) {
+    var cookieSession = require('cookie-session');
     var persistence_store = store.get();
 
     if (!_session) {
@@ -31,7 +32,7 @@ module.exports = {
 
     }
 
-    _session = connect.cookieSession({
+    _session = cookieSession({
       secret: SESSION_SECRET
     });
 

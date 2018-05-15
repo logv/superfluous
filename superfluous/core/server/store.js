@@ -1,12 +1,12 @@
 "use strict";
 
 var config = require('./config');
-var connect = require('connect');
+var session = require('express-session');
+var MemoryStore = require('memorystore')(session);
 
 var _store;
 module.exports = {
   install: function() {
-    var MemoryStore = connect.session.MemoryStore;
     _store = new MemoryStore({});
   },
   get: function() {
