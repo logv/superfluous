@@ -1,17 +1,16 @@
 {
   "name": "superfluous",
   "description": "a node.js server/client understanding",
-  "version": "0.0.76",
+  "version": "0.0.77",
   "private": false,
   "dependencies": {
     "async": "x",
     "cheerio": "0.10.x",
     "commander": "x",
-    "connect": "2.x",
+    "connect": "~2.x.x",
     "connect-redirect": "x",
     "continuation-local-storage": "x",
-    "engine.io": "^2.0.1",
-    "sockjs" : "x",
+    "engine.io": "^3.2.0",
     "fs-extra": "x",
     "json-stable-stringify": "x",
     "less": "x",
@@ -20,12 +19,12 @@
     "primus.io": "3.2.0",
     "response-redirect": "x",
     "reversable-router": "git://github.com/logv/node-reversable-router",
+    "sockjs": "x",
     "st": "x",
-    "ua-parser" : "x"
+    "useragent": "^2.3.0"
   },
   "devDependencies": {
     "marked": "x",
-    "orm": "x",
     "mocha": "x",
     "nodemailer": "x",
     "mocha-phantomjs": "x"

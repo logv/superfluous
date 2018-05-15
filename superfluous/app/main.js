@@ -33,10 +33,6 @@ module.exports = {
   },
   setup_plugins: function(app) {
     // If we are testing, don't install this plugin
-    if (process.env.ENV !== "test") {
-      app.add_plugin_dir("app/plugins/mars");
-      require_app("plugins/mars/models").install(app);
-    }
   },
   setup_cache: function(app) {
     // setup static helpers
