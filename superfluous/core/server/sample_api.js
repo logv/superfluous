@@ -1,7 +1,7 @@
 var context = require_core("server/context");
 
 var config = require_core("server/config");
-var ua_parser = require("ua-parser");
+var useragent = require("useragent");
 var app_name = require_core("server/app_name");
 
 var geoip;
@@ -98,8 +98,8 @@ var DECO = {
 
     // Add in UA flavors
     var userAgent = req.headers["user-agent"];
-    var ua = ua_parser.parseUA(userAgent);
-    var os = ua_parser.parseOS(userAgent);
+    var ua = useragent.parse(userAgent);
+    var os = ua.os;
 
     s.string("browser_family", ua.family);
     s.string("browser_major", ua.major);
