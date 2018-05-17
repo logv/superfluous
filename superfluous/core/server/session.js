@@ -3,6 +3,7 @@
 var connect = require('connect');
 var config = require('./config');
 var store = require_core("server/store");
+var session = require("express-session");
 
 var _session;
 
@@ -17,7 +18,7 @@ module.exports = {
     if (!_session) {
       if (persistence_store) {
         try {
-          _session = connect.session({
+          _session = session({
             secret: SESSION_SECRET,
             store: persistence_store
           });
@@ -27,6 +28,7 @@ module.exports = {
           return;
         } catch(e) {
           console.log("Session store and session are incompatible");
+          console.log("Error is:", e);
         }
       } 
 
