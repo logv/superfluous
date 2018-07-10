@@ -27,8 +27,8 @@ module.exports = {
 
           return;
         } catch(e) {
-          console.log("Session store and session are incompatible");
-          console.log("Error is:", e);
+          console.error("ERROR: Session store and session are incompatible");
+          throw e
         }
       } 
 

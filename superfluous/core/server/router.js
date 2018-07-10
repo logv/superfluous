@@ -83,7 +83,7 @@ function request_handler_factory(app, route_data) {
                 return;
               }
               handled = true;
-              debug("Starting request", ctx.id, ctx.req.url.pathname);
+              debug("Starting request", ctx.id, ctx.req.url);
               res.set("Transfer-Encoding", "chunked");
 
               handler(ctx, API);
