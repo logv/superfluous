@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image:  nodesource/precise:0.10.46
+    working_directory: /app
+    steps:
+      - checkout
+      - run:
+          name: build
+          command: |
+            cd superfluous
+            NODE_ENV=development npm install
+            ln -s .. node_modules/superfluous
+            npm test
