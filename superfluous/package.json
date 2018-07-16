@@ -3,6 +3,9 @@
   "description": "a node.js server/client understanding",
   "version": "0.1.4",
   "private": false,
+  "engines": {
+    "node": ">=0.10 <0.13"
+  },
   "dependencies": {
     "async": "x",
     "cheerio": "0.10.x",
@@ -21,6 +24,7 @@
     "json-stable-stringify": "x",
     "less": "x",
     "longjohn": "x",
+    "memorystore": "^1.6.0",
     "module-grapher": "x",
     "primus.io": "3.2.0",
     "response-redirect": "x",
@@ -32,11 +36,12 @@
   },
   "devDependencies": {
     "marked": "x",
-    "mocha": "x",
-    "nodemailer": "x"
+    "mocha": "<4",
+    "nodemailer": "x",
+    "socket.io": "^0.9.19"
   },
   "optionalDependencies": {
-    "mongodb": "x",
+    "mongodb": "<1.2.3",
     "connect-mongo": "x"
   },
   "bin": {
