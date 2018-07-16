@@ -12,7 +12,7 @@ app environment.
 
 ### 0) get it running
 
-# install node (>= 0.8)
+# install node (0.10-0.12)
 
 ```bash
 # get the code and dependencies for superfluous
