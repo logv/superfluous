@@ -6,7 +6,7 @@ for component in components/*; do
     fi
 
     echo "Running component tests for $component" 
-    mocha ${component}/test/server || FAIL=1;
+    mocha ${component}/test/server --exit || FAIL=1;
 
   fi
 done

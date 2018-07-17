@@ -12,7 +12,7 @@ if [[ $HAS_PHANTOMJS == 0 && $HAS_MOCHA_PHANTOM == 0 ]]; then
   PID=$!
   sleep 1
   echo "Running client tests"
-  mocha-phantomjs http://localhost:4200/tester || FAIL=1
+  mocha-phantomjs http://localhost:4200/tester --exit || FAIL=1
   kill $PID
 else
   echo "WARNING: Couldn't find phantomjs, skipping client tests"
