@@ -10,8 +10,16 @@ describe("core/server/template.js", function() {
   var hooks = require_core("server/hooks");
   var main = {};
   hooks.set_main(main);
+
   describe("#load", function() {
     test_helper.it("should have a test", function(done) {
+      var app = require("connect")();
+      context("app", app);
+      var router = {
+        build: function() {}
+      };
+      app.router = router;
+      context("router", router);
       var tl = template.load("helpers/bridge_payload.html.erb");
       assert.notEqual(tl, null);
       assert.notEqual(tl, "");
@@ -19,11 +27,6 @@ describe("core/server/template.js", function() {
     });
   });
   describe("#render", function() {
-    context("router", {
-      build: function() {
-
-      }
-    });
     test_helper.it("should have a test", function(done) {
       var str = template.render("helpers/js_link.html.erb", { path: "tonowhere" });
       assert.notEqual(str, null);

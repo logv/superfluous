@@ -25,7 +25,7 @@ var package_json = require_core("../package.json");
 var context = require_core("server/context");
 var config = require_core("server/config");
 var mongodb = require("mongodb"),
-    port = mongodb.Connection.DEFAULT_PORT;
+    port = (mongodb.Connection && mongodb.Connection.DEFAULT_PORT) || 36227;
 
 var EventEmitter = require("events").EventEmitter;
 

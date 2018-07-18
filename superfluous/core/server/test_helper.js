@@ -14,7 +14,7 @@ function suppress_console_log() {
 }
 console.suppress = suppress_console_log;
 
-function restore_console_log() { 
+function restore_console_log() {
   if (_suppressed_log) {
     console.log = _suppressed_log;
   }
@@ -111,7 +111,7 @@ module.exports = {
     var router = require_core("server/router");
     var controller = require_core("server/controller");
     var controller_mod = controller.load(controller_name);
-  
+
     var stream_data = "";
     var ctx = {
       session: {
@@ -173,7 +173,7 @@ module.exports = {
     run_in_context(function() {
       controller_mod[route].apply(controller_mod, args);
     }, ctx);
-  }, 
+  },
 
   // Loads a module and logs its module.exports as a test definition
   generate_tests_for_module: function(module_path) {
