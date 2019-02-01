@@ -1,7 +1,7 @@
 {
   "name": "superfluous",
   "description": "a node.js server/client understanding",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "private": false,
   "engines": {
     "node": ">=0.10 <0.13"
